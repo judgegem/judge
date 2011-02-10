@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "validate_me"
   gem.homepage = "http://github.com/joecorcoran/validate_me"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Simple client-side ActiveModel::Validators}
+  gem.description = %Q{Validate forms in-place using your model validations}
   gem.email = "joe@tribesports.com"
   gem.authors = ["Joe Corcoran"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
