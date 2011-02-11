@@ -4,10 +4,15 @@ module ValidateMe
 
     include ActionView::Helpers::TagHelper
     
-    def validated_text_field(method, options = {})
-      validators = self.object.class.validators_on(method).collect{ |v| { :kind => v.kind.to_s, :options => v.options } }
-      options = { "data-validate" => validators.to_json }.merge(options)
-      @template.text_field(self.object_name, method, options)
+    %w{text_field text_area}.each do |type|
+      helper = <<-END
+        def validated_#{type}(method, options = {})
+          validators = self.object.class.validators_on(method).collect{ |v| { :kind => v.kind.to_s, :options => v.options } }
+          options = { "data-validate" => validators.to_json }.merge(options)
+          @template.#{type}(self.object_name, method, options)
+        end
+      END
+      class_eval helper, __FILE__, __LINE__
     end
 
   end
