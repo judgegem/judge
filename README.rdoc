@@ -6,7 +6,7 @@ Requires a recent copy of jQuery and Rails 3.0.3 or higher.
 
 == Usage
 
-1. Replace +form_for+ with +validated_form_for+.  There are no new options here.
+1. Replace <tt>form_for</tt> with <tt><b>validated_form_for</b></tt>.  There are no new options here.
 
 2. Replace your <tt>f.text_field</tt> or <tt>f.text_area</tt> with <tt><b>f.validated_text_field</b></tt> or <tt><b>f.validated_text_area</b></tt>.
 
