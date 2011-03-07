@@ -6,23 +6,23 @@ Requires a recent copy of jQuery and Rails 3.0.3 or higher.
 
 == Usage
 
-  1. Replace +form_for+ with +*validated_form_for*+.  There are no new options here.
+1. Replace +form_for+ with +*validated_form_for*+.  There are no new options here.
 
-  2. Replace your +f.text_field+ or +f.text_area+ with +*f.validated_text_field*+ or +*f.validated_text_area*+.
+2. Replace your +f.text_field+ or +f.text_area+ with +*f.validated_text_field*+ or +*f.validated_text_area*+.
 
-  3. +$ rails g validate_me+ copies the necessary javascript files to public/javascripts.  
+3. +$ rails g validate_me+ copies the necessary javascript files to public/javascripts.  
      
-     Run +rails g validate_me --help+ for further options.
+   Run +rails g validate_me --help+ for further options.
 
-  4. Check out *public/javascripts/example.validateMe.js* for some jQuery event binding examples.
+4. Check out *public/javascripts/example.validateMe.js* for some jQuery event binding examples.
 
 == To do
 
-  - Complete feature set to match all the possible validations from ActiveModel
+- Complete feature set to match all the possible validations from ActiveModel
 
-  - Come up with nifty way of enabling validation types which require a request to the server (uniqueness etc.)
+- Come up with nifty way of enabling validation types which require a request to the server (uniqueness etc.)
   
-  - Write a proper guide
+- Write a proper guide
 
 == Copyright
 
