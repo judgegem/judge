@@ -1,6 +1,6 @@
 module ValidateMe
 
-  module Helpers
+  module FieldHelpers
 
     include ActionView::Helpers::TagHelper
     
@@ -13,6 +13,17 @@ module ValidateMe
         end
       END
       class_eval helper, __FILE__, __LINE__
+    end
+
+  end
+
+  module FormHelpers
+  
+    def validated_form_for(record_or_name_or_array, *args, &proc)
+      options = args.extract_options!
+      options[:html] ||= {}
+      options[:html]["data-error-messages"] = I18n.t("errors.messages").to_json
+      form_for(record_or_name_or_array, *(args << options), &proc)
     end
 
   end
