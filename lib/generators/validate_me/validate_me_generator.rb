@@ -12,7 +12,7 @@ class ValidateMeGenerator < Rails::Generators::Base
     Some example element bindings are also copied into this directory.
     If you don't want them, use the --skip-example option.
   }
-  def copy_initializer_file
+  def copy_files
     copy_file "jquery.validateMe.js", "#{path}/jquery.validateMe.js"
     copy_file "example.validateMe.js", "#{path}/example.validateMe.js" if options.example?
   end
