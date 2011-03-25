@@ -1,4 +1,4 @@
-= validate_me
+= judge
 
 Client-side form validation in Rails 3.
 
@@ -12,13 +12,13 @@ Requires a recent copy of jQuery and Rails 3.0.3 or higher.
 
 3. Run
      
-     $ rails g validate_me
+     $ rails g judge
    
    to copy the necessary javascript files to public/javascripts. For further options, run  
      
-     $ rails g validate_me --help
+     $ rails g judge --help
   
-4. Check out <b>public/javascripts/example.validateMe.js</b> for some jQuery event binding examples.
+4. Check out <b>public/javascripts/example.judge.js</b> for some jQuery event binding examples.
 
 == To do
 

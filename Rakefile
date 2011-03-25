@@ -12,8 +12,8 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "validate_me"
-  gem.homepage = "http://github.com/joecorcoran/validate_me"
+  gem.name = "judge"
+  gem.homepage = "http://github.com/joecorcoran/judge"
   gem.license = "MIT"
   gem.summary = %Q{Simple client-side ActiveModel::Validators}
   gem.description = %Q{Validate forms in-place using your model validations}
@@ -47,7 +47,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "validate_me #{version}"
+  rdoc.title = "judge #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
