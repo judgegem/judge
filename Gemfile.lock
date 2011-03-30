@@ -1,16 +1,38 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    diff-lcs (1.1.2)
     git (1.2.5)
+    jasmine (1.0.1.1)
+      json_pure (>= 1.4.3)
+      rack (>= 1.0.0)
+      rake (>= 0.8.7)
+      rspec (>= 1.1.5)
+      selenium-client (>= 1.2.17)
+      selenium-rc (>= 2.1.0)
     jeweler (1.5.2)
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
+    json_pure (1.5.1)
+    rack (1.2.2)
     rake (0.8.7)
+    rspec (2.5.0)
+      rspec-core (~> 2.5.0)
+      rspec-expectations (~> 2.5.0)
+      rspec-mocks (~> 2.5.0)
+    rspec-core (2.5.1)
+    rspec-expectations (2.5.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.5.0)
+    selenium-client (1.2.18)
+    selenium-rc (2.3.2)
+      selenium-client (>= 1.2.18)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   bundler (~> 1.0.0)
+  jasmine
   jeweler (~> 1.5.2)
