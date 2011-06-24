@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "judge.gemspec",
     "lib/generators/judge/judge_generator.rb",
     "lib/generators/judge/templates/example.judge.js",
     "lib/generators/judge/templates/jquery.judge.js",
@@ -123,14 +124,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<sqlite3-ruby>, ["~> 1.3.2"])
       s.add_development_dependency(%q<nokogiri>, ["~> 1.4.4"])
       s.add_development_dependency(%q<json>, ["~> 1.4.6"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
-      s.add_development_dependency(%q<jasmine>, ["~> 1.0.2"])
-      s.add_development_dependency(%q<rails>, ["~> 3.0.3"])
-      s.add_development_dependency(%q<shoulda>, ["~> 2.11.3"])
-      s.add_development_dependency(%q<sqlite-ruby>, ["~> 1.3.2"])
-      s.add_development_dependency(%q<nokogiri>, ["~> 1.4.4"])
-      s.add_development_dependency(%q<json>, ["~> 1.4.6"])
     else
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
@@ -138,14 +131,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rails>, ["~> 3.0.3"])
       s.add_dependency(%q<shoulda>, ["~> 2.11.3"])
       s.add_dependency(%q<sqlite3-ruby>, ["~> 1.3.2"])
-      s.add_dependency(%q<nokogiri>, ["~> 1.4.4"])
-      s.add_dependency(%q<json>, ["~> 1.4.6"])
-      s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
-      s.add_dependency(%q<jasmine>, ["~> 1.0.2"])
-      s.add_dependency(%q<rails>, ["~> 3.0.3"])
-      s.add_dependency(%q<shoulda>, ["~> 2.11.3"])
-      s.add_dependency(%q<sqlite-ruby>, ["~> 1.3.2"])
       s.add_dependency(%q<nokogiri>, ["~> 1.4.4"])
       s.add_dependency(%q<json>, ["~> 1.4.6"])
     end
@@ -156,14 +141,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rails>, ["~> 3.0.3"])
     s.add_dependency(%q<shoulda>, ["~> 2.11.3"])
     s.add_dependency(%q<sqlite3-ruby>, ["~> 1.3.2"])
-    s.add_dependency(%q<nokogiri>, ["~> 1.4.4"])
-    s.add_dependency(%q<json>, ["~> 1.4.6"])
-    s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-    s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
-    s.add_dependency(%q<jasmine>, ["~> 1.0.2"])
-    s.add_dependency(%q<rails>, ["~> 3.0.3"])
-    s.add_dependency(%q<shoulda>, ["~> 2.11.3"])
-    s.add_dependency(%q<sqlite-ruby>, ["~> 1.3.2"])
     s.add_dependency(%q<nokogiri>, ["~> 1.4.4"])
     s.add_dependency(%q<json>, ["~> 1.4.6"])
   end
