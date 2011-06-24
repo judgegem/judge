@@ -18,14 +18,6 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Validate forms in-place using your model validations}
   gem.email = "joe@tribesports.com"
   gem.authors = ["Joe Corcoran"]
-  gem.add_development_dependency "bundler",     "~> 1.0.0"
-  gem.add_development_dependency "jeweler",     "~> 1.5.2"
-  gem.add_development_dependency "jasmine",     "~> 1.0.2"
-  gem.add_development_dependency "rails",       "~> 3.0.3"
-  gem.add_development_dependency "shoulda",     "~> 2.11.3"
-  gem.add_development_dependency "sqlite-ruby", "~> 1.3.2"
-  gem.add_development_dependency "nokogiri",    "~> 1.4.4"
-  gem.add_development_dependency "json",        "~> 1.4.6"
 end
 Jeweler::RubygemsDotOrgTasks.new
 
