@@ -38,6 +38,8 @@ stylesheets:
 #   - helpers/**/*.js
 #
 helpers:
+  - helpers/jasmine-jquery.js
+  - helpers/customMatchers.js
 
 # spec_files
 #

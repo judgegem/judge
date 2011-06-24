@@ -11,7 +11,6 @@ require 'rake'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "judge"
   gem.homepage = "http://github.com/joecorcoran/judge"
   gem.license = "MIT"
@@ -19,21 +18,23 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Validate forms in-place using your model validations}
   gem.email = "joe@tribesports.com"
   gem.authors = ["Joe Corcoran"]
-  # Include your dependencies below. Runtime dependencies are required when using your gem,
-  # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
-  #  gem.add_development_dependency 'rspec', '> 1.2.3'
+  gem.add_development_dependency "bundler",     "~> 1.0.0"
+  gem.add_development_dependency "jeweler",     "~> 1.5.2"
+  gem.add_development_dependency "jasmine",     "~> 1.0.2"
+  gem.add_development_dependency "rails",       "~> 3.0.3"
+  gem.add_development_dependency "shoulda",     "~> 2.11.3"
+  gem.add_development_dependency "sqlite-ruby", "~> 1.3.2"
+  gem.add_development_dependency "nokogiri",    "~> 1.4.4"
+  gem.add_development_dependency "json",        "~> 1.4.6"
 end
 Jeweler::RubygemsDotOrgTasks.new
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
+  test.pattern = 'test/**/*_test.rb'
   test.verbose = true
 end
-
-task :default => :test
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
@@ -47,3 +48,5 @@ end
 
 require 'jasmine'
 load 'jasmine/tasks/jasmine.rake'
+
+task :default => ["test", "jasmine:ci"]

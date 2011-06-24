@@ -1,0 +1,42 @@
+<h1>New foo</h1>
+
+<%= validated_form_for(@foo) do |f| %>
+  <% if @foo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@foo.errors.count, "error") %> prohibited this foo from being saved:</h2>
+
+      <ul>
+      <% @foo.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :one %><br />
+    <%= f.validated_text_field :one %>
+  </div>
+  <div class="field">
+    <%= f.label :two %><br />
+    <%= f.validated_text_field :two %>
+  </div>
+  <div class="field">
+    <%= f.label :three %><br />
+    <%= f.validated_text_field :three %>
+  </div>
+  <div class="field">
+    <%= f.label :four %><br />
+    <%= f.validated_text_area :four %>
+  </div>
+  <div class="field">
+    <%= f.label :five %><br />
+    <%= f.validated_text_area :five %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+<%= link_to 'Back', foos_path %>
