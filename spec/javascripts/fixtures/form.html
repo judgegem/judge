@@ -1,0 +1,26 @@
+<form accept-charset="UTF-8" action="/foos" class="new_foo" data-error-messages="{&quot;inclusion&quot;:&quot;is not included in the list&quot;,&quot;exclusion&quot;:&quot;is reserved&quot;,&quot;invalid&quot;:&quot;is invalid&quot;,&quot;confirmation&quot;:&quot;doesn't match confirmation&quot;,&quot;accepted&quot;:&quot;must be accepted&quot;,&quot;empty&quot;:&quot;can't be empty&quot;,&quot;blank&quot;:&quot;can't be blank&quot;,&quot;too_long&quot;:&quot;is too long (maximum is %{count} characters)&quot;,&quot;too_short&quot;:&quot;is too short (minimum is %{count} characters)&quot;,&quot;wrong_length&quot;:&quot;is the wrong length (should be %{count} characters)&quot;,&quot;not_a_number&quot;:&quot;is not a number&quot;,&quot;not_an_integer&quot;:&quot;must be an integer&quot;,&quot;greater_than&quot;:&quot;must be greater than %{count}&quot;,&quot;greater_than_or_equal_to&quot;:&quot;must be greater than or equal to %{count}&quot;,&quot;equal_to&quot;:&quot;must be equal to %{count}&quot;,&quot;less_than&quot;:&quot;must be less than %{count}&quot;,&quot;less_than_or_equal_to&quot;:&quot;must be less than or equal to %{count}&quot;,&quot;odd&quot;:&quot;must be odd&quot;,&quot;even&quot;:&quot;must be even&quot;}" id="new_foo" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="Ub8cJKYcPwvga6LZTeihSyjYqN3I1Jz3rd1oaC6Tfwk=" /></div> 
+ 
+  <div class="field"> 
+    <label for="foo_one">One</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;presence&quot;,&quot;options&quot;:{}}]" id="foo_one" name="foo[one]" size="30" type="text" /> 
+  </div>   
+  <div class="field"> 
+    <label for="foo_two">Two</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;length&quot;,&quot;options&quot;:{&quot;tokenizer&quot;:{},&quot;allow_blank&quot;:true,&quot;minimum&quot;:5,&quot;maximum&quot;:10}}]" id="foo_two" name="foo[two]" size="30" type="text" /> 
+  </div> 
+  <div class="field"> 
+    <label for="foo_three">Three</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;exclusion&quot;,&quot;options&quot;:{&quot;in&quot;:[&quot;foo&quot;,&quot;bar&quot;]}}]" id="foo_three" name="foo[three]" size="30" type="text" /> 
+  </div> 
+  <div class="field"> 
+    <label for="foo_four">Four</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;numericality&quot;,&quot;options&quot;:{&quot;only_integer&quot;:true,&quot;allow_nil&quot;:false,&quot;odd&quot;:true,&quot;less_than_or_equal_to&quot;:7}},{&quot;kind&quot;:&quot;exclusion&quot;,&quot;options&quot;:{&quot;in&quot;:[3,12]}}]" id="foo_four" name="foo[four]" size="30" type="text" /> 
+  </div> 
+  <div class="field"> 
+    <label for="foo_five">Five</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;format&quot;,&quot;options&quot;:{&quot;without&quot;:&quot;(?-mix:[A-Za-z]+)&quot;}}]" id="foo_five" name="foo[five]" size="30" type="text" /> 
+  </div> 
+  <div class="actions"> 
+    <input id="foo_submit" name="commit" type="submit" value="Create Foo" /> 
+  </div> 
+</form>
