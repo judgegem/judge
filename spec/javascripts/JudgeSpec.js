@@ -4,6 +4,31 @@ describe('Judge', function() {
     this.addMatchers(tsCustomMatchers);
   });
 
+  describe('constructor', function() {
+  
+    var j;
+    
+    beforeEach(function() {
+      loadFixtures('spec/javascripts/fixtures/form.html');
+      j = new Judge(document.getElementById('foo_one'));
+    });
+
+    it('returns new instance of Judge', function() {
+      expect(typeof j).toEqual('object');
+      expect(j.constructor).toEqual(Judge);
+    });
+
+    it('associates with element', function() {
+      expect(j.element).toEqual(document.getElementById('foo_one'));
+    });
+
+    it('stores validators', function() {
+      expect(_(j.validators).isArray()).toEqual(true);
+      expect(_(j.validators).isEmpty()).toEqual(false);
+    });
+
+  });
+
   describe('instance validation methods', function() {
 
     beforeEach(function() {
@@ -39,28 +64,48 @@ describe('Judge', function() {
     });
 
     describe('length', function() {
-      xit('returns false when value is valid', function() {
-        expect(Judge.Validators.length('abcdef', { minimum:5, maximum:7 })).toEqual(false);
+
+      var j, jIs;
+
+      beforeEach(function() {
+        j = new Judge(document.getElementById('foo_two'));
+        jIs = new Judge(document.getElementById('foo_two_is'));
       });
 
-      xit('invalidates when value is under minimum', function() {
-        expect(Judge.Validators.length('abc', { minimum:6 })).toContain('is too short (minimum is 6 characters)');
-        expect(Judge.Validators.length('abc', { minimum:6, too_short:'should be longer' })).toContain('should be longer');
+      it('validates valid input', function() {
+        j.element.value = 'abcdef';
+        expect(j.validate().valid).toEqual(true);
       });
 
-      xit('invalidates when value is over maximum', function() {
-        expect(Judge.Validators.length('abcdef', { maximum:4 })).toContain('is too long (maximum is 4 characters)');
-        expect(Judge.Validators.length('abcdef', { maximum:4, too_long:'should be shorter' })).toContain('should be shorter');
+      it('validates allow_blank', function() {
+        j.element.value = '';
+        expect(j.validate().valid).toEqual(true);
       });
 
-      xit('invalidates when value is not equal to is', function() {
-        expect(Judge.Validators.length('abc', { is:6 })).toContain('is the wrong length (should be 6 characters)');
-        expect(Judge.Validators.length('abc', { is:6, wrong_length:'wrong length' })).toContain('wrong length');
+      it('returns custom message when present', function() {
+        j.element.value = 'abc';
+        _(j.validators).first().options.too_short = 'oh dear';
+        expect(j.validate().messages).toContain('oh dear');
       });
 
-      xit('invalidates when value is outside of range, using minimum and maximum', function() {
-        expect(Judge.Validators.length('abc', { minimum:6, maximum:10 })).toContain('is too short (minimum is 6 characters)');
-        expect(Judge.Validators.length('abcdefghijkl', { minimum:6, maximum:10 })).toContain('is too long (maximum is 10 characters)');
+      it('returns default message', function() {
+        j.element.value = 'abc';
+        expect(j.validate().messages).toContain(j.defaultMessages.too_short);
+      });
+
+      it('invalidates when value is under minimum', function() {
+        j.element.value = 'abc';
+        expect(j.validate().valid).toEqual(false);
+      });
+
+      it('invalidates when value is over maximum', function() {
+        j.element.value = 'abcdefghijkl';
+        expect(j.validate().valid).toEqual(false);
+      });
+
+      it('invalidates when value is not equal to is', function() {
+        jIs.element.value = 'abc';
+        expect(jIs.validate().valid).toEqual(false);
       });
     });
 

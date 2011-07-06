@@ -1,0 +1,10 @@
+rvm:
+  - 1.9.2
+
+notifications:
+  recipients:
+    - joe@tribesports.com
+
+branches:
+  only:
+    - module
