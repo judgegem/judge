@@ -1,6 +1,8 @@
 rvm:
   - 1.9.2
 
+script: "bundle exec rake --trace"
+
 notifications:
   recipients:
     - joe@tribesports.com
