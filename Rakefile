@@ -40,5 +40,6 @@ end
 
 require 'jasmine'
 load 'jasmine/tasks/jasmine.rake'
+load 'lib/tasks/js_tests.rake'
 
 task :default => ["test", "jasmine:ci"]

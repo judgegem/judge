@@ -1,7 +1,13 @@
 rvm:
   - 1.9.2
 
-script: "bundle exec rake --trace"
+script: "bundle exec rake test && rake jasmine:phantom --trace"
+
+before_script:
+  - "sudo apt-get install libqtwebkit-dev qt4-qmake"
+  - "git clone git://github.com/ariya/phantomjs.git && cd phantomjs"
+  - "git checkout 1.2"
+  - "qmake-qt4 && make"
 
 notifications:
   recipients:

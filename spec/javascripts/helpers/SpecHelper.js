@@ -1,3 +1,0 @@
-beforeEach(function() {
-  this.addMatchers({});
-});
