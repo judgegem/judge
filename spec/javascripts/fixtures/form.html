@@ -9,20 +9,40 @@
     <input data-validate="[{&quot;kind&quot;:&quot;length&quot;,&quot;options&quot;:{&quot;tokenizer&quot;:{},&quot;allow_blank&quot;:true,&quot;minimum&quot;:5,&quot;maximum&quot;:10}}]" id="foo_two" name="foo[two]" size="30" type="text" /> 
   </div>
   <div class="field"> 
-    <label for="foo_two">Two is</label><br /> 
+    <label for="foo_two_is">Two is</label><br /> 
     <input data-validate="[{&quot;kind&quot;:&quot;length&quot;,&quot;options&quot;:{&quot;tokenizer&quot;:{},&quot;allow_blank&quot;:true,&quot;is&quot;:5}}]" id="foo_two_is" name="foo[two_is]" size="30" type="text" /> 
   </div>
   <div class="field"> 
     <label for="foo_three">Three</label><br /> 
     <input data-validate="[{&quot;kind&quot;:&quot;exclusion&quot;,&quot;options&quot;:{&quot;in&quot;:[&quot;foo&quot;,&quot;bar&quot;]}}]" id="foo_three" name="foo[three]" size="30" type="text" /> 
-  </div> 
+  </div>
+  <div class="field"> 
+    <label for="foo_three_inc">Three</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;inclusion&quot;,&quot;options&quot;:{&quot;in&quot;:[2,3,4]}}]" id="foo_three_inc" name="foo[three_inc]" size="30" type="text" /> 
+  </div>
   <div class="field"> 
     <label for="foo_four">Four</label><br /> 
     <input data-validate="[{&quot;kind&quot;:&quot;numericality&quot;,&quot;options&quot;:{&quot;only_integer&quot;:true,&quot;allow_nil&quot;:false,&quot;odd&quot;:true,&quot;less_than_or_equal_to&quot;:7}},{&quot;kind&quot;:&quot;exclusion&quot;,&quot;options&quot;:{&quot;in&quot;:[3,12]}}]" id="foo_four" name="foo[four]" size="30" type="text" /> 
-  </div> 
+  </div>
+  <div class="field"> 
+    <label for="foo_four_even">Four</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;numericality&quot;,&quot;options&quot;:{&quot;only_integer&quot;:true,&quot;allow_nil&quot;:false,&quot;even&quot;:true,&quot;greater_than_or_equal_to&quot;:2}},{&quot;kind&quot;:&quot;exclusion&quot;,&quot;options&quot;:{&quot;in&quot;:[3,12]}}]" id="foo_four_even" name="foo[four_even]" size="30" type="text" /> 
+  </div>
+  <div class="field"> 
+    <label for="foo_four_gt">Four</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;numericality&quot;,&quot;options&quot;:{&quot;allow_nil&quot;:false,&quot;greater_than&quot;:7}},{&quot;kind&quot;:&quot;exclusion&quot;,&quot;options&quot;:{&quot;in&quot;:[3,12]}}]" id="foo_four_gt" name="foo[four_gt]" size="30" type="text" /> 
+  </div>
+  <div class="field"> 
+    <label for="foo_four_lt">Four</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;numericality&quot;,&quot;options&quot;:{&quot;allow_nil&quot;:false,&quot;less_than&quot;:7,&quot;equal_to&quot;:6}},{&quot;kind&quot;:&quot;exclusion&quot;,&quot;options&quot;:{&quot;in&quot;:[3,12]}}]" id="foo_four_lt" name="foo[four_lt]" size="30" type="text" /> 
+  </div>
   <div class="field"> 
     <label for="foo_five">Five</label><br /> 
-    <input data-validate="[{&quot;kind&quot;:&quot;format&quot;,&quot;options&quot;:{&quot;without&quot;:&quot;(?-mix:[A-Za-z]+)&quot;}}]" id="foo_five" name="foo[five]" size="30" type="text" /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;format&quot;,&quot;options&quot;:{&quot;with&quot;:&quot;(?-mix:[A-Za-z]+)&quot;}}]" id="foo_five" name="foo[five]" size="30" type="text" /> 
+  </div>
+  <div class="field"> 
+    <label for="foo_five_wo">Five</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;format&quot;,&quot;options&quot;:{&quot;without&quot;:&quot;(?-mix:[A-Za-z]+)&quot;}}]" id="foo_five_wo" name="foo[five_wo]" size="30" type="text" /> 
   </div> 
   <div class="actions"> 
     <input id="foo_submit" name="commit" type="submit" value="Create Foo" /> 

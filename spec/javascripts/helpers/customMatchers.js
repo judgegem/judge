@@ -1,4 +1,4 @@
-var tsCustomMatchers = {
+var customMatchers = {
   // custom jasmine-jquery matchers
   // TODO: write as extension to jasmine-jquery
   toHaveEvent: function(eventType){
