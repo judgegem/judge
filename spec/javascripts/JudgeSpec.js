@@ -1,4 +1,4 @@
-describe('Judge', function() {
+describe('judge', function() {
 
   beforeEach(function() {
     this.addMatchers(customMatchers);
@@ -10,12 +10,12 @@ describe('Judge', function() {
     
     beforeEach(function() {
       loadFixtures('spec/javascripts/fixtures/form.html');
-      j = new Judge(document.getElementById('foo_one'));
+      j = new judge.Watcher(document.getElementById('foo_one'));
     });
 
-    it('returns new instance of Judge', function() {
+    it('returns new instance of judge', function() {
       expect(typeof j).toEqual('object');
-      expect(j.constructor).toEqual(Judge);
+      expect(j.constructor).toEqual(judge.Watcher);
     });
 
     it('associates with element', function() {
@@ -44,7 +44,7 @@ describe('Judge', function() {
       var j;
 
       beforeEach(function() {
-        j = new Judge(document.getElementById('foo_one'));
+        j = new judge.Watcher(document.getElementById('foo_one'));
       });
       
       it('invalidates empty input', function() {
@@ -72,8 +72,8 @@ describe('Judge', function() {
       var j, jIs;
 
       beforeEach(function() {
-        j = new Judge(document.getElementById('foo_two'));
-        jIs = new Judge(document.getElementById('foo_two_is'));
+        j = new judge.Watcher(document.getElementById('foo_two'));
+        jIs = new judge.Watcher(document.getElementById('foo_two_is'));
       });
 
       it('validates valid input', function() {
@@ -94,7 +94,7 @@ describe('Judge', function() {
 
       it('returns default message', function() {
         j.element.value = 'abc';
-        expect(j.validate().messages).toContain(Judge.utils.countMsg(j.defaultMessages.too_short, 5));
+        expect(j.validate().messages).toContain(judge.utils.countMsg(j.defaultMessages.too_short, 5));
       });
 
       it('invalidates when value is under minimum', function() {
@@ -118,7 +118,7 @@ describe('Judge', function() {
       var j;
 
       beforeEach(function() {
-        j = new Judge(document.getElementById('foo_three'));
+        j = new judge.Watcher(document.getElementById('foo_three'));
       });
       
       it('validates when value is not in array', function() {
@@ -149,7 +149,7 @@ describe('Judge', function() {
       var j;
 
       beforeEach(function() {
-        j = new Judge(document.getElementById('foo_three_inc'));
+        j = new judge.Watcher(document.getElementById('foo_three_inc'));
       });
       
       it('validates when value is in array', function() {
@@ -180,10 +180,10 @@ describe('Judge', function() {
       var j, jEven, jGt, jLt;
 
       beforeEach(function() {
-        j     = new Judge(document.getElementById('foo_four'));
-        jEven = new Judge(document.getElementById('foo_four_even'));
-        jGt   = new Judge(document.getElementById('foo_four_gt'));
-        jLt   = new Judge(document.getElementById('foo_four_lt'));
+        j     = new judge.Watcher(document.getElementById('foo_four'));
+        jEven = new judge.Watcher(document.getElementById('foo_four_even'));
+        jGt   = new judge.Watcher(document.getElementById('foo_four_gt'));
+        jLt   = new judge.Watcher(document.getElementById('foo_four_lt'));
       });
 
       it('invalidates when value is not a number', function() {
@@ -228,10 +228,10 @@ describe('Judge', function() {
         it('invalidates not greater than', function() {
           jGt.element.value = '6';
           expect(jGt.validate().valid).toEqual(false);
-          expect(jGt.validate().messages).toContain(Judge.utils.countMsg(jGt.defaultMessages.greater_than, 7));
+          expect(jGt.validate().messages).toContain(judge.utils.countMsg(jGt.defaultMessages.greater_than, 7));
           jGt.element.value = '7';
           expect(jGt.validate().valid).toEqual(false);
-          expect(jGt.validate().messages).toContain(Judge.utils.countMsg(jGt.defaultMessages.greater_than, 7));
+          expect(jGt.validate().messages).toContain(judge.utils.countMsg(jGt.defaultMessages.greater_than, 7));
         });
 
         it('validates greater than', function() {
@@ -291,7 +291,7 @@ describe('Judge', function() {
         var j;
 
         beforeEach(function() {
-          j = new Judge(document.getElementById('foo_five'));
+          j = new judge.Watcher(document.getElementById('foo_five'));
         });
 
         it('validates value matching with', function() {
@@ -312,7 +312,7 @@ describe('Judge', function() {
         var j;
 
         beforeEach(function() {
-          j = new Judge(document.getElementById('foo_five_wo'));
+          j = new judge.Watcher(document.getElementById('foo_five_wo'));
         });
 
         it('validates value matching with', function() {
@@ -336,67 +336,67 @@ describe('Judge', function() {
     
     describe('isInt', function() {
       it('returns true when int', function() {
-        expect(Judge.utils.isInt(1)).toEqual(true);
-        expect(Judge.utils.isInt(1.)).toEqual(true);
-        expect(Judge.utils.isInt(1.0)).toEqual(true);
-        expect(Judge.utils.isInt(0)).toEqual(true);
-        expect(Judge.utils.isInt(-1)).toEqual(true);
+        expect(judge.utils.isInt(1)).toEqual(true);
+        expect(judge.utils.isInt(1.)).toEqual(true);
+        expect(judge.utils.isInt(1.0)).toEqual(true);
+        expect(judge.utils.isInt(0)).toEqual(true);
+        expect(judge.utils.isInt(-1)).toEqual(true);
       });
       it('returns false when not int', function() {
-        expect(Judge.utils.isInt(1.1)).toEqual(false);
-        expect(Judge.utils.isInt(-1.1)).toEqual(false);
+        expect(judge.utils.isInt(1.1)).toEqual(false);
+        expect(judge.utils.isInt(-1.1)).toEqual(false);
       });
     });
 
     describe('isFloat', function() {
       it('returns true when float', function() {
-        expect(Judge.utils.isFloat(1.1)).toEqual(true);
-        expect(Judge.utils.isFloat(-1.1)).toEqual(true);
+        expect(judge.utils.isFloat(1.1)).toEqual(true);
+        expect(judge.utils.isFloat(-1.1)).toEqual(true);
       });
       it('returns false when not float', function() {
-         expect(Judge.utils.isFloat(1)).toEqual(false);
-         expect(Judge.utils.isFloat(1.)).toEqual(false);
-         expect(Judge.utils.isFloat(1.0)).toEqual(false);
-         expect(Judge.utils.isFloat(0)).toEqual(false);
-         expect(Judge.utils.isFloat(-1)).toEqual(false);
+         expect(judge.utils.isFloat(1)).toEqual(false);
+         expect(judge.utils.isFloat(1.)).toEqual(false);
+         expect(judge.utils.isFloat(1.0)).toEqual(false);
+         expect(judge.utils.isFloat(0)).toEqual(false);
+         expect(judge.utils.isFloat(-1)).toEqual(false);
       });
     });
 
     describe('isEven', function() {
       it('returns true when even', function() {
-        expect(Judge.utils.isEven(2)).toEqual(true);
-        expect(Judge.utils.isEven(0)).toEqual(true);
-        expect(Judge.utils.isEven(-2)).toEqual(true);
+        expect(judge.utils.isEven(2)).toEqual(true);
+        expect(judge.utils.isEven(0)).toEqual(true);
+        expect(judge.utils.isEven(-2)).toEqual(true);
       });
       it('returns false when odd', function() {
-        expect(Judge.utils.isEven(1)).toEqual(false);
-        expect(Judge.utils.isEven(-1)).toEqual(false);
+        expect(judge.utils.isEven(1)).toEqual(false);
+        expect(judge.utils.isEven(-1)).toEqual(false);
       });
     });
 
     describe('isOdd', function() {
       it('returns true when odd', function() {
-        expect(Judge.utils.isOdd(1)).toEqual(true);
-        expect(Judge.utils.isOdd(-1)).toEqual(true);
+        expect(judge.utils.isOdd(1)).toEqual(true);
+        expect(judge.utils.isOdd(-1)).toEqual(true);
       });
       it('returns false when even', function() {
-        expect(Judge.utils.isOdd(2)).toEqual(false);
-        expect(Judge.utils.isOdd(0)).toEqual(false);
-        expect(Judge.utils.isOdd(-2)).toEqual(false);
+        expect(judge.utils.isOdd(2)).toEqual(false);
+        expect(judge.utils.isOdd(0)).toEqual(false);
+        expect(judge.utils.isOdd(-2)).toEqual(false);
       });
     });
 
     describe('operate', function() {
       it('evaluates and returns true or false', function() {
-        expect(Judge.utils.operate(1, '<', 4)).toEqual(true);
-        expect(Judge.utils.operate(1, '==', 1)).toEqual(true);
-        expect(Judge.utils.operate(1, '>=', 4)).toEqual(false);
+        expect(judge.utils.operate(1, '<', 4)).toEqual(true);
+        expect(judge.utils.operate(1, '==', 1)).toEqual(true);
+        expect(judge.utils.operate(1, '>=', 4)).toEqual(false);
       });
     });
 
     describe('convertRegExp', function() {
       it('converts string format options-first ruby regexp into RegExp object', function() {
-        var re = Judge.utils.convertRegExp('(?mix:[A-Z0-9])');
+        var re = judge.utils.convertRegExp('(?mix:[A-Z0-9])');
         expect(re).toBeInstanceOf(RegExp);
         expect(re.source).toEqual('[A-Z0-9]');
         expect(re.multiline).toEqual(true);
@@ -406,12 +406,12 @@ describe('Judge', function() {
 
     describe('convertFlags', function() {
       it('returns m if present in options string without negation', function() {
-        expect(Judge.utils.convertFlags('imx')).toEqual('m');
+        expect(judge.utils.convertFlags('imx')).toEqual('m');
       });
       it('returns empty string otherwise', function() {
-        expect(Judge.utils.convertFlags('-imx')).toEqual('');
-        expect(Judge.utils.convertFlags('ix')).toEqual('');
-        expect(Judge.utils.convertFlags('-m')).toEqual('');
+        expect(judge.utils.convertFlags('-imx')).toEqual('');
+        expect(judge.utils.convertFlags('ix')).toEqual('');
+        expect(judge.utils.convertFlags('-m')).toEqual('');
       });
     });
 
