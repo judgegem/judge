@@ -1,5 +1,13 @@
 require 'rubygems'
 require 'bundler'
+require 'rake'
+require 'jeweler'
+require 'rake/rdoctask'
+require 'jasmine'
+require 'rake/testtask'
+load 'jasmine/tasks/jasmine.rake'
+load 'lib/tasks/js_tests.rake'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -7,9 +15,7 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
-require 'rake'
 
-require 'jeweler'
 Jeweler::Tasks.new do |gem|
   gem.name = "judge"
   gem.homepage = "http://github.com/joecorcoran/judge"
@@ -21,14 +27,6 @@ Jeweler::Tasks.new do |gem|
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/*_test.rb'
-  test.verbose = true
-end
-
-require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
@@ -38,8 +36,16 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-require 'jasmine'
-load 'jasmine/tasks/jasmine.rake'
-load 'lib/tasks/js_tests.rake'
+namespace :test do
+  Rake::TestTask.new(:helpers) do |test|
+    test.libs << 'lib' << 'test'
+    test.pattern = 'test/**/*_test.rb'
+    test.verbose = true
+  end
+  
+  desc "Run javascript tests"
+  task :js => ["jasmine:phantom"]
 
-task :default => ["test", "jasmine:ci"]
+  desc "Run all tests"
+  task :all => [:helpers, :js]
+end

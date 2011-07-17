@@ -5,6 +5,7 @@ namespace :jasmine do
     end
   end
 
+  desc "Run continuous integration tests headlessly with phantom.js"
   task :phantom => ['jasmine:require', 'jasmine:require_phantom_js'] do
     support_dir = File.expand_path('../../spec/javascripts/support', File.dirname(__FILE__))
     config_overrides = File.join(support_dir, 'jasmine_config.rb')

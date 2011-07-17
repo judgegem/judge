@@ -4,7 +4,7 @@ describe('judge', function() {
     this.addMatchers(customMatchers);
   });
 
-  describe('constructor', function() {
+  describe('judge.Watcher', function() {
   
     var j;
     
@@ -22,18 +22,125 @@ describe('judge', function() {
       expect(j.element).toEqual(document.getElementById('foo_one'));
     });
 
-    it('stores validators', function() {
+    it('holds validators', function() {
       expect(_(j.validators).isArray()).toEqual(true);
       expect(_(j.validators).isEmpty()).toEqual(false);
     });
 
-    it('stores default messages', function() {
+    it('holds default messages', function() {
       expect(j.defaultMessages).toBeInstanceOf(Object);
+    });
+
+    it('has validation methods in prototype', function() {
+      expect(j.validates()).not.toBeEmpty();
+      expect(_(j.validates()).keys()).toContain('presence');
+    });
+
+    it('has custom validation methods when defined by user', function() {
+      judge.customValidators.phatness = function(options) { return { valid: true }; };
+      expect(_(j.validates()).keys()).toContain('phatness');
+    });
+
+  });
+    
+  describe('judge.store', function() {
+
+    var e;
+
+    beforeEach(function() {
+      loadFixtures('spec/javascripts/fixtures/form.html');
+      judge.store.clear();
+      e = document.getElementById('foo_one');
+    });
+
+    describe('save / get', function() {
+
+      it('saves Watcher against key', function() {
+        judge.store.save('mykey', e);
+        expect(_(judge.store.get('mykey')).first().constructor).toEqual(judge.Watcher);
+        expect(_(judge.store.get('mykey')).first().element).toBe(e);
+      });
+
+      it('does not save Watcher if element has already been stored against same key', function() {
+        judge.store.save('mykey', e);
+        judge.store.save('mykey', e);
+        expect(judge.store.get('mykey').length).toEqual(1);
+      });
+
+      it('does save Watcher again if key is different', function() {
+        judge.store.save('mykey', e);
+        judge.store.save('mykey2', e);
+        expect(judge.store.get('mykey').length).toEqual(1);
+        expect(judge.store.get('mykey2').length).toEqual(1);
+      });
+
+    });
+
+    describe('getDOM', function() {
+      
+      it('returns DOM elements from stored Watchers', function() {
+        judge.store.save('mykey', e);
+        judge.store.save('mykey', document.getElementById('foo_two'));
+        var d = judge.store.getDOM('mykey');
+        expect(d.length).toEqual(2);
+        expect(Object.prototype.toString.call(d[0])).toEqual('[object HTMLInputElement]');
+      });
+
+      it('returns all stored DOM elements if no key given', function() {
+        judge.store.save('mykey', e);
+        judge.store.save('mykey2', document.getElementById('foo_two'));
+        judge.store.save('mykey2', document.getElementById('foo_three'));
+        var d = judge.store.getDOM();
+        expect(d.length).toEqual(3);
+        expect(Object.prototype.toString.call(d[0])).toEqual('[object HTMLInputElement]');
+      });
+
+      it('returns null if key not found', function() {
+        expect(judge.store.getDOM('notakey')).toEqual(null);
+      });
+
+    });
+
+    describe('remove', function() {
+      
+      it('removes Watcher from store', function() {
+        judge.store.save('mykey', e);
+        expect(judge.store.remove('mykey', e)).not.toEqual(null);
+        expect(judge.store.get('mykey').length).toEqual(0);
+      });
+
+      it('returns null if key not found', function() {
+        judge.store.save('mykey', e);
+        expect(judge.store.remove('notakey', e)).toEqual(null);
+      });
+
+    });
+
+    describe('clear', function() {
+      
+      it('clears entire store if no key is passed', function() {
+        judge.store.save('mykey', e);
+        judge.store.clear();
+        expect(judge.store.get()).toEqual({});
+      });
+
+      it('clears all Watchers against key', function() {
+        judge.store.save('mykey', e);
+        judge.store.save('mykey2', e);
+        judge.store.clear('mykey');
+        expect(judge.store.get('mykey')).toEqual([]);
+        expect(judge.store.get('mykey2').length).toEqual(1);
+      });
+
+      it('returns null if key not found', function() {
+        expect(judge.store.clear('notakey')).toEqual(null);
+      });
+
     });
 
   });
 
-  describe('instance validation methods', function() {
+  describe('judge.Watcher instance methods', function() {
 
     beforeEach(function() {
       loadFixtures('spec/javascripts/fixtures/form.html');
@@ -333,8 +440,66 @@ describe('judge', function() {
   });
 
   describe('utils', function() {
+
+    describe('isValidatable', function() {
+      
+      it('returns true if judge can validate object', function() {
+        var i = document.createElement('input'),
+            s = document.createElement('select'),
+            t = document.createElement('textarea');
+        expect(judge.utils.isValidatable(i)).toEqual(true);
+        expect(judge.utils.isValidatable(s)).toEqual(true);
+        expect(judge.utils.isValidatable(t)).toEqual(true);
+      });
+
+      it('returns false otherwise', function() {
+        var p = document.createElement('p');
+        expect(judge.utils.isValidatable(p)).toEqual(false);
+      });
+
+    });
+
+    describe('isCollection', function() {
+      
+      beforeEach(function() {
+        loadFixtures('spec/javascripts/fixtures/form.html');
+      });
+
+      it('returns true if judge can treat object as collection', function() {
+        var a = [],
+            n = document.getElementsByTagName('input');
+        expect(judge.utils.isCollection(a)).toEqual(true);
+        expect(judge.utils.isCollection(n)).toEqual(true);
+      });
+
+      it('returns false otherwise', function() {
+        var o = { a:1, b:2 };
+        expect(judge.utils.isCollection(o)).toEqual(false);
+      });
+
+    });
+
+    describe('getObjectString', function() {
+      
+      it('returns type as represented in Object.prototype.toString', function() {
+        var i = document.createElement('input'),
+            s = document.createElement('select');
+        expect(judge.utils.getObjectString(i)).toEqual('HTMLInputElement');
+        expect(judge.utils.getObjectString(s)).toEqual('HTMLSelectElement');
+      });
+
+    });
+
+    describe('countMsg', function() {
+      
+      it('subs string', function() {
+        expect(judge.utils.countMsg('should be less than %{count}', 5)).toEqual('should be less than 5');
+      });
+
+    });
     
     describe('isInt', function() {
+      
       it('returns true when int', function() {
         expect(judge.utils.isInt(1)).toEqual(true);
         expect(judge.utils.isInt(1.)).toEqual(true);
@@ -342,17 +507,21 @@ describe('judge', function() {
         expect(judge.utils.isInt(0)).toEqual(true);
         expect(judge.utils.isInt(-1)).toEqual(true);
       });
+
       it('returns false when not int', function() {
         expect(judge.utils.isInt(1.1)).toEqual(false);
         expect(judge.utils.isInt(-1.1)).toEqual(false);
       });
+
     });
 
     describe('isFloat', function() {
+      
       it('returns true when float', function() {
         expect(judge.utils.isFloat(1.1)).toEqual(true);
         expect(judge.utils.isFloat(-1.1)).toEqual(true);
       });
+      
       it('returns false when not float', function() {
          expect(judge.utils.isFloat(1)).toEqual(false);
          expect(judge.utils.isFloat(1.)).toEqual(false);
@@ -360,41 +529,51 @@ describe('judge', function() {
          expect(judge.utils.isFloat(0)).toEqual(false);
          expect(judge.utils.isFloat(-1)).toEqual(false);
       });
+
     });
 
     describe('isEven', function() {
+      
       it('returns true when even', function() {
         expect(judge.utils.isEven(2)).toEqual(true);
         expect(judge.utils.isEven(0)).toEqual(true);
         expect(judge.utils.isEven(-2)).toEqual(true);
       });
+      
       it('returns false when odd', function() {
         expect(judge.utils.isEven(1)).toEqual(false);
         expect(judge.utils.isEven(-1)).toEqual(false);
       });
+
     });
 
     describe('isOdd', function() {
+      
       it('returns true when odd', function() {
         expect(judge.utils.isOdd(1)).toEqual(true);
         expect(judge.utils.isOdd(-1)).toEqual(true);
       });
+      
       it('returns false when even', function() {
         expect(judge.utils.isOdd(2)).toEqual(false);
         expect(judge.utils.isOdd(0)).toEqual(false);
         expect(judge.utils.isOdd(-2)).toEqual(false);
       });
+
     });
 
     describe('operate', function() {
+      
       it('evaluates and returns true or false', function() {
         expect(judge.utils.operate(1, '<', 4)).toEqual(true);
         expect(judge.utils.operate(1, '==', 1)).toEqual(true);
         expect(judge.utils.operate(1, '>=', 4)).toEqual(false);
       });
+
     });
 
     describe('convertRegExp', function() {
+      
       it('converts string format options-first ruby regexp into RegExp object', function() {
         var re = judge.utils.convertRegExp('(?mix:[A-Z0-9])');
         expect(re).toBeInstanceOf(RegExp);
@@ -402,17 +581,21 @@ describe('judge', function() {
         expect(re.multiline).toEqual(true);
         expect(re.global).toEqual(false);
       });
+
     });
 
     describe('convertFlags', function() {
+
       it('returns m if present in options string without negation', function() {
         expect(judge.utils.convertFlags('imx')).toEqual('m');
       });
+
       it('returns empty string otherwise', function() {
         expect(judge.utils.convertFlags('-imx')).toEqual('');
         expect(judge.utils.convertFlags('ix')).toEqual('');
         expect(judge.utils.convertFlags('-m')).toEqual('');
       });
+
     });
 
   });
