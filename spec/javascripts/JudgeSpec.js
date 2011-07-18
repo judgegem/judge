@@ -4,6 +4,26 @@ describe('judge', function() {
     this.addMatchers(customMatchers);
   });
 
+  describe('judge.validate', function() {
+
+    beforeEach(function() {
+      loadFixtures('spec/javascripts/fixtures/form.html');
+    });
+    
+    it('validates a single element', function() {
+      var e = document.getElementById('foo_one'),
+          v = judge.validate(e);
+      expect(v.length).toEqual(1);
+    });
+
+    it('validates a collection of elements', function() {
+      var e = document.querySelectorAll('.field input'),
+          v = judge.validate(e);
+      expect(v.length).toBeGreaterThan(1);
+    });
+
+  });
+
   describe('judge.Watcher', function() {
   
     var j;
@@ -144,6 +164,29 @@ describe('judge', function() {
 
     beforeEach(function() {
       loadFixtures('spec/javascripts/fixtures/form.html');
+    });
+
+    describe('validate method', function() {
+      
+      var j, r;
+
+      beforeEach(function() {
+        j = new judge.Watcher(document.getElementById('foo_one'));
+        r = j.validate();
+      });
+
+      it('returns element', function() {
+        expect(r.element).toBeInstanceOf(Object);
+      });
+
+      it('returns validity', function() {
+        expect(typeof r.valid).toEqual('boolean');
+      });
+
+      it('returns messages', function() {
+        expect(r.messages).toBeInstanceOf(Array);
+      });
+
     });
     
     describe('presence', function() {
