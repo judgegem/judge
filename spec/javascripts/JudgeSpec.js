@@ -106,13 +106,14 @@ describe('judge', function() {
         expect(Object.prototype.toString.call(d[0])).toEqual('[object HTMLInputElement]');
       });
 
-      it('returns all stored DOM elements if no key given', function() {
+      it('returns store object with watchers converted to elements if no key given', function() {
         judge.store.save('mykey', e);
         judge.store.save('mykey2', document.getElementById('foo_two'));
         judge.store.save('mykey2', document.getElementById('foo_three'));
         var d = judge.store.getDOM();
-        expect(d.length).toEqual(3);
-        expect(Object.prototype.toString.call(d[0])).toEqual('[object HTMLInputElement]');
+        expect(d.mykey.length).toEqual(1);
+        expect(d.mykey2.length).toEqual(2);
+        expect(Object.prototype.toString.call(d.mykey[0])).toEqual('[object HTMLInputElement]');
       });
 
       it('returns null if key not found', function() {
