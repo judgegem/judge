@@ -61,6 +61,29 @@ describe('judge', function() {
       expect(_(j.validates()).keys()).toContain('phatness');
     });
 
+    it('throws error if element has no data-validate attribute', function() {
+      var e = document.createElement('input');
+      e.type = 'text';
+      expect(function() { new judge.Watcher(e); }).toThrow();
+    });
+
+    it('throws error if element.form has no data-error-messages attribute', function() {
+      var e = document.createElement('input'),
+          f = document.createElement('form');
+      e.type = 'text';
+      f.appendChild(e);
+      expect(function() { new judge.Watcher(e); }).toThrow();
+    });
+
+    it('throws error if no element is passed', function() {
+      expect(function() { new judge.Watcher(); }).toThrow();
+    });
+
+    it('throws error if element is not validatable', function() {
+      var e = document.createElement('p');
+      expect(function() { new judge.Watcher(e); }).toThrow();
+    });
+
   });
     
   describe('judge.store', function() {
