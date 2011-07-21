@@ -5,39 +5,45 @@
 
 Gem::Specification.new do |s|
   s.name = %q{judge}
-  s.version = "0.1.1"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joe Corcoran"]
-  s.date = %q{2011-06-24}
+  s.date = %q{2011-07-21}
   s.description = %q{Validate forms in-place using your model validations}
   s.email = %q{joe@tribesports.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".document",
+    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
     "judge.gemspec",
     "lib/generators/judge/judge_generator.rb",
-    "lib/generators/judge/templates/example.judge.js",
-    "lib/generators/judge/templates/jquery.judge.js",
+    "lib/generators/judge/templates/json2.js",
+    "lib/generators/judge/templates/judge.js",
+    "lib/generators/judge/templates/underscore.js",
     "lib/judge.rb",
     "lib/judge/helpers.rb",
+    "lib/tasks/js_tests.rake",
     "spec/javascripts/JudgeSpec.js",
-    "spec/javascripts/fixtures/plugin.html",
-    "spec/javascripts/helpers/SpecHelper.js",
+    "spec/javascripts/fixtures/form.html",
     "spec/javascripts/helpers/customMatchers.js",
     "spec/javascripts/helpers/jasmine-jquery.js",
     "spec/javascripts/helpers/jquery-1.5.1.min.js",
+    "spec/javascripts/helpers/json2.js",
+    "spec/javascripts/helpers/underscore.js",
     "spec/javascripts/support/jasmine.yml",
+    "spec/javascripts/support/jasmine_config.rb",
     "spec/javascripts/support/jasmine_runner.rb",
+    "spec/javascripts/support/phantomRunner.js",
     "test/dummy/Rakefile",
     "test/dummy/app/controllers/application_controller.rb",
     "test/dummy/app/controllers/foos_controller.rb",
@@ -88,6 +94,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Simple client-side ActiveModel::Validators}
   s.test_files = [
+    "spec/javascripts/support/jasmine_config.rb",
     "spec/javascripts/support/jasmine_runner.rb",
     "test/dummy/app/controllers/application_controller.rb",
     "test/dummy/app/controllers/foos_controller.rb",
