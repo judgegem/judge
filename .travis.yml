@@ -15,4 +15,4 @@ notifications:
 
 branches:
   only:
-    - module
+    - master
