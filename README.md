@@ -8,16 +8,7 @@ Client-side form validation in Rails 3.
 Usage
 -----
 
-See http://joecorcoran.github.com/judge for an overview.
-
-To do
------
-
-* Complete feature set to match all the possible validations from ActiveModel
-
-* Come up with nifty way of enabling validation types which require a request to the server (uniqueness etc.)
-  
-* More detailed documentation 
+See http://joecorcoran.github.com/judge for documentation.
 
 License
 -------
