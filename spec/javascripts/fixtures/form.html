@@ -44,6 +44,15 @@
     <label for="foo_five_wo">Five</label><br /> 
     <input data-validate="[{&quot;kind&quot;:&quot;format&quot;,&quot;options&quot;:{&quot;without&quot;:&quot;(?-mix:[A-Za-z]+)&quot;}}]" id="foo_five_wo" name="foo[five_wo]" size="30" type="text" /> 
   </div> 
+  <div class="field"> 
+    <label for="foo_six">Six</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;acceptance&quot;,&quot;options&quot;:{&quot;accept&quot;:&quot;1&quot;,&quot;allow_nil&quot;:&quot;true&quot;}}]" id="foo_six" name="foo[six]" type="checkbox" /> 
+  </div>
+  <div class="field"> 
+    <label for="foo_seven">Six</label><br /> 
+    <input data-validate="[{&quot;kind&quot;:&quot;confirmation&quot;,&quot;options&quot;:{}}]" id="foo_seven" name="foo[seven]" type="text" />
+  </div>
+  <input id="foo_seven_confirmation" name="foo[seven_confirmation]" type="text" />
   <div class="actions"> 
     <input id="foo_submit" name="commit" type="submit" value="Create Foo" /> 
   </div> 

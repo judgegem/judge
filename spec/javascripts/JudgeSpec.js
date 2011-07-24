@@ -504,6 +504,60 @@ describe('judge', function() {
 
     });
 
+    describe('acceptance', function() {
+
+      var j;
+
+      beforeEach(function() {
+        j = new judge.Watcher(document.getElementById('foo_six'));
+      });
+
+      it('validates when element is checked', function() {
+        j.element.checked = true;
+        expect(j.validate().valid).toEqual(true);        
+      });
+
+      it('invalidates when element is not checked', function() {
+        expect(j.validate().valid).toEqual(false);
+      });
+
+      it('invalidates with custom message when present', function() {
+        _(j.validators).first().options.message = 'must be ticked';
+        expect(j.validate().messages).toContain('must be ticked');
+      });
+
+    });
+
+    describe('confirmation', function() {
+      
+      var j, c;
+
+      beforeEach(function() {
+        j = new judge.Watcher(document.getElementById('foo_seven'));
+        c = document.getElementById('foo_seven_confirmation');
+      });
+
+      it('validates when confirmed', function() {
+        j.element.value = 'password';
+        c.value = 'password';
+        expect(j.validate().valid).toEqual(true);
+      });
+
+      it('invalidates when not confirmed', function() {
+        j.element.value = 'password';
+        c.value = 'wrongpassword';
+        expect(j.validate().valid).toEqual(false);
+      });
+
+      it('invalidates with custom message when present', function() {
+        _(j.validators).first().options.message = 'must be same';
+        j.element.value = 'password';
+        c.value = 'wrongpassword';
+        expect(j.validate().messages).toContain('must be same');
+      });
+
+    });
+
   });
 
   describe('utils', function() {
