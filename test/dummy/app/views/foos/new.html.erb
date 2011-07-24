@@ -15,7 +15,7 @@
 
   <div class="field">
     <%= f.label :one %><br />
-    <%= f.validated_text_field :one %>
+    <%= f.validated_select :one, [["hello", "HELLO"],["goodbye", "GOODBYE"]] %>
   </div>
   <div class="field">
     <%= f.label :two %><br />
@@ -23,7 +23,7 @@
   </div>
   <div class="field">
     <%= f.label :three %><br />
-    <%= f.validated_text_field :three %>
+    <%= f.validated_collection_select :three, [Fake.new(:text => "Dave", :value => 24), Fake.new(:text => "Alice", :value => 30)], :value, :text %>
   </div>
   <div class="field">
     <%= f.label :four %><br />
@@ -32,6 +32,14 @@
   <div class="field">
     <%= f.label :five %><br />
     <%= f.validated_text_area :five %>
+  </div>
+  <div class="field">
+    <%= f.label :six %><br />
+    <%= f.validated_check_box :six %>
+  </div>
+  <div class="field">
+    <%= f.label :seven %><br />
+    <%= f.validated_text_field :seven %>
   </div>
   <div class="actions">
     <%= f.submit %>

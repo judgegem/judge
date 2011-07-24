@@ -15,7 +15,7 @@ class JudgeTest < ActionController::TestCase
     setup { get :new }
 
     should "include presence validation in data attribute" do
-      assert_equal "presence", validators_from("input#foo_one").first["kind"]
+      assert_equal "presence", validators_from("select#foo_one").first["kind"]
     end
 
     should "include length (within range) validation in data attribute" do
@@ -32,7 +32,7 @@ class JudgeTest < ActionController::TestCase
     end
 
     should "include exclusion validation in data atribute" do
-      validators = validators_from("input#foo_three")
+      validators = validators_from("select#foo_three")
       assert_equal "exclusion", validators.first["kind"]
       assert_equal Array, validators.first["options"]["in"].class
     end
@@ -57,11 +57,23 @@ class JudgeTest < ActionController::TestCase
       assert_equal "format", validator["kind"]
       assert_match /\(.+\:.+\)/, validator["options"]["without"]
     end
+
+    should "include acceptance validator in data attribute" do
+      validator = validators_from("input#foo_six").first
+      assert_equal "acceptance", validator["kind"]
+      assert validator["options"]["accept"]
+    end
+
+    should "include confirmation validator in data attribute" do
+      validator = validators_from("input#foo_seven").first
+      assert_equal "confirmation", validator["kind"]
+    end
   end
 
   def validators_from(input_selector)
     form = Nokogiri::HTML(css_select("form[data-error-messages]").first.to_s)
     data_attribute = form.css(input_selector).first["data-validate"]
+    #puts form.css(input_selector).inspect
     JSON.parse(data_attribute)
   end
 

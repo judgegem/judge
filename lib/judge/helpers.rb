@@ -7,14 +7,28 @@ module Judge
     %w{text_field text_area}.each do |type|
       helper = <<-END
         def validated_#{type}(method, options = {})
-          validators = self.object.class.validators_on(method).collect{ |v| { :kind => v.kind.to_s, :options => v.options } }
-          options = { "data-validate" => validators.to_json }.merge(options)
+          options = { "data-validate" => Judge::Utils.jsonify_validators(self.object, method) }.merge(options)
           @template.#{type}(self.object_name, method, options)
         end
       END
       class_eval helper, __FILE__, __LINE__
     end
 
+    def validated_check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
+      options = { "data-validate" => Judge::Utils.jsonify_validators(self.object, method) }.merge(options)
+      @template.check_box(self.object_name, method, objectify_options(options), checked_value, unchecked_value)
+    end
+
+    def validated_select(method, choices, options = {}, html_options = {})
+      html_options = { "data-validate" => Judge::Utils.jsonify_validators(self.object, method) }.merge(html_options)
+      @template.select(self.object_name, method, choices, objectify_options(options), @default_options.merge(html_options))
+    end
+
+    def validated_collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
+      html_options = { "data-validate" => Judge::Utils.jsonify_validators(self.object, method) }.merge(html_options)
+      @template.collection_select(@object_name, method, collection, value_method, text_method, objectify_options(options), @default_options.merge(html_options))
+    end
+    
   end
 
   module FormHelpers

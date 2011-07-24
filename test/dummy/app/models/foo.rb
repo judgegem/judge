@@ -6,6 +6,8 @@ class Foo < ActiveRecord::Base
   validates :four, :numericality => { :only_integer => true, :odd => true, :less_than_or_equal_to => 7 },
                    :exclusion => { :in => [3,12] }
   validates :five, :format => { :without => /[A-Za-z]+/ }
+  validates :six, :acceptance => true
+  validates :seven, :confirmation => true
 
 end
 
