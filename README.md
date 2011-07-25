@@ -3,8 +3,6 @@ judge
 
 Client-side form validation in Rails 3.
 
-[![Build status](http://travis-ci.org/joecorcoran/judge.png)](http://travis-ci.org/joecorcoran/judge)
-
 Usage
 -----
 
