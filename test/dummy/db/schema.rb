@@ -10,7 +10,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110724201548) do
+ActiveRecord::Schema.define(:version => 20110725082530) do
+
+  create_table "cities", :force => true do |t|
+    t.integer "country_id"
+    t.string  "name"
+  end
+
+  create_table "continents", :force => true do |t|
+    t.string "name"
+  end
+
+  create_table "countries", :force => true do |t|
+    t.integer "continent_id"
+    t.string  "name"
+  end
 
   create_table "fakes", :force => true do |t|
     t.string   "value"

@@ -19,7 +19,7 @@ class JudgeTest < ActionController::TestCase
     end
 
     should "include length (within range) validation in data attribute" do
-      validators = validators_from("input#foo_two")
+      validators = validators_from("input#foo_two_foobar")
       assert_equal "length", validators.first["kind"]
       assert_equal Fixnum, validators.first["options"]["minimum"].class
       assert_equal Fixnum, validators.first["options"]["maximum"].class
@@ -27,7 +27,7 @@ class JudgeTest < ActionController::TestCase
     end
 
     should "include allow_blank validation in data attribute" do
-      validators = validators_from("input#foo_two")
+      validators = validators_from("input#foo_two_foobar")
       assert validators.first["options"]["allow_blank"]
     end
 
@@ -53,7 +53,7 @@ class JudgeTest < ActionController::TestCase
     end
 
     should "include format validator in data attribute" do
-      validator = validators_from("textarea#foo_five").first
+      validator = validators_from("select#foo_five").first
       assert_equal "format", validator["kind"]
       assert_match /\(.+\:.+\)/, validator["options"]["without"]
     end
@@ -73,7 +73,6 @@ class JudgeTest < ActionController::TestCase
   def validators_from(input_selector)
     form = Nokogiri::HTML(css_select("form[data-error-messages]").first.to_s)
     data_attribute = form.css(input_selector).first["data-validate"]
-    #puts form.css(input_selector).inspect
     JSON.parse(data_attribute)
   end
 

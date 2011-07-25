@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/judge/utils'
-require File.dirname(__FILE__) + '/judge/helpers'
+require File.dirname(__FILE__) + '/judge/form'
 
-::ActionView::Helpers::FormBuilder.send(:include, Judge::FieldHelpers)
-::ActionView::Helpers::FormHelper.send(:include, Judge::FormHelpers)
+::ActionView::Helpers::FormBuilder.send(:include, Judge::FormBuilder)
+::ActionView::Helpers::FormHelper.send(:include, Judge::FormHelper)

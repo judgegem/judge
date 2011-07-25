@@ -19,7 +19,7 @@
   </div>
   <div class="field">
     <%= f.label :two %><br />
-    <%= f.validated_text_field :two %>
+    <%= f.validated_radio_button :two, "FOOBAR" %>
   </div>
   <div class="field">
     <%= f.label :three %><br />
@@ -31,7 +31,7 @@
   </div>
   <div class="field">
     <%= f.label :five %><br />
-    <%= f.validated_text_area :five %>
+    <%= f.validated_grouped_collection_select :five, @continents, :countries, :name, :id, :name %>
   </div>
   <div class="field">
     <%= f.label :six %><br />
