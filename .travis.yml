@@ -3,12 +3,6 @@ rvm:
 
 script: "bundle exec rake test:helpers"
 
-before_script:
-#  - "sudo apt-get install qt4-qmake"
-#  - "git clone git://github.com/ariya/phantomjs.git && cd phantomjs"
-#  - "git checkout 1.2"
-#  - "qmake-qt4 && make"
-
 notifications:
   recipients:
     - joe@tribesports.com
