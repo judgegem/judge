@@ -37,7 +37,7 @@ Rake::RDocTask.new do |rdoc|
 end
 
 namespace :test do
-  Rake::TestTask.new(:helpers) do |test|
+  Rake::TestTask.new(:form) do |test|
     test.libs << 'lib' << 'test'
     test.pattern = 'test/**/*_test.rb'
     test.verbose = true
