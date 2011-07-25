@@ -47,5 +47,5 @@ namespace :test do
   task :js => ["jasmine:phantom"]
 
   desc "Run all tests"
-  task :all => [:helpers, :js]
+  task :all => [:form, :js]
 end
