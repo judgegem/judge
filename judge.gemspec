@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{judge}
-  s.version = "0.2.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joe Corcoran"]
-  s.date = %q{2011-07-21}
+  s.date = %q{2011-07-25}
   s.description = %q{Validate forms in-place using your model validations}
   s.email = %q{joe@tribesports.com}
   s.extra_rdoc_files = [
@@ -31,7 +31,8 @@ Gem::Specification.new do |s|
     "lib/generators/judge/templates/judge.js",
     "lib/generators/judge/templates/underscore.js",
     "lib/judge.rb",
-    "lib/judge/helpers.rb",
+    "lib/judge/form.rb",
+    "lib/judge/utils.rb",
     "lib/tasks/js_tests.rake",
     "spec/javascripts/JudgeSpec.js",
     "spec/javascripts/fixtures/form.html",
@@ -48,6 +49,10 @@ Gem::Specification.new do |s|
     "test/dummy/app/controllers/application_controller.rb",
     "test/dummy/app/controllers/foos_controller.rb",
     "test/dummy/app/helpers/application_helper.rb",
+    "test/dummy/app/models/city.rb",
+    "test/dummy/app/models/continent.rb",
+    "test/dummy/app/models/country.rb",
+    "test/dummy/app/models/fake.rb",
     "test/dummy/app/models/foo.rb",
     "test/dummy/app/views/foos/new.html.erb",
     "test/dummy/app/views/layouts/application.html.erb",
@@ -68,6 +73,9 @@ Gem::Specification.new do |s|
     "test/dummy/config/routes.rb",
     "test/dummy/db/development.sqlite3",
     "test/dummy/db/migrate/20110624115516_create_foos.rb",
+    "test/dummy/db/migrate/20110724201117_create_fake_collections.rb",
+    "test/dummy/db/migrate/20110724201548_rename_fake_collection_to_fake.rb",
+    "test/dummy/db/migrate/20110725082530_create_continent_country_and_city_tables.rb",
     "test/dummy/db/schema.rb",
     "test/dummy/db/test.sqlite3",
     "test/dummy/log/development.log",
@@ -99,6 +107,10 @@ Gem::Specification.new do |s|
     "test/dummy/app/controllers/application_controller.rb",
     "test/dummy/app/controllers/foos_controller.rb",
     "test/dummy/app/helpers/application_helper.rb",
+    "test/dummy/app/models/city.rb",
+    "test/dummy/app/models/continent.rb",
+    "test/dummy/app/models/country.rb",
+    "test/dummy/app/models/fake.rb",
     "test/dummy/app/models/foo.rb",
     "test/dummy/config/application.rb",
     "test/dummy/config/boot.rb",
@@ -113,6 +125,9 @@ Gem::Specification.new do |s|
     "test/dummy/config/initializers/session_store.rb",
     "test/dummy/config/routes.rb",
     "test/dummy/db/migrate/20110624115516_create_foos.rb",
+    "test/dummy/db/migrate/20110724201117_create_fake_collections.rb",
+    "test/dummy/db/migrate/20110724201548_rename_fake_collection_to_fake.rb",
+    "test/dummy/db/migrate/20110725082530_create_continent_country_and_city_tables.rb",
     "test/dummy/db/schema.rb",
     "test/judge_test.rb",
     "test/test_helper.rb"
