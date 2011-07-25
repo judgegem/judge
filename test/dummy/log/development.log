@@ -271,3 +271,40 @@ Migrating to CreateContinentCountryAndCityTables (20110725082530)
   [1m[36mSQL (1.3ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20110624115516')[0m
   [1m[35mSQL (1.2ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20110724201117')
   [1m[36mSQL (1.3ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20110724201548')[0m
+
+
+Started GET "/posts/new" for 127.0.0.1 at 2011-07-25 18:59:00 +0100
+
+ActionController::RoutingError (No route matches "/posts/new"):
+  
+
+Rendered /Users/joecorcoran/.rvm/gems/ruby-1.9.2-head/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.1ms)
+
+
+Started GET "/foos/new" for 127.0.0.1 at 2011-07-25 18:59:06 +0100
+  Processing by FoosController#new as HTML
+  [1m[36mSQL (0.6ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mSQL (0.2ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+WARNING: Can't mass-assign protected attributes: id
+WARNING: Can't mass-assign protected attributes: id
+WARNING: Can't mass-assign protected attributes: id
+Rendered foos/new.html.erb within layouts/application (44.7ms)
+Completed   in 221ms
+
+ActionView::Template::Error (undefined method `validated_form_for' for #<#<Class:0x00000102d4f258>:0x00000102d48e80>):
+    1: <h1>New foo</h1>
+    2: 
+    3: <%= validated_form_for(@foo) do |f| %>
+    4:   <% if @foo.errors.any? %>
+    5:     <div id="error_explanation">
+    6:       <h2><%= pluralize(@foo.errors.count, "error") %> prohibited this foo from being saved:</h2>
+  app/views/foos/new.html.erb:3:in `_app_views_foos_new_html_erb__1838023501461859710_2171221340__2905132362480950973'
+
+Rendered /Users/joecorcoran/.rvm/gems/ruby-1.9.2-head/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_trace.erb (1.5ms)
+Rendered /Users/joecorcoran/.rvm/gems/ruby-1.9.2-head/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/_request_and_response.erb (2.7ms)
+Rendered /Users/joecorcoran/.rvm/gems/ruby-1.9.2-head/gems/actionpack-3.0.3/lib/action_dispatch/middleware/templates/rescues/template_error.erb within rescues/layout (14.3ms)

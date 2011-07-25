@@ -2,11 +2,14 @@ module Judge
   module Utils
 
     def self.jsonify_validators(object, method)
-      object
-        .class
-        .validators_on(method)
-        .collect{ |v| { :kind => v.kind.to_s, :options => v.options } }
-        .to_json
+      validators = object.class.validators_on(method)
+      validators = validators.collect do |validator|
+        {
+          :kind => validator.kind.to_s, 
+          :options => validator.options.reject{ |key| [:if, :on, :unless, :tokenizer].include?(key)  }
+        }
+      end
+      validators.to_json
     end
 
   end
