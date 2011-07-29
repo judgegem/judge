@@ -67,6 +67,8 @@ class JudgeTest < ActionController::TestCase
     should "include confirmation validator in data attribute" do
       validator = validators_from("input#foo_seven").first
       assert_equal "confirmation", validator["kind"]
+      validator2 = validators_from("input#foo_eight").first
+      assert_equal "confirmation", validator2["kind"]
     end
   end
 

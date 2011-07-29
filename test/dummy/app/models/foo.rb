@@ -8,6 +8,7 @@ class Foo < ActiveRecord::Base
   validates :five, :format => { :without => /[A-Za-z]+/ }
   validates :six, :acceptance => true
   validates :seven, :confirmation => true
+  validates :eight, :confirmation => true
 
 end
 

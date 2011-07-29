@@ -4,7 +4,7 @@ module Judge
 
     include ActionView::Helpers::TagHelper
     
-    %w{text_field text_area}.each do |type|
+    %w{text_field text_area password_field}.each do |type|
       helper = <<-END
         def validated_#{type}(method, options = {})
           options = { "data-validate" => Judge::Utils.jsonify_validators(self.object, method) }.merge(options)
@@ -19,7 +19,6 @@ module Judge
       @template.radio_button(@object_name, method, tag_value, objectify_options(options))
     end
     
-
     def validated_check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
       options = { "data-validate" => Judge::Utils.jsonify_validators(self.object, method) }.merge(options)
       @template.check_box(self.object_name, method, objectify_options(options), checked_value, unchecked_value)
