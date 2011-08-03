@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{judge}
-  s.version = "0.3.1"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Joe Corcoran"]
-  s.date = %q{2011-07-26}
+  s.date = %q{2011-08-03}
   s.description = %q{Validate forms in-place using your model validations}
   s.email = %q{joe@tribesports.com}
   s.extra_rdoc_files = [
@@ -25,6 +25,8 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "docs/docco.css",
+    "docs/judge.html",
     "judge.gemspec",
     "lib/generators/judge/judge_generator.rb",
     "lib/generators/judge/templates/json2.js",
@@ -78,8 +80,6 @@ Gem::Specification.new do |s|
     "test/dummy/db/migrate/20110725082530_create_continent_country_and_city_tables.rb",
     "test/dummy/db/schema.rb",
     "test/dummy/db/test.sqlite3",
-    "test/dummy/log/development.log",
-    "test/dummy/log/production.log",
     "test/dummy/log/server.log",
     "test/dummy/public/404.html",
     "test/dummy/public/422.html",
