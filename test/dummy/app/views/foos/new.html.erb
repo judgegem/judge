@@ -45,6 +45,23 @@
     <%= f.label :eight %><br />
     <%= f.validated_password_field :eight %>
   </div>
+  <div class="field">
+    <%= f.label :nine %><br />
+    <%= f.validated_time_zone_select :nine, ActiveSupport::TimeZone.us_zones, :include_blank => true %>
+  </div>
+  <div class="field">
+    <%= f.label :ten %><br />
+    <%= f.validated_time_select :ten, :include_blank => true, :ignore_date => true %>
+  </div>
+  <div class="field">
+    <%= f.label :eleven %><br />
+    <%= f.validated_datetime_select :eleven, :include_blank => true %>
+  </div>
+  <div class="field">
+    <%= f.label :twelve %><br />
+    <%= f.validated_date_select :twelve, :include_blank => true %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

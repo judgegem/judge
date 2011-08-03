@@ -11,6 +11,9 @@ doc
 # bundler
 .bundle
 
+# dummy app logs
+test/dummy/log
+
 # jeweler generated
 pkg
 
@@ -41,5 +44,3 @@ pkg
 # For vim:
 *.swp
 *.swo
-
-*.log

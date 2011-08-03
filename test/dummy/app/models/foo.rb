@@ -10,5 +10,10 @@ class Foo < ActiveRecord::Base
   validates :seven, :confirmation => true
   validates :eight, :confirmation => true
 
+  validates :nine, :presence => true
+  validates :ten, :presence => true
+  validates :eleven, :presence => true
+  validates :twelve, :presence => true
+
 end
 

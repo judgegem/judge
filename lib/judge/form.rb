@@ -38,6 +38,22 @@ module Judge
       html_options = { "data-validate" => Judge::Utils.jsonify_validators(self.object, method) }.merge(html_options)
       @template.grouped_collection_select(self.object_name, method, collection, group_method, group_label_method, option_key_method, option_value_method, objectify_options(options), @default_options.merge(html_options))
     end
+
+    %w{date_select datetime_select time_select}.each do |type|
+      helper = <<-END
+        def validated_#{type}(method, options = {}, html_options = {})
+          html_options = { "data-validate" => Judge::Utils.jsonify_validators(self.object, method) }.merge(html_options)
+          @template.#{type}(self.object_name, method, objectify_options(options), html_options)
+        end
+      END
+      class_eval helper, __FILE__, __LINE__
+    end
+
+    def validated_time_zone_select(method, priority_zones = nil, options = {}, html_options = {})
+      html_options = { "data-validate" => Judge::Utils.jsonify_validators(self.object, method) }.merge(html_options)
+      @template.time_zone_select(@object_name, method, priority_zones, objectify_options(options), @default_options.merge(html_options))
+    end
+    
     
   end
 
