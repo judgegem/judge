@@ -70,6 +70,11 @@ class JudgeTest < ActionController::TestCase
       assert_equal "confirmation", validator2["kind"]
     end
 
+    should "not include uniqueness validator in data attribute" do
+      validators = validators_from("#foo_nine")
+      assert_equal 0, validators.select{ |v| v["kind"] == "uniqueness" }.length
+    end
+
   end
 
   context "validated tag output" do

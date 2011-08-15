@@ -9,7 +9,7 @@ module Judge
           :options => validator.options.reject{ |key| [:if, :on, :unless, :tokenizer].include?(key)  }
         }
       end
-      validators.to_json
+      validators.reject{ |validator| validator[:kind] == "uniqueness" }.to_json
     end
 
   end
