@@ -696,9 +696,9 @@ describe('judge', function() {
     describe('convertRegExp', function() {
       
       it('converts string format options-first ruby regexp into RegExp object', function() {
-        var re = judge.utils.convertRegExp('(?mix:[A-Z0-9])');
+        var re = judge.utils.convertRegExp('(?mix:[A-Z0-9]\.)');
         expect(re).toBeInstanceOf(RegExp);
-        expect(re.source).toEqual('[A-Z0-9]');
+        expect(re.source).toEqual('[A-Z0-9]\.');
         expect(re.multiline).toEqual(true);
         expect(re.global).toEqual(false);
       });
