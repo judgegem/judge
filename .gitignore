@@ -12,7 +12,7 @@ doc
 .bundle
 
 # dummy app logs
-test/dummy/log
+test/dummy/log/*
 
 # jeweler generated
 pkg
