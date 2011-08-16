@@ -79,11 +79,6 @@ describe('judge', function() {
       expect(function() { new judge.Watcher(); }).toThrow();
     });
 
-    it('throws error if element is not validatable', function() {
-      var e = document.createElement('p');
-      expect(function() { new judge.Watcher(e); }).toThrow();
-    });
-
   });
     
   describe('judge.store', function() {
