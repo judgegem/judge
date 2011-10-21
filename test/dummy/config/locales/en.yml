@@ -3,3 +3,10 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    errors:
+      messages:
+        blank: "activerecord errors messages blank"
+        
+

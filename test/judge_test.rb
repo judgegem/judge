@@ -3,17 +3,7 @@ require 'test_helper'
 class JudgeTest < ActionController::TestCase
   tests FoosController
   
-  context "form tag" do
-
-    should "include validation messages in data attribute" do
-      get :new
-      assert_equal Hash, error_messages.class
-      assert error_messages.include? "inclusion"
-    end
-
-  end
-
-  context "validators" do
+  context "JSONified validators" do
 
     setup { get :new }
 
@@ -27,6 +17,7 @@ class JudgeTest < ActionController::TestCase
       assert_equal "length", validators.first["kind"]
       assert_equal Fixnum, validators.first["options"]["minimum"].class
       assert_equal Fixnum, validators.first["options"]["maximum"].class
+
       assert validators.first["options"]["allow_blank"]
     end
 
@@ -77,10 +68,10 @@ class JudgeTest < ActionController::TestCase
 
   end
 
-  context "validated tag output" do
+  context "form builder" do
     setup do
       get :new
-      @form = Nokogiri::HTML(css_select("form[data-error-messages]").first.to_s)
+      @form = Nokogiri::HTML(css_select("form").first.to_s)
     end
 
     should "do validated_select" do
@@ -145,14 +136,45 @@ class JudgeTest < ActionController::TestCase
   
   end
 
+  context "data attribute messages option" do
+    
+    setup do
+      get :new
+      @exclusion_validator = validators_from("select#foo_three").first
+    end
+
+    should "be present" do
+      assert_equal Hash, @exclusion_validator["messages"].class
+    end
+
+    should "include base message" do
+      assert @exclusion_validator["messages"]["exclusion"], "base message not found"
+    end
+
+    should "lookup i18n error message" do
+      assert_equal "activerecord errors messages blank", @exclusion_validator["messages"]["blank"]
+    end
+
+    should "not include blank message if allow_blank is true" do
+      length_validator = validators_from("input#foo_two_foobar").first
+      assert_equal nil, length_validator["messages"]["blank"]
+    end
+
+    should "include not_an_integer message if only_integer is true" do
+      numericality_validator = validators_from("textarea#foo_four").first
+      assert numericality_validator["messages"]["not_an_integer"], "not_an_integer message not found"
+    end
+
+  end
+
   def validators_from(selector)
-    form = Nokogiri::HTML(css_select("form[data-error-messages]").first.to_s)
+    form = Nokogiri::HTML(css_select("form").first.to_s)
     data_attribute = form.css(selector).first["data-validate"]
     JSON.parse(data_attribute)
   end
 
   def error_messages
-    form = Nokogiri::HTML(css_select("form[data-error-messages]").first.to_s)
+    form = Nokogiri::HTML(css_select("form").first.to_s)
     data_attribute = form.css("form").first["data-error-messages"]
     JSON.parse(data_attribute)
   end

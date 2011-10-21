@@ -2,9 +2,10 @@ require 'rubygems'
 require 'bundler'
 require 'rake'
 require 'jeweler'
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'jasmine'
 require 'rake/testtask'
+
 load 'jasmine/tasks/jasmine.rake'
 load 'lib/tasks/js_tests.rake'
 
@@ -27,7 +28,7 @@ Jeweler::Tasks.new do |gem|
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-Rake::RDocTask.new do |rdoc|
+RDoc::Task.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
@@ -45,7 +46,7 @@ namespace :test do
   
   desc "Run javascript tests"
   task :js => ["jasmine:phantom"]
-
-  desc "Run all tests"
-  task :all => [:form, :js]
 end
+
+desc "Run all tests"
+task :test => ["test:form", "test:js"]
