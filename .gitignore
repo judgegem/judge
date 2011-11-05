@@ -1,9 +1,4 @@
-rdoc
-doc
-.yardoc
+*.gem
 .bundle
-pkg
-.DS_Store
-*.swp
-*.swo
 Gemfile.lock
+pkg/*

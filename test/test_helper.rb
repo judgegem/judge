@@ -1,5 +1,4 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__)))
+require "bundler/setup"
 
 # require dependencies
 %w{rubygems bundler shoulda active_record}.each do |x|
