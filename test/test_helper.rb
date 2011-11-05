@@ -6,8 +6,10 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__)))
 	require x
 end
 
-require "judge"
-require "setup"
+# require judge and test setup files
+%w{judge setup}.each do |x|
+	require x
+end
 
 begin
   Bundler.setup(:default, :test)

@@ -30,7 +30,7 @@ module Judge
       @template.check_box(self.object_name, method, objectify_options(options), checked_value, unchecked_value)
     end
 
-    def validated_select(method, choices, options = {}, html_options = {})
+    def select(method, choices, options = {}, html_options = {})
       if options.delete(:validate).present?
         html_options = { "data-validate" => Judge::ValidatorCollection.new(self.object, method).to_json }.merge(html_options)
       end

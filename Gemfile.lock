@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    judge (0.5.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -110,6 +115,7 @@ DEPENDENCIES
   jasmine (~> 1.0.2)
   jeweler (~> 1.5.2)
   json (~> 1.6.0)
+  judge!
   nokogiri (~> 1.4.7)
   rails (~> 3.0.10)
   shoulda (~> 2.11.3)

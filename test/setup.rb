@@ -6,13 +6,21 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :username
     t.string :country
     t.integer :age
+    t.text :bio
+    t.string :password
+    t.boolean :accepted
+    t.text :gender
   end
 end
 class User < ActiveRecord::Base
-  validates :name,     :presence     => true
-  validates :username, :length       => { :maximum => 10 }
-  validates :country,  :format       => { :with => /[A-Za-z]/, :allow_blank => true }
+  validates :name,     :presence => true
+  validates :username, :length => { :maximum => 10 }
+  validates :country,  :format => { :with => /[A-Za-z]/, :allow_blank => true }
   validates :age,      :numericality => { :only_integer => true, :greater_than => 13 }
+  validates :bio,      :presence => true
+  validates :password, :format => { :with => /.+/ }, :confirmation => true
+  validates :accepted, :acceptance => true
+  validates :gender,   :inclusion => { :in => ["male", "female", "other", "withheld"] }
 end
 
 # hack to stop #url_for error
