@@ -3,4 +3,5 @@
 Gemfile.lock
 pkg/*
 docs
+doc
 rdoc
