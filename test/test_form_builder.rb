@@ -1,4 +1,5 @@
 require "action_view/test_case"
+require "html/document"
 require "expected_elements"
 
 class JudgeFormBuilderTest < ActionView::TestCase
