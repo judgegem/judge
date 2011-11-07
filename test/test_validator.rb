@@ -2,7 +2,7 @@ class JudgeValidatorTest < Test::Unit::TestCase
 	
 	context "Judge::Validator" do
 		setup do
-			user = User.new
+			user = FactoryGirl.build(:user)
 			amv = User.validators_on(:name).first 
 			@validator = Judge::Validator.new(amv, :name, Judge::MessageCollection.new(user, :name, amv))
 		end

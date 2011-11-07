@@ -2,7 +2,7 @@ class JudgeMessageCollectionTest < Test::Unit::TestCase
 
 	context "Judge::MessageCollection" do
 		setup do
-			@user = User.new
+			@user = FactoryGirl.build(:user)
 		end
 
 		should "have hash of messages in messages attr" do
