@@ -21,7 +21,8 @@ module ExpectedElements
   end
 
   def expected_select
-    %Q{<select data-validate="[{&quot;kind&quot;:&quot;format&quot;,&quot;options&quot;:{&quot;with&quot;:&quot;(?-mix:[A-Za-z])&quot;,&quot;allow_blank&quot;:true},&quot;messages&quot;:{&quot;invalid&quot;:&quot;is invalid&quot;}}]" id="user_country" name="user[country]"><option value="US">US</option><option value="GB">GB</option></select>}
+    %Q{<select data-validate="[{&quot;kind&quot;:&quot;format&quot;,&quot;options&quot;:{&quot;with&quot;:&quot;(?-mix:[A-Za-z])&quot;,&quot;allow_blank&quot;:true},&quot;messages&quot;:{&quot;invalid&quot;:&quot;is invalid&quot;}}]" id="user_country" name="user[country]"><option value="US">US</option>
+<option value="GB">GB</option></select>}
   end
 
   def expected_collection_select
