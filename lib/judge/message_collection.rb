@@ -59,6 +59,8 @@ module Judge
       messages
     end
 
+    private
+
     def generate_base!
       if mm.has_key?(kind) && mm[kind][:base].present?
         base_message = mm[kind][:base]
