@@ -1,8 +1,8 @@
 module Judge
 
-	class MessageCollection
+  class MessageCollection
 
-		MESSAGE_MAP = {
+    MESSAGE_MAP = {
       :confirmation => { :base => :confirmation },
       :acceptance   => { :base => :accepted },
       :presence     => { :base => :blank },
@@ -36,16 +36,16 @@ module Judge
     attr_reader   :object, :method, :kind, :options, :mm
     attr_accessor :messages
 
-		def initialize(object, method, amv, opts = {})
+    def initialize(object, method, amv, opts = {})
       opts = DEFAULT_OPTS.merge(opts)
       @object   = object
       @method   = method
       @kind     = amv.kind
       @options  = amv.options.dup
-			@mm       = MESSAGE_MAP
+      @mm       = MESSAGE_MAP
       @messages = {}
       generate_messages! unless opts[:generate] == false
-		end
+    end
 
     def generate_messages!
       if messages.blank?
@@ -90,6 +90,6 @@ module Judge
       end
     end
 
-	end
+  end
 
 end
