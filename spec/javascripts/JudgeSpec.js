@@ -114,7 +114,6 @@ describe('judge', function() {
         judge.store.save('mykey', document.getElementById('foo_two_foobar'));
         var d = judge.store.getDOM('mykey');
         expect(d.length).toEqual(2);
-        console.log(d);
         expect(Object.prototype.toString.call(d[0])).toEqual('[object HTMLSelectElement]');
       });
 
@@ -130,6 +129,17 @@ describe('judge', function() {
 
       it('returns null if key not found', function() {
         expect(judge.store.getDOM('notakey')).toEqual(null);
+      });
+
+    });
+
+    describe('validate', function() {
+      
+      it('validates all elements stored against key', function() {
+        judge.store.save('mykey', e);
+        var results = judge.store.validate('mykey');
+        expect(_(results).first()).toBeInstanceOf(Object);
+        expect(_(results).first().element).toEqual(e);
       });
 
     });
