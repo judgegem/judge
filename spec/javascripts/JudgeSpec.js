@@ -519,24 +519,6 @@ describe('judge', function() {
 
   describe('utils', function() {
 
-    describe('isValidatable', function() {
-      
-      it('returns true if judge can validate object', function() {
-        var i = document.createElement('input'),
-            s = document.createElement('select'),
-            t = document.createElement('textarea');
-        expect(judge.utils.isValidatable(i)).toEqual(true);
-        expect(judge.utils.isValidatable(s)).toEqual(true);
-        expect(judge.utils.isValidatable(t)).toEqual(true);
-      });
-
-      it('returns false otherwise', function() {
-        var p = document.createElement('p');
-        expect(judge.utils.isValidatable(p)).toEqual(false);
-      });
-
-    });
-
     describe('isCollection', function() {
       
       beforeEach(function() {
