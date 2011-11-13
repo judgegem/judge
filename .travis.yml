@@ -1,7 +1,7 @@
 rvm:
   - 1.9.2
 
-script: "bundle exec rake test:form"
+script: "bundle exec rake test:ruby"
 
 notifications:
   recipients:
