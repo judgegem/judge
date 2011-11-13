@@ -147,6 +147,11 @@ describe('judge', function() {
         expect(results).toBe(null);
       });
 
+      it('returns null if key is not passed', function() {
+        var results = judge.store.validate();
+        expect(results).toBe(null);
+      });
+
     });
 
     describe('remove', function() {
