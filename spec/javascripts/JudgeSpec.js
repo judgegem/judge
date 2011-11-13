@@ -142,6 +142,11 @@ describe('judge', function() {
         expect(_(results).first().element).toEqual(e);
       });
 
+      it('returns null if no elements found', function() {
+        var results = judge.store.validate('mykey');
+        expect(results).toBe(null);
+      });
+
     });
 
     describe('remove', function() {
@@ -171,12 +176,12 @@ describe('judge', function() {
         judge.store.save('mykey', e);
         judge.store.save('mykey2', e);
         judge.store.clear('mykey');
-        expect(judge.store.get('mykey')).toEqual([]);
+        expect(judge.store.get('mykey')).toBe(null);
         expect(judge.store.get('mykey2').length).toEqual(1);
       });
 
       it('returns null if key not found', function() {
-        expect(judge.store.clear('notakey')).toEqual(null);
+        expect(judge.store.clear('notakey')).toBe(null);
       });
 
     });
