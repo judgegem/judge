@@ -114,7 +114,6 @@ describe('judge', function() {
         judge.store.save('mykey', document.getElementById('foo_two_foobar'));
         var d = judge.store.getDOM('mykey');
         expect(d.length).toEqual(2);
-        console.log(d);
         expect(Object.prototype.toString.call(d[0])).toEqual('[object HTMLSelectElement]');
       });
 
@@ -134,12 +133,33 @@ describe('judge', function() {
 
     });
 
+    describe('validate', function() {
+      
+      it('validates all elements stored against key', function() {
+        judge.store.save('mykey', e);
+        var results = judge.store.validate('mykey');
+        expect(_(results).first()).toBeInstanceOf(Object);
+        expect(_(results).first().element).toEqual(e);
+      });
+
+      it('returns null if no elements found', function() {
+        var results = judge.store.validate('mykey');
+        expect(results).toBe(null);
+      });
+
+      it('returns null if key is not passed', function() {
+        var results = judge.store.validate();
+        expect(results).toBe(null);
+      });
+
+    });
+
     describe('remove', function() {
       
       it('removes Watcher from store', function() {
         judge.store.save('mykey', e);
-        expect(judge.store.remove('mykey', e)).not.toEqual(null);
-        expect(judge.store.get('mykey').length).toEqual(0);
+        expect(_(judge.store.remove('mykey', e)).isUndefined()).toEqual(true);
+        expect(judge.store.get('mykey')).toBe(null);
       });
 
       it('returns null if key not found', function() {
@@ -161,12 +181,12 @@ describe('judge', function() {
         judge.store.save('mykey', e);
         judge.store.save('mykey2', e);
         judge.store.clear('mykey');
-        expect(judge.store.get('mykey')).toEqual([]);
+        expect(judge.store.get('mykey')).toBe(null);
         expect(judge.store.get('mykey2').length).toEqual(1);
       });
 
       it('returns null if key not found', function() {
-        expect(judge.store.clear('notakey')).toEqual(null);
+        expect(judge.store.clear('notakey')).toBe(null);
       });
 
     });
@@ -508,24 +528,6 @@ describe('judge', function() {
   });
 
   describe('utils', function() {
-
-    describe('isValidatable', function() {
-      
-      it('returns true if judge can validate object', function() {
-        var i = document.createElement('input'),
-            s = document.createElement('select'),
-            t = document.createElement('textarea');
-        expect(judge.utils.isValidatable(i)).toEqual(true);
-        expect(judge.utils.isValidatable(s)).toEqual(true);
-        expect(judge.utils.isValidatable(t)).toEqual(true);
-      });
-
-      it('returns false otherwise', function() {
-        var p = document.createElement('p');
-        expect(judge.utils.isValidatable(p)).toEqual(false);
-      });
-
-    });
 
     describe('isCollection', function() {
       

@@ -1,8 +1,6 @@
 module Judge
-  
-  module Utils
 
-    extend self
+  class MessageCollection
 
     MESSAGE_MAP = {
       :confirmation => { :base => :confirmation },
@@ -33,48 +31,67 @@ module Judge
 
     ALLOW_BLANK = [:format, :exclusion, :inclusion, :length]
 
-    # Returns all decorated validators for an object's method, as JSON
-    #   Judge::Utils.validators_to_json(@user, :name)
-    def validators_to_json(object, method)
-      validators = object.class.validators_on(method).reject { |validator| validator.kind == :uniqueness }
-      validators.collect! do |validator| 
-        Judge::Utils.decorate_validator(validator, object, method)
-      end
-      validators.to_json
-    end
-    
-    # Convert validator to hash, removing all parts we don't support and adding all possible error messages
-    #   Judge::Utils.decorate_validator(validator_instance, @user, :name)
-    def decorate_validator(validator, object, method)
-      kind = validator.kind
-      mm = MESSAGE_MAP
+    DEFAULT_OPTS = { :generate => true }
 
-      # remove callbacks and tokenizer, which we don't support
-      validator_options = validator.options.reject { |key| [:if, :on, :unless, :tokenizer].include?(key)  }
-      
-      messages = {}
+    attr_reader   :object, :method, :kind, :options, :mm
+    attr_accessor :messages
+
+    def initialize(object, method, amv, opts = {})
+      opts = DEFAULT_OPTS.merge(opts)
+      @object   = object
+      @method   = method
+      @kind     = amv.kind
+      @options  = amv.options.dup
+      @mm       = MESSAGE_MAP
+      @messages = {}
+      generate_messages! unless opts[:generate] == false
+    end
+
+    def generate_messages!
+      if messages.blank?
+        %w{base options blank integer}.each do |type|
+          self.send(:"generate_#{type}!")
+        end
+      end
+    end
+
+    def to_hash
+      messages
+    end
+
+    private
+
+    def generate_base!
       if mm.has_key?(kind) && mm[kind][:base].present?
         base_message = mm[kind][:base]
-        messages[base_message] = object.errors.generate_message(method, base_message, validator_options)
+        messages[base_message] = object.errors.generate_message(method, base_message, options)
       end
+    end
+
+    def generate_options!
       if mm.has_key?(kind) && mm[kind][:options].present?
         opt_messages = mm[kind][:options]
         opt_messages.each do |opt, opt_message|
-          if validator_options.has_key?(opt)
-            options_for_interpolation = { :count => validator_options[opt] }.merge(validator_options)
+          if options.has_key?(opt)
+            options_for_interpolation = { :count => options[opt] }.merge(options)
             messages[opt_message] = object.errors.generate_message(method, opt_message, options_for_interpolation)
           end
         end
       end
-      if ALLOW_BLANK.include?(kind) && validator_options[:allow_blank].blank? && messages[:blank].blank?
+    end
+
+    def generate_blank!
+      if ALLOW_BLANK.include?(kind) && options[:allow_blank].blank? && messages[:blank].blank?
         messages[:blank] = object.errors.generate_message(method, :blank)
       end
-      if kind == :numericality && validator_options[:only_integer].present?
+    end
+
+    def generate_integer!
+      if kind == :numericality && options[:only_integer].present?
         messages[:not_an_integer] = object.errors.generate_message(method, :not_an_integer)
       end
-
-      { :kind => kind, :options => validator_options, :messages => messages }
     end
 
   end
+
 end

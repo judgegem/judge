@@ -1,4 +1,6 @@
-require File.dirname(__FILE__) + '/judge/utils'
-require File.dirname(__FILE__) + '/judge/form'
-
-::ActionView::Helpers::FormBuilder.send(:include, Judge::FormBuilder)
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "judge"))
+require "version"
+require "validator"
+require "validator_collection"
+require "message_collection"
+require "form_builder"
