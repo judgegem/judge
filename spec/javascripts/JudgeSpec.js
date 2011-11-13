@@ -153,8 +153,8 @@ describe('judge', function() {
       
       it('removes Watcher from store', function() {
         judge.store.save('mykey', e);
-        expect(judge.store.remove('mykey', e)).not.toEqual(null);
-        expect(judge.store.get('mykey').length).toEqual(0);
+        expect(_(judge.store.remove('mykey', e)).isUndefined()).toEqual(true);
+        expect(judge.store.get('mykey')).toBe(null);
       });
 
       it('returns null if key not found', function() {
