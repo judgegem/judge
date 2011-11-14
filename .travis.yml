@@ -1,6 +1,6 @@
 rvm:
   - 1.9.2
-  - 1.9.3-preview1
+  - 1.9.3
 
 script: "bundle exec rake test:ruby"
 
