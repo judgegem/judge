@@ -1,7 +1,7 @@
 require "bundler/setup"
 
-# require dependencies
-%w{rubygems bundler shoulda factory_girl active_record}.each do |x|
+# require stuff
+%w{active_record action_view shoulda factory_girl}.each do |x|
   require x
 end
 
