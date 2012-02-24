@@ -6,7 +6,7 @@ Client-side form validation in Rails 3.
 Usage
 -----
 
-See http://joecorcoran.github.com/judge for documentation.
+See http://judge.joecorcoran.co.uk for documentation.
 
 License
 -------
