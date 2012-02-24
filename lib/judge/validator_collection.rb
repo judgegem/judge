@@ -13,9 +13,9 @@ module Judge
       end
     end
 
-    def each
+    def each(&block)
       validators.each do |v|
-        yield v
+        block.call(v)
       end
     end
 
