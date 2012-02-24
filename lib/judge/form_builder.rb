@@ -20,7 +20,7 @@ module Judge
       if options.delete(:validate).present?
         options = { "data-validate" => Judge::ValidatorCollection.new(self.object, method).to_json }.merge(options)
       end
-      @template.radio_button(@object_name, method, tag_value, objectify_options(options))
+      @template.radio_button(self.object_name, method, tag_value, objectify_options(options))
     end
     
     def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
@@ -67,7 +67,7 @@ module Judge
       if options.delete(:validate).present?
         html_options = { "data-validate" => Judge::ValidatorCollection.new(self.object, method).to_json }.merge(html_options)
       end
-      @template.time_zone_select(@object_name, method, priority_zones, objectify_options(options), @default_options.merge(html_options))
+      @template.time_zone_select(self.object_name, method, priority_zones, objectify_options(options), @default_options.merge(html_options))
     end
     
   end
