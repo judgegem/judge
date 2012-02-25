@@ -8,7 +8,7 @@ module Judge
           if options.delete(:validate).present?
             options = Judge::HTML.attrs_for(self.object, method).merge(options)
           end
-          @template.#{type}(self.object_name, method, options)
+          super
         end
       END
       class_eval helper, __FILE__, __LINE__
@@ -18,35 +18,35 @@ module Judge
       if options.delete(:validate).present?
         options = Judge::HTML.attrs_for(self.object, method).merge(options)
       end
-      @template.radio_button(self.object_name, method, tag_value, objectify_options(options))
+      super
     end
     
     def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
       if options.delete(:validate).present?
         options = Judge::HTML.attrs_for(self.object, method).merge(options)
       end
-      @template.check_box(self.object_name, method, objectify_options(options), checked_value, unchecked_value)
+      super
     end
 
     def select(method, choices, options = {}, html_options = {})
       if options.delete(:validate).present?
         html_options = Judge::HTML.attrs_for(self.object, method).merge(html_options)
       end
-      @template.select(self.object_name, method, choices, objectify_options(options), @default_options.merge(html_options))
+      super
     end
 
     def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
       if options.delete(:validate).present?
         html_options = Judge::HTML.attrs_for(self.object, method).merge(html_options)
       end
-      @template.collection_select(self.object_name, method, collection, value_method, text_method, objectify_options(options), @default_options.merge(html_options))
+      super
     end
 
     def grouped_collection_select(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
       if options.delete(:validate).present?
         html_options = Judge::HTML.attrs_for(self.object, method).merge(html_options)
       end
-      @template.grouped_collection_select(self.object_name, method, collection, group_method, group_label_method, option_key_method, option_value_method, objectify_options(options), @default_options.merge(html_options))
+      super
     end
 
     %w{date_select datetime_select time_select}.each do |type|
@@ -55,7 +55,7 @@ module Judge
           if options.delete(:validate).present?
             html_options = Judge::HTML.attrs_for(self.object, method).merge(html_options)
           end
-          @template.#{type}(self.object_name, method, objectify_options(options), html_options)
+          super
         end
       END
       class_eval helper, __FILE__, __LINE__
@@ -65,7 +65,7 @@ module Judge
       if options.delete(:validate).present?
         html_options = Judge::HTML.attrs_for(self.object, method).merge(html_options)
       end
-      @template.time_zone_select(self.object_name, method, priority_zones, objectify_options(options), @default_options.merge(html_options))
+      super
     end
     
   end
