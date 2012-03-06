@@ -15,8 +15,8 @@ Extensions
 
 Use Judge with your favourite form building tool.
 
-http://github.com/joecorcoran/judge-formtastic
-http://github.com/joecorcoran/judge-simple_form
+* http://github.com/joecorcoran/judge-formtastic
+* http://github.com/joecorcoran/judge-simple_form
 
 License
 -------
