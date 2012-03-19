@@ -58,7 +58,7 @@ describe('judge', function() {
     });
 
     it('has custom validation methods when defined by user', function() {
-      judge.customValidators.phatness = function(options) { return { valid: true }; };
+      judge.customValidators.phatness = function() {};
       expect(_(j.validates()).keys()).toContain('phatness');
     });
 
