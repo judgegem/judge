@@ -649,13 +649,14 @@ describe('judge', function() {
     describe('convertFlags', function() {
 
       it('returns m if present in options string without negation', function() {
-        expect(judge.utils.convertFlags('imx')).toEqual('m');
+        expect(judge.utils.convertFlags('mix')).toEqual('m');
+        expect(judge.utils.convertFlags('m-ix')).toEqual('m');
+        expect(judge.utils.convertFlags('mx-i')).toEqual('m');
       });
 
       it('returns empty string otherwise', function() {
-        expect(judge.utils.convertFlags('-imx')).toEqual('');
-        expect(judge.utils.convertFlags('ix')).toEqual('');
-        expect(judge.utils.convertFlags('-m')).toEqual('');
+        expect(judge.utils.convertFlags('ix-m')).toEqual('');
+        expect(judge.utils.convertFlags('x-mi')).toEqual('');
       });
 
     });
