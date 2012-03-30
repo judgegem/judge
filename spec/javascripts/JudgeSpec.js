@@ -24,11 +24,11 @@ describe('judge', function() {
 
     describe('callbacks', function() {
       it('calls callback correct number of times', function() {
-        var e = document.getElementsByTagName('textarea');
+        var elements = document.getElementsByTagName('textarea');
             callback = jasmine.createSpy(),
-            l = e.length;
-        judge.validate(e, callback);
-        expect(callback.callCount).toBe(l);
+            length = elements.length;
+        judge.validate(elements, callback);
+        expect(callback.callCount).toBe(length);
       });
     });
 
@@ -235,7 +235,7 @@ describe('judge', function() {
 
         beforeEach(function() {
           callback = jasmine.createSpy();
-          j.validate(callback);
+          watcher.validate(callback);
           args = callback.argsForCall[0];
         });
 
