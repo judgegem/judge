@@ -22,6 +22,16 @@ describe('judge', function() {
       expect(v.length).toEqual(1);
     });
 
+    describe('callbacks', function() {
+      it('calls callback correct number of times', function() {
+        var e = document.getElementsByTagName('textarea');
+            callback = jasmine.createSpy(),
+            l = e.length;
+        judge.validate(e, callback);
+        expect(callback.callCount).toBe(l);
+      });
+    });
+
   });
 
   describe('judge.Watcher', function() {
@@ -218,6 +228,27 @@ describe('judge', function() {
 
       it('returns messages', function() {
         expect(r.messages).toBeInstanceOf(Array);
+      });
+
+      describe('callback', function() {
+
+        var callback, args;
+
+        beforeEach(function() {
+          callback = jasmine.createSpy();
+          j.validate(callback);
+          args = callback.argsForCall[0];
+        });
+
+        it('is called when given', function() {
+          expect(callback).toHaveBeenCalled();
+        });
+        it('receives correct args', function() {
+          expect(_.isBoolean(args[0])).toBe(true);
+          expect(_.isArray(args[1])).toBe(true);
+          expect(_.isElement(args[2])).toBe(true);
+        });
+        
       });
 
     });
