@@ -369,13 +369,11 @@ describe('judge', function() {
       it('invalidates when value is not a number', function() {
         watcher.element.value = 'foo bar';
         expect(watcher.validate().valid).toEqual(false);
-        expect(watcher.validate().messages).not.toBeEmpty();
       });
 
       it('validates odd / invalidates not odd', function() {
         watcher.element.value = '2';
         expect(watcher.validate().valid).toEqual(false);
-        expect(watcher.validate().messages).not.toBeEmpty();
         watcher.element.value = '1';
         expect(watcher.validate().valid).toEqual(true);
       });
@@ -383,7 +381,6 @@ describe('judge', function() {
       it('validates even / invalidates not even', function() {
         watcherEven.element.value = '1';
         expect(watcherEven.validate().valid).toEqual(false);
-        expect(watcherEven.validate().messages).not.toBeEmpty();
         watcherEven.element.value = '2';
         expect(watcherEven.validate().valid).toEqual(true);
       });
@@ -398,7 +395,6 @@ describe('judge', function() {
         it('invalidates float', function() {
           watcher.element.value = '1.1';
           expect(watcher.validate().valid).toEqual(false);
-          expect(watcher.validate().messages).not.toBeEmpty();
         });
 
       });
@@ -519,142 +515,6 @@ describe('judge', function() {
         watcher.element.value = 'password';
         conf.value = 'wrongpassword';
         expect(watcher.validate().valid).toEqual(false);
-      });
-
-    });
-
-  });
-
-  describe('utils', function() {
-
-    describe('isCollection', function() {
-      
-      beforeEach(function() {
-        loadFixtures('spec/javascripts/fixtures/form.html');
-      });
-
-      it('returns true if judge can treat object as collection', function() {
-        var a = [],
-            n = document.getElementsByTagName('input');
-        expect(judge.utils.isCollection(a)).toEqual(true);
-        expect(judge.utils.isCollection(n)).toEqual(true);
-      });
-
-      it('returns false otherwise', function() {
-        var o = { a:1, b:2 };
-        expect(judge.utils.isCollection(o)).toEqual(false);
-      });
-
-    });
-
-    describe('getObjectString', function() {
-      
-      it('returns type as represented in Object.prototype.toString', function() {
-        var i = document.createElement('input'),
-            s = document.createElement('select');
-        expect(judge.utils.getObjectString(i)).toEqual('HTMLInputElement');
-        expect(judge.utils.getObjectString(s)).toEqual('HTMLSelectElement');
-      });
-
-    });
-    
-    describe('isInt', function() {
-      
-      it('returns true when int', function() {
-        expect(judge.utils.isInt(1)).toEqual(true);
-        expect(judge.utils.isInt(1.)).toEqual(true);
-        expect(judge.utils.isInt(1.0)).toEqual(true);
-        expect(judge.utils.isInt(0)).toEqual(true);
-        expect(judge.utils.isInt(-1)).toEqual(true);
-      });
-
-      it('returns false when not int', function() {
-        expect(judge.utils.isInt(1.1)).toEqual(false);
-        expect(judge.utils.isInt(-1.1)).toEqual(false);
-      });
-
-    });
-
-    describe('isFloat', function() {
-      
-      it('returns true when float', function() {
-        expect(judge.utils.isFloat(1.1)).toEqual(true);
-        expect(judge.utils.isFloat(-1.1)).toEqual(true);
-      });
-      
-      it('returns false when not float', function() {
-         expect(judge.utils.isFloat(1)).toEqual(false);
-         expect(judge.utils.isFloat(1.)).toEqual(false);
-         expect(judge.utils.isFloat(1.0)).toEqual(false);
-         expect(judge.utils.isFloat(0)).toEqual(false);
-         expect(judge.utils.isFloat(-1)).toEqual(false);
-      });
-
-    });
-
-    describe('isEven', function() {
-      
-      it('returns true when even', function() {
-        expect(judge.utils.isEven(2)).toEqual(true);
-        expect(judge.utils.isEven(0)).toEqual(true);
-        expect(judge.utils.isEven(-2)).toEqual(true);
-      });
-      
-      it('returns false when odd', function() {
-        expect(judge.utils.isEven(1)).toEqual(false);
-        expect(judge.utils.isEven(-1)).toEqual(false);
-      });
-
-    });
-
-    describe('isOdd', function() {
-      
-      it('returns true when odd', function() {
-        expect(judge.utils.isOdd(1)).toEqual(true);
-        expect(judge.utils.isOdd(-1)).toEqual(true);
-      });
-      
-      it('returns false when even', function() {
-        expect(judge.utils.isOdd(2)).toEqual(false);
-        expect(judge.utils.isOdd(0)).toEqual(false);
-        expect(judge.utils.isOdd(-2)).toEqual(false);
-      });
-
-    });
-
-    describe('operate', function() {
-      
-      it('evaluates and returns true or false', function() {
-        expect(judge.utils.operate(1, '<', 4)).toEqual(true);
-        expect(judge.utils.operate(1, '==', 1)).toEqual(true);
-        expect(judge.utils.operate(1, '>=', 4)).toEqual(false);
-      });
-
-    });
-
-    describe('convertRegExp', function() {
-      
-      it('converts string format options-first ruby regexp into RegExp object', function() {
-        var re = judge.utils.convertRegExp('(?mix:[A-Z0-9]\.)');
-        expect(re).toBeInstanceOf(RegExp);
-        expect(re.source).toEqual('[A-Z0-9]\.');
-        expect(re.multiline).toEqual(true);
-        expect(re.global).toEqual(false);
-      });
-
-    });
-
-    describe('convertFlags', function() {
-
-      it('returns m if present in options string without negation', function() {
-        expect(judge.utils.convertFlags('mix')).toEqual('m');
-        expect(judge.utils.convertFlags('m-ix')).toEqual('m');
-        expect(judge.utils.convertFlags('mx-i')).toEqual('m');
-      });
-
-      it('returns empty string otherwise', function() {
-        expect(judge.utils.convertFlags('ix-m')).toEqual('');
-        expect(judge.utils.convertFlags('x-mi')).toEqual('');
       });
 
     });
