@@ -8,4 +8,4 @@ load "jasmine/tasks/jasmine.rake"
 load "lib/tasks/js_tests.rake"
 
 desc "Run all tests"
-task :default => ["spec", "jasmine:phantom"]
+task :default => ["spec", "jasmine:headless"]

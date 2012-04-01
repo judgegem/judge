@@ -9,6 +9,7 @@ before_script:
   - "cd casperjs"
   - "git checkout tags/0.6.5"
   - "echo $PATH"
+  - "sudo ln -sf `pwd`/bin/casperjs /usr/local/bin/casperjs"
 
 script: "bundle exec rake"
 
