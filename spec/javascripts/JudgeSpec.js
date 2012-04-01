@@ -448,6 +448,13 @@ describe('judge', function() {
         expect(_(results).first().element).toEqual(element);
       });
 
+      it('calls callback correct number of times', function() {
+        judge.store.save('mykey', document.getElementsByTagName('textarea'));
+        var callback = jasmine.createSpy();
+        judge.store.validate('mykey', callback);
+        expect(callback.callCount).toBe(4);
+      });
+
       it('returns null if no elements found', function() {
         var results = judge.store.validate('mykey');
         expect(results).toBe(null);
