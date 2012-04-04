@@ -1,48 +1,20 @@
+require 'message_config'
+
 module Judge
 
   class MessageCollection
 
-    MESSAGE_MAP = {
-      :confirmation => { :base => :confirmation },
-      :acceptance   => { :base => :accepted },
-      :presence     => { :base => :blank },
-      :length       => { :base => nil,
-                         :options => {
-                           :minimum => :too_short,
-                           :maximum => :too_long,
-                           :is      => :wrong_length    
-                         }
-                       },
-      :format       => { :base => :invalid },
-      :inclusion    => { :base => :inclusion },
-      :exclusion    => { :base => :exclusion },
-      :numericality => { :base => :not_a_number,
-                         :options => {
-                           :greater_than             => :greater_than, 
-                           :greater_than_or_equal_to => :greater_than_or_equal_to, 
-                           :equal_to                 => :equal_to, 
-                           :less_than                => :less_than, 
-                           :less_than_or_equal_to    => :less_than_or_equal_to,
-                           :odd                      => :odd,
-                           :even                     => :even
-                         }
-                       }
-    }
+    include MessageConfig
 
-    ALLOW_BLANK = [:format, :exclusion, :inclusion, :length]
-
-    DEFAULT_OPTS = { :generate => true }
-
-    attr_reader   :object, :method, :kind, :options, :mm
+    attr_reader   :object, :method, :kind, :options
     attr_accessor :messages
 
     def initialize(object, method, amv, opts = {})
-      opts = DEFAULT_OPTS.merge(opts)
+      opts      = { :generate => true }.merge(opts)
       @object   = object
       @method   = method
       @kind     = amv.kind
       @options  = amv.options.dup
-      @mm       = MESSAGE_MAP
       @messages = {}
       generate_messages! unless opts[:generate] == false
     end
@@ -62,15 +34,15 @@ module Judge
     private
 
     def generate_base!
-      if mm.has_key?(kind) && mm[kind][:base].present?
-        base_message = mm[kind][:base]
+      if MESSAGE_MAP.has_key?(kind) && MESSAGE_MAP[kind][:base].present?
+        base_message = MESSAGE_MAP[kind][:base]
         messages[base_message] = object.errors.generate_message(method, base_message, options)
       end
     end
 
     def generate_options!
-      if mm.has_key?(kind) && mm[kind][:options].present?
-        opt_messages = mm[kind][:options]
+      if MESSAGE_MAP.has_key?(kind) && MESSAGE_MAP[kind][:options].present?
+        opt_messages = MESSAGE_MAP[kind][:options]
         opt_messages.each do |opt, opt_message|
           if options.has_key?(opt)
             options_for_interpolation = { :count => options[opt] }.merge(options)

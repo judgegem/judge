@@ -7,10 +7,8 @@ module Judge
     attr_reader :validators
     
     def initialize(object, method)
-      active_model_validators = object.class.validators_on(method).reject { |amv| amv.kind == :uniqueness }
-      @validators = active_model_validators.map do |amv|
-        Judge::Validator.new(amv, method, Judge::MessageCollection.new(object, method, amv))
-      end
+      amvs = object.class.validators_on(method).reject { |amv| amv.kind == :uniqueness }
+      @validators = amvs.map { |amv| Judge::Validator.new(object, method, amv) }
     end
 
     def each(&block)

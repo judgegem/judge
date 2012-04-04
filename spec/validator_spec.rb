@@ -5,11 +5,7 @@ describe Judge::Validator do
   before(:each) do
     user = FactoryGirl.build(:user)
     amv = User.validators_on(:name).first 
-    @validator = Judge::Validator.new(amv, :name, Judge::MessageCollection.new(user, :name, amv))
-  end
-
-  it "has an original validator in validator attr" do
-    @validator.active_model_validator.should be_a ActiveModel::Validations::PresenceValidator
+    @validator = Judge::Validator.new(user, :name, amv)
   end
 
   it "has correct kind attr" do
