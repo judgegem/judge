@@ -4,9 +4,9 @@ require "action_view"
 require "judge"
 require "rspec"
 require "factory_girl"
+require "support/validators/foo_validator"
 require "setup"
-
-require_relative "factories"
+require "support/factories"
 
 RSpec.configure do |config|
   config.color_enabled = true
