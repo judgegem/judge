@@ -18,6 +18,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "jasmine",            "~> 1.1.2"
   s.add_development_dependency "rails",              "~> 3.2"
   s.add_development_dependency "rspec",              "~> 2.8"
-  s.add_development_dependency "sqlite3",       "~> 1.3.5"
+  s.add_development_dependency "sqlite3",            "~> 1.3.5"
   s.add_development_dependency "factory_girl",       "~> 2.6"
 end
