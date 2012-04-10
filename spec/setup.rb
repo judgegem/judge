@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.integer :team_id
     t.string :time_zone
     t.integer :discipline_id
-    t.string :foo
+    t.string :city
   end
   create_table :teams do |t|
     t.string :name
@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   validates :team_id,       :presence => true
   validates :time_zone,     :presence => true
   validates :discipline_id, :presence => true
-  validates :foo,           :foo => true
+  validates :city,          :city => { :hello => ["abc"] }
 end
 
 class Team < ActiveRecord::Base; end
@@ -63,6 +63,9 @@ class Discipline < ActiveRecord::Base
   belongs_to :sport
   belongs_to :user
 end
+
+# i18n locale file
+I18n.load_path << File.expand_path("spec/support/locale/en.yml")
 
 # hack to stop #url_for error
 module ActionDispatch::Routing::PolymorphicRoutes

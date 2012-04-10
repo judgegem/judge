@@ -4,7 +4,7 @@ require "action_view"
 require "judge"
 require "rspec"
 require "factory_girl"
-require "support/validators/foo_validator"
+require "support/validators/city_validator"
 require "setup"
 require "support/factories"
 
