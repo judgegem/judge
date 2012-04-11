@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   validates :team_id,       :presence => true
   validates :time_zone,     :presence => true
   validates :discipline_id, :presence => true
-  validates :city,          :city => { :hello => ["abc"] }
+  validates :city,          :city => true
 end
 
 class Team < ActiveRecord::Base; end
