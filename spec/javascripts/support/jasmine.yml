@@ -12,9 +12,9 @@
 #
 src_files:
   - spec/javascripts/helpers/jquery-1.5.1.min.js
-  - spec/javascripts/helpers/json2.js
-  - spec/javascripts/helpers/underscore.js
-  - lib/generators/judge/templates/judge.js
+  - vendor/assets/javascripts/json2.js
+  - vendor/assets/javascripts/underscore.js
+  - app/assets/javascripts/judge.js
 
 # stylesheets
 #

@@ -7,3 +7,5 @@ doc
 rdoc
 gem_graph.png
 .rvmrc
+.rspec
+spec/dummy/tmp/**/*

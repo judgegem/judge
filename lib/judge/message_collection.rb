@@ -1,4 +1,4 @@
-require 'message_config'
+require "judge/message_config"
 
 module Judge
 

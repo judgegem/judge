@@ -1,4 +1,4 @@
-require "support/spec_helper"
+require "spec_helper"
 
 describe Judge::EachValidator do
 
