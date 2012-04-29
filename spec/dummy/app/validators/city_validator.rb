@@ -3,7 +3,7 @@ class CityValidator < ActiveModel::EachValidator
 
   def validate_each(record, attribute, value)
     unless ["London", "New York City"].include? value
-      record.errors.add :attribute, :not_valid_city
+      record.errors.add attribute, :not_valid_city
     end
   end
 end

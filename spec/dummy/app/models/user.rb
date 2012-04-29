@@ -1,8 +1,9 @@
 class User < ActiveRecord::Base
   belongs_to :team
+  belongs_to :discipline
 
   validates :name,          :presence => true
-  validates :username,      :length => { :maximum => 10 }
+  validates :username,      :length => { :maximum => 10 }, :uniqueness => true
   validates :country,       :format => { :with => /[A-Za-z]/, :allow_blank => true }
   validates :age,           :numericality => { :only_integer => true, :greater_than => 13 }
   validates :bio,           :presence => true

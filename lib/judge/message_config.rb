@@ -33,7 +33,8 @@ module Judge
                            :odd                      => :odd,
                            :even                     => :even
                          }
-                       }
+                       },
+      :uniqueness   => { :base => :taken }
     }
 
   end

@@ -4,6 +4,8 @@ en:
       models:
         user:
           attributes:
+            username:
+              taken: "%{attribute} \"%{value}\" has already been taken"
             city:
               not_valid_city: "%{attribute} must be an approved city"
   errors:
