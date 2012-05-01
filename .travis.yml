@@ -14,8 +14,13 @@ script: "bundle exec rake"
 
 notifications:
   recipients:
-    - joe@tribesports.com
+    - joecorcoran@gmail.com
+
+gemfiles:
+  - "gemfiles/rails_3_1.gemfile"
+  - "gemfiles/rails_3_2.gemfile"
 
 branches:
   only:
     - master
+    - engine
