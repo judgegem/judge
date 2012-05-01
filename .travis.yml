@@ -16,7 +16,7 @@ notifications:
   recipients:
     - joecorcoran@gmail.com
 
-gemfiles:
+gemfile:
   - "gemfiles/rails_3_1.gemfile"
   - "gemfiles/rails_3_2.gemfile"
 

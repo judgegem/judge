@@ -1,7 +1,7 @@
 PATH
   remote: /Users/joecorcoran/Projects/judge
   specs:
-    judge (1.6.0)
+    judge (1.5.0)
 
 GEM
   remote: http://rubygems.org/
