@@ -1,3 +1,3 @@
 Judge::Engine.routes.draw do
-  match "/validations/uniqueness" => "validations#uniqueness"  
+  get "/validate", :to => "validations#perform", :as => :perform_validation
 end
