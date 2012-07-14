@@ -2,17 +2,21 @@ module Judge
 
   class Validation
 
-    attr_reader :klass, :attribute, :value, :kind, :object, :amv
+    attr_accessor :klass, :attribute, :value, :kind
+    attr_reader :object, :amv
 
     def initialize(klass, attribute, value, kind)
-      @klass, @attribute, @value, @kind = klass, attribute, value, kind
-      @object = build_object
-      @amv = lookup_amv
+      @klass     = klass.constantize
+      @attribute = attribute.to_sym
+      @value     = value
+      @kind      = kind.to_sym
+      @object    = build_object
+      @amv       = lookup_amv
       validate!
     end
 
     def errors
-      object.errors.get(attribute)
+      object.errors.get(attribute) || []
     end
 
     def validate!
@@ -21,8 +25,7 @@ module Judge
     end
 
     def valid?
-      validate!
-      errors.nil?
+      errors.empty?
     end
 
     private

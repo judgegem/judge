@@ -3,8 +3,8 @@ require "spec_helper"
 describe Judge::Validation do
 
   before(:all) { FactoryGirl.create(:user, :username => "existing") }
-  let(:validation_fail) { Judge::Validation.new(User, :username, "existing", :uniqueness) }
-  let(:validation_succeed) { Judge::Validation.new(User, :username, "new", :uniqueness) }
+  let(:validation_fail) { Judge::Validation.new("User", "username", "existing", "uniqueness") }
+  let(:validation_succeed) { Judge::Validation.new("User", "username", "new", "uniqueness") }
   after(:all) { User.destroy_all }
 
   specify "#object" do
@@ -15,7 +15,8 @@ describe Judge::Validation do
   describe "#errors" do
 
     specify "when value is valid" do
-      validation_succeed.errors.should be_nil
+      validation_succeed.errors.should be_an Array
+      validation_succeed.errors.should be_empty
     end
 
     specify "when value is invalid" do
