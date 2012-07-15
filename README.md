@@ -1,7 +1,7 @@
 judge
 =====
 
-[![Build status](https://secure.travis-ci.org/joecorcoran/judge.png?branch=master)](http://travis-ci.org/joecorcoran/judge)
+[![Build status](https://secure.travis-ci.org/joecorcoran/judge.png?branch=v1.6)](http://travis-ci.org/joecorcoran/judge)
 
 Client-side form validation in Rails 3.
 
