@@ -10,3 +10,4 @@ gem_graph.png
 .rspec
 spec/dummy/tmp/**/*
 *.sqlite3
+.rspec

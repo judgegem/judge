@@ -25,3 +25,4 @@ branches:
   only:
     - master
     - engine
+    - v1.6
