@@ -11,3 +11,4 @@ gem_graph.png
 spec/dummy/tmp/**/*
 *.sqlite3
 .rspec
+gemfiles/*.lock
