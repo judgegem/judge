@@ -1,4 +1,4 @@
-describe('judge.store', function() {
+describe('judge-store', function() {
 
   beforeEach(function() {
     this.addMatchers(customMatchers);
