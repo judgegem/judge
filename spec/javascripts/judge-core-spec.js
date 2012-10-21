@@ -56,16 +56,6 @@ describe('judge-core', function() {
       expect(_(watcher.validators).first().messages).toBeInstanceOf(Object);
     });
 
-    it('has validation methods in prototype', function() {
-      expect(watcher.validates()).not.toBeEmpty();
-      expect(_(watcher.validates()).keys()).toContain('presence');
-    });
-
-    it('has custom validation methods when defined by user', function() {
-      judge.customValidators.phatness = function() {};
-      expect(_(watcher.validates()).keys()).toContain('phatness');
-    });
-
     it('throws error if element has no data-validate attribute', function() {
       var input = document.createElement('input');
       input.type = 'text';

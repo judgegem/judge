@@ -76,18 +76,41 @@
     return new RegExp(source, convertFlags(flags));
   };
 
+  // Returns a browser-specific XHR object, or null if one cannot be constructed.
+  var reqObj = function() {
+    return (new root.ActiveXObject('Microsoft.XMLHTTP')) || (new root.XMLHttpRequest()) || null;
+  };
+  // Performs a GET request using the browser's XHR object. The callback function is executed when the XHR
+  // object's readyState is changed. This provides very basic ajax capability for use in the standard uniqueness
+  // validator. If you wish to perform custom ajax validation, or override standard validators by sending requests
+  // to the validation controller, you should use something more robust like jQuery or Zepto.
+  var get = function(path, callback) {
+    var req = reqObj();
+    if (!!req) {
+      req.onreadystatechange = function() {
+        if (req.readyState === 4 && _.isFunction(callback)) {
+          callback(req.responseText);
+        }
+      };
+      req.open('GET', path, true);
+      req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      req.send();
+    }
+    return req;
+  };
+
   // A judge.Watcher is a DOM element wrapper that judge uses to store validation info and instance methods.
   judge.Watcher = function (element) {
     // Throw dependency errors.
     if (typeof root._ === 'undefined') {
       throw new DependencyError('Ensure underscore.js is loaded');
     }
-    if (_(root.JSON).isUndefined()) {
+    if (_.isUndefined(root.JSON)) {
       throw new DependencyError('Ensure that your browser provides the JSON object or that json2.js is loaded');
     }
 
     // Throw some constructor usage errors.
-    if (_(element).isUndefined()) {
+    if (_.isUndefined(element)) {
       throw new ReferenceError('No DOM element passed to judge.Watcher constructor');
     }
     if (element.getAttribute('data-validate') === null) {
@@ -102,23 +125,24 @@
   // The `validate` method returns an object which describes the current validity of the
   // value of the watched element.
   judge.Watcher.prototype.validate = function(callback) {
-    var allMessages = [], isValid;
+    var messages         = [],
+        availableMethods = _.extend(judge.eachValidators, judge.customValidators),
+        isValid;
     _(this.validators).each(function(v) {
       if (this.element.value.length || v.options.allow_blank !== true) {
-        var messages = this.validates()[v.kind](this.element.value, v.options, v.messages);
-        if (messages.length) {
-          allMessages.push(messages);
-        }
+        var validationMethod   = _.bind(availableMethods[v.kind], this.element),
+            validationMessages = validationMethod(v.options, v.messages);
+        if (validationMessages.length) { messages.push(validationMessages); }
       }
     }, this);
-    allMessages = _(allMessages).flatten();
-    isValid = (allMessages.length < 1);
+    messages = _.flatten(messages);
+    isValid = (messages.length < 1);
     if (_.isFunction(callback)) {
-      callback(isValid, allMessages, this.element);
+      callback(isValid, messages, this.element);
     }
     return {
       valid: isValid, 
-      messages: allMessages,
+      messages: messages,
       element: this.element
     };
   };
@@ -128,12 +152,12 @@
   judge.eachValidators = (function() {
     return {
       // ActiveModel::Validations::PresenceValidator
-      presence: function(value, options, messages) {
-        return (value.length) ? [] : [messages.blank];
+      presence: function(options, messages) {
+        return (this.value.length) ? [] : [messages.blank];
       },
       
       // ActiveModel::Validations::LengthValidator
-      length: function(value, options, messages) {
+      length: function(options, messages) {
         var msgs = [],
             types = {
               minimum: { operator: '<',  message: 'too_short' },
@@ -141,28 +165,28 @@
               is:      { operator: '!=', message: 'wrong_length' }
             };
         _(types).each(function(properties, type) {
-          var invalid = operate(value.length, properties.operator, options[type]);
+          var invalid = operate(this.value.length, properties.operator, options[type]);
           if (_(options).has(type) && invalid) {
             msgs.push(messages[properties.message]);
           }
-        });
+        }, this);
         return msgs;
       },
       
       // ActiveModel::Validations::ExclusionValidator
-      exclusion: function(value, options, messages) {
+      exclusion: function(options, messages) {
         var stringIn = _(options['in']).map(function(o) { return o.toString(); });
-        return (_(stringIn).include(value)) ? [messages.exclusion] : [];
+        return (_(stringIn).include(this.value)) ? [messages.exclusion] : [];
       },
       
       // ActiveModel::Validations::InclusionValidator
-      inclusion: function(value, options, messages) {
+      inclusion: function(options, messages) {
         var stringIn = _(options['in']).map(function(o) { return o.toString(); });
-        return (!_(stringIn).include(value)) ? [messages.inclusion] : [];
+        return (!_(stringIn).include(this.value)) ? [messages.inclusion] : [];
       },
       
       // ActiveModel::Validations::NumericalityValidator
-      numericality: function(value, options, messages) {
+      numericality: function(options, messages) {
         var operators = {
               greater_than: '>',
               greater_than_or_equal_to: '>=',
@@ -171,9 +195,9 @@
               less_than_or_equal_to: '<='
             },
             msgs = [],
-            parsedValue = parseFloat(value, 10); 
+            parsedValue = parseFloat(this.value, 10); 
 
-        if (isNaN(Number(value))) {
+        if (isNaN(Number(this.value))) {
           msgs.push(messages.not_a_number);
         } else {
           if (options.odd && isEven(parsedValue)) {
@@ -196,17 +220,17 @@
       },
       
       // ActiveModel::Validations::FormatValidator
-      format: function(value, options, messages) {
+      format: function(options, messages) {
         var msgs  = [];
         if (_(options).has('with')) {
           var withReg = convertRegExp(options['with']);
-          if (!withReg.test(value)) {
+          if (!withReg.test(this.value)) {
             msgs.push(messages.invalid);
           }
         }
         if (_(options).has('without')) {
           var withoutReg = convertRegExp(options.without);
-          if (withoutReg.test(value)) {
+          if (withoutReg.test(this.value)) {
             msgs.push(messages.invalid);
           }
         }
@@ -214,16 +238,21 @@
       },
       
       // ActiveModel::Validations::AcceptanceValidator
-      acceptance: function(value, options, messages) {
-        return (this._element.checked === true) ? [] : [messages.accepted];
+      acceptance: function(options, messages) {
+        return (this.checked === true) ? [] : [messages.accepted];
       },
       
       // ActiveModel::Validations::ConfirmationValidator
-      confirmation: function(value, options, messages) {
-        var id       = this._element.getAttribute('id'),
+      confirmation: function(options, messages) {
+        var id       = this.getAttribute('id'),
             confId   = id + '_confirmation',
             confElem = root.document.getElementById(confId);
-        return (value === confElem.value) ? [] : [messages.confirmation];
+        return (this.value === confElem.value) ? [] : [messages.confirmation];
+      },
+
+      // Uniqueness
+      uniqueness: function(options, messages) {
+
       }
     };
 
@@ -232,14 +261,6 @@
   // This object should contain any judge validation methods
   // that correspond to custom validators used in the model.
   judge.customValidators = {};
-
-  // Return all validation methods, including those found in judge.customValidators.
-  // If you name a custom validation method the same as a default one, for example
-  //   `judge.customValidators.presence = function() {};`
-  // then the custom method _will overwrite_ the default one, so be careful!
-  judge.Watcher.prototype.validates = function() {
-    return _.extend({_element: this.element}, judge.eachValidators, judge.customValidators);
-  };
 
   // Validate all given element(s) without storing. Watcher creation is handled for you,
   // but the created Watchers will not be returned, so it's less flexible.
