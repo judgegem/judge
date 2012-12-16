@@ -1,365 +1,367 @@
 describe('judge-core', function() {
+  var server,
+      uniquenessAttr = '[{"kind":"uniqueness","options":{},"messages":{}}]',
+      presenceAttr   = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]';
 
   beforeEach(function() {
     this.addMatchers(customMatchers);
-    loadFixtures('form.html');
+    server = sinon.fakeServer.create();
+  });
+  afterEach(function() {
+    server.restore();
   });
 
   describe('judge.validate', function() {
-    
-    it('validates a single element', function() {
-      var elements = document.getElementById('foo_one'),
-          results = judge.validate(elements);
-      expect(results.length).toEqual(1);
+    var el = document.createElement('input');
+    it('returns a ValidationQueue', function() {
+      expect(judge.validate(el)).toEqual(jasmine.any(judge.ValidationQueue));
     });
-
-    it('validates a collection of elements', function() {
-      var elements = document.querySelectorAll('input[type=radio]'),
-          results = judge.validate(elements);
-      expect(results.length).toEqual(1);
-    });
-
-    describe('callbacks', function() {
-      it('calls callback correct number of times', function() {
-        var elements = document.getElementsByTagName('textarea');
-            callback = jasmine.createSpy(),
-            length = elements.length;
-        judge.validate(elements, callback);
-        expect(callback.callCount).toBe(length);
-      });
-    });
-
   });
 
-  describe('judge.Watcher', function() {
-  
-    var watcher;
-    
+  describe('judge.Dispatcher', function() {
+    var object;
     beforeEach(function() {
-      watcher = new judge.Watcher(document.getElementById('foo_one'));
+      object = {};
+      _.extend(object, judge.Dispatcher);
     });
-
-    it('returns new instance of judge', function() {
-      expect(watcher.constructor).toEqual(judge.Watcher);
+    describe('on/trigger', function() {
+      var callback;
+      beforeEach(function() {
+        callback = jasmine.createSpy();
+      });
+      it('stores callback', function() {
+        object.on('eventName', callback);
+        expect(object.callbacks.eventName[0]).toBe(callback);
+      });
+      it('triggers callback', function() {
+        object.on('eventName', callback);
+        object.trigger('eventName', 10, 20);
+        expect(callback).toHaveBeenCalledWith(10, 20);
+      });
     });
-
-    it('associates with element', function() {
-      expect(watcher.element).toEqual(document.getElementById('foo_one'));
+    it('works with multiple callbacks', function() {
+      var first  = jasmine.createSpy(), second = jasmine.createSpy();
+      object.on('eventName', first);
+      object.on('eventName', second);
+      object.trigger('eventName');
+      expect(first).toHaveBeenCalled();
+      expect(second).toHaveBeenCalled();
     });
-
-    it('holds validators', function() {
-      expect(_(watcher.validators).isArray()).toEqual(true);
-      expect(_(watcher.validators).isEmpty()).toEqual(false);
-    });
-
-    it('holds messages inside validators', function() {
-      expect(_(watcher.validators).first().messages).toBeInstanceOf(Object);
-    });
-
-    it('throws error if element has no data-validate attribute', function() {
-      var input = document.createElement('input');
-      input.type = 'text';
-      expect(function() { new judge.Watcher(input); }).toThrow();
-    });
-
-    it('throws error if no element is passed', function() {
-      expect(function() { new judge.Watcher(); }).toThrow();
-    });
-
   });
 
-  describe('judge.Watcher instance methods', function() {
-
-    describe('validate method', function() {
-      
-      var watcher, result;
-
-      beforeEach(function() {
-        watcher = new judge.Watcher(document.getElementById('foo_one'));
-        result = watcher.validate();
+  describe('judge.ValidationQueue', function() {
+    var el, queue;
+    describe('constructor', function() {
+      it('adds pending validations to the pending array', function() {
+        el = document.createElement('input');
+        el.setAttribute('data-validate', uniquenessAttr);
+        queue = new judge.ValidationQueue(el);
+        expect(queue.validations.pending.length).toBe(1);
       });
-
-      it('returns element', function() {
-        expect(result.element).toBeInstanceOf(Object);
+      it('adds a closed event to a pending validation', function() {
+        el = document.createElement('input');
+        el.setAttribute('data-validate', uniquenessAttr);
+        queue = new judge.ValidationQueue(el);
+        expect(_.isFunction(queue.validations.pending[0].callbacks.closed[0])).toBe(true);
       });
-
-      it('returns validity', function() {
-        expect(_.isBoolean(result.valid)).toBe(true);
+      it('adds closed validations to the closed array', function() {
+        el = document.createElement('input');
+        el.setAttribute('data-validate', presenceAttr);
+        queue = new judge.ValidationQueue(el);
+        expect(queue.validations.closed.length).toBe(1);
       });
-
-      it('returns messages', function() {
-        expect(result.messages).toBeInstanceOf(Array);
-      });
-
-      describe('callback', function() {
-
-        var callback, args;
-
-        beforeEach(function() {
-          callback = jasmine.createSpy();
-          watcher.validate(callback);
-          args = callback.argsForCall[0];
-        });
-
-        it('is called when given', function() {
-          expect(callback).toHaveBeenCalled();
-        });
-        it('receives correct args', function() {
-          expect(_.isBoolean(args[0])).toBe(true);
-          expect(_.isArray(args[1])).toBe(true);
-          expect(_.isElement(args[2])).toBe(true);
-        });
-        
-      });
-
     });
-    
+  });
+
+  describe('judge.Validation', function() {
+    var validation;
+    describe('constructor', function() {
+      it('is pending when no messages given to constructor', function() {
+        validation = new judge.Validation();
+        expect(validation.status()).toBe('pending');
+      });
+      it('is closed as invalid when present messages array given to constructor', function() {
+        validation = new judge.Validation(['foo']);
+        expect(validation.status()).toBe('invalid');
+      });
+      it('is closed as valid when empty array given to constructor', function() {
+        validation = new judge.Validation([]);
+        expect(validation.status()).toBe('valid')
+      });
+    });
+    describe('close method', function() {
+      it('is closed as valid when empty array is given', function() {
+        validation = new judge.Validation();
+        validation.close([]);
+        expect(validation.status()).toBe('valid');
+      });
+      it('is closed as invalid when present array is given', function() {
+        validation = new judge.Validation();
+        validation.close(['foo']);
+        expect(validation.status()).toBe('invalid');
+      });
+      it('does not overwrite messages once set', function() {
+        validation = new judge.Validation();
+        validation.close(['foo']);
+        validation.close([]);
+        expect(validation.getMessages()).toEqual(['foo']);
+      });
+      it('triggers closed event with correct args', function() {
+        validation = new judge.Validation();
+        callback = jasmine.createSpy();
+        validation.on('closed', callback);
+        validation.close(['foo']);
+        expect(callback).toHaveBeenCalledWith(false, ['foo']);
+      });
+    });
+  });
+
+  describe('eachValidators', function() {
+    var el, validator;
+    beforeEach(function() {
+      el = document.createElement('input');
+    });
+
     describe('presence', function() {
-      
-      var watcher;
-
       beforeEach(function() {
-        watcher = new judge.Watcher(document.getElementById('foo_one'));
+        validator = _.bind(judge.eachValidators.presence, el);
       });
-      
-      it('invalidates empty input', function() {
-        expect(watcher.validate().valid).toEqual(false);
+      it('returns invalid Validation if element has no value', function() {
+        expect(validator({}, { blank: 'Must not be blank' })).toBeInvalid();
       });
-
-      it('validates non-empty input', function() {
-        watcher.element.children[1].selected = true;
-        expect(watcher.validate().valid).toEqual(true);
+      it('returns valid Validation if element has value', function() {
+        el.value = 'foo';
+        expect(validator({}, { blank: 'Must not be blank' })).toBeValid();
       });
-
     });
 
     describe('length', function() {
-
-      var watcher;
-
       beforeEach(function() {
-        watcher = new judge.Watcher(document.getElementById('foo_two_foobar'));
+        validator = _.bind(judge.eachValidators.length, el);
       });
-
-      it('validates valid input', function() {
-        watcher.element.value = 'abcdef';
-        expect(watcher.validate().valid).toEqual(true);
+      it('returns invalid Validation if value is too short', function() {
+        el.value = 'abc'
+        expect(validator({ minimum: 5 }, { too_short: '2 shrt' })).toBeInvalidWith(['2 shrt']);
       });
-
-      it('validates allow_blank', function() {
-        watcher.element.value = '';
-        expect(watcher.validate().valid).toEqual(true);
+      it('returns invalid Validation if value is too long', function() {
+        el.value = 'abcdef'
+        expect(validator({ maximum: 5 }, { too_long: '2 lng' })).toBeInvalidWith(['2 lng']);
       });
-
-      it('invalidates when value is under minimum', function() {
-        watcher.element.value = 'abc';
-        expect(watcher.validate().valid).toEqual(false);
-      });
-
-      it('invalidates when value is over maximum', function() {
-        watcher.element.value = 'abcdefghijkl';
-        expect(watcher.validate().valid).toEqual(false);
+      it('returns valid Validation for valid value', function() {
+        el.value = 'abc';
+        expect(validator({ minimum: 2, maximum: 5 }, {})).toBeValid();
       });
     });
 
     describe('exclusion', function() {
-
-      var watcher;
-
       beforeEach(function() {
-        watcher = new judge.Watcher(document.getElementById('foo_three'));
+        validator = _.bind(judge.eachValidators.exclusion, el);
       });
-      
-      it('validates when value is not in array', function() {
-        expect(watcher.validate().valid).toEqual(true);
+      it('returns valid Validation when value is not in array', function() {
+        el.value = 'baz';
+        expect(validator({ in: ['foo', 'bar'] }, {})).toBeValid();
       });
-
-      it('invalidates when value is in array', function() {
-        watcher.element.children[1].selected = true;
-        expect(watcher.validate().valid).toEqual(false);
+      it('returns invalid Validation when value is in array', function() {
+        el.value = 'foo';
+        var validation = validator(
+          { in: ['foo', 'bar'] },
+          { exclusion: 'foo and bar are not allowed' }
+        );
+        expect(validation).toBeInvalidWith(['foo and bar are not allowed']);
       });
-
     });
 
     describe('inclusion', function() {
-
-      var watcher;
-
       beforeEach(function() {
-        watcher = new judge.Watcher(document.getElementById('foo_three_inc'));
+        validator = _.bind(judge.eachValidators.inclusion, el);
       });
-      
-      it('validates when value is in array', function() {
-        watcher.element.children[1].selected = true;
-        expect(watcher.validate().valid).toEqual(true);
+      it('returns valid Validation when value is in array', function() {
+        el.value = 'foo';
+        expect(validator({ in: ['foo', 'bar'] }, {})).toBeValid();
       });
-
-      it('invalidates when value is not in array', function() {
-        expect(watcher.validate().valid).toEqual(false);
+      it('returns invalid Validation when value is not in array', function() {
+        el.value = 'baz';
+        expect(validator({ in: ['foo', 'bar'] }, { inclusion: 'must be foo or bar' })).toBeInvalidWith(['must be foo or bar']);
       });
-
     });
 
     describe('numericality', function() {
-
-      var watcher, watcherEven, watcherGt, watcherLt;
-
       beforeEach(function() {
-        watcher     = new judge.Watcher(document.getElementById('foo_four'));
-        watcherEven = new judge.Watcher(document.getElementById('foo_four_even'));
-        watcherGt   = new judge.Watcher(document.getElementById('foo_four_gt'));
-        watcherLt   = new judge.Watcher(document.getElementById('foo_four_lt'));
+        validator = _.bind(judge.eachValidators.numericality, el);
       });
 
-      it('invalidates when value is not a number', function() {
-        watcher.element.value = 'foo bar';
-        expect(watcher.validate().valid).toEqual(false);
+      it('returns invalid Validation when value is not a number', function() {
+        el.value = 'abc';
+        expect(validator({}, { not_a_number: 'not a number' })).toBeInvalidWith(['not a number']);
       });
 
-      it('validates odd / invalidates not odd', function() {
-        watcher.element.value = '2';
-        expect(watcher.validate().valid).toEqual(false);
-        watcher.element.value = '1';
-        expect(watcher.validate().valid).toEqual(true);
+      it('returns invalid Validation when value must be odd but is even', function() {
+        el.value = '2';
+        expect(validator({ odd: true }, { odd: 'must be odd' })).toBeInvalidWith(['must be odd'])
       });
 
-      it('validates even / invalidates not even', function() {
-        watcherEven.element.value = '1';
-        expect(watcherEven.validate().valid).toEqual(false);
-        watcherEven.element.value = '2';
-        expect(watcherEven.validate().valid).toEqual(true);
+      it('returns valid Validation when value must be odd and is odd', function() {
+        el.value = '1';
+        expect(validator({ odd: true }, {})).toBeValid();
       });
 
-      describe('integer', function() {
-
-        it('validates int', function() {
-          watcher.element.value = '1';
-          expect(watcher.validate().valid).toEqual(true);
-        });
-
-        it('invalidates float', function() {
-          watcher.element.value = '1.1';
-          expect(watcher.validate().valid).toEqual(false);
-        });
-
+      it('returns invalid Validation when value must be even but is odd', function() {
+        el.value = '1';
+        expect(validator({ even: true }, { even: 'must be even' })).toBeInvalidWith(['must be even'])
       });
 
-      describe('greater than', function() {
-        
-        it('invalidates not greater than', function() {
-          watcherGt.element.value = '6';
-          expect(watcherGt.validate().valid).toEqual(false);
-          watcherGt.element.value = '7';
-          expect(watcherGt.validate().valid).toEqual(false);
-        });
-
-        it('validates greater than', function() {
-          watcherGt.element.value = '8';
-          expect(watcherGt.validate().valid).toEqual(true);
-        });
-
+      it('returns valid Validation when value must be even and is even', function() {
+        el.value = '2';
+        expect(validator({ even: true }, {})).toBeValid();
       });
 
-      describe('less than', function() {
-        
-        it('invalidates not less than', function() {
-          watcherLt.element.value = '8';
-          expect(watcherLt.validate().valid).toEqual(false);
-          watcherLt.element.value = '7';
-          expect(watcherLt.validate().valid).toEqual(false);
-        });
+      it('returns valid Validation when value must be an integer and value is an integer', function() {
+        el.value = '1';
+        expect(validator({ only_integer: true }, {})).toBeValid();
+      });
 
-        it('validates less than', function() {
-          watcherLt.element.value = '6';
-          expect(watcherLt.validate().valid).toEqual(true);
-        });
+      it('returns invalid Validation when value must be an integer and value is a float', function() {
+        el.value = '1.1';
+        expect(validator({ only_integer: true }, { not_an_integer: 'must be integer' })).toBeInvalidWith(['must be integer']);
+      });
+
+      it('returns invalid Validation when value is too low', function() {
+        el.value = '1';
+        expect(validator({ greater_than: 2 }, { greater_than: 'too low' })).toBeInvalidWith(['too low']);
+      });
+
+      it('returns valid Validation when value is high enough', function() {
+        el.value = '3';
+        expect(validator({ greater_than: 2 }, {})).toBeValid();
+      });
+
+      it('returns invalid Validation when value is too high', function() {
+        el.value = '2';
+        expect(validator({ less_than: 2 }, { less_than: 'too high' })).toBeInvalidWith(['too high']);
+      });
+
+      it('returns valid Validation when value is low enough', function() {
+        el.value = '1';
+        expect(validator({ less_than: 2 }, {})).toBeValid();
       });
     });
 
     describe('format', function() {
+      beforeEach(function() {
+        validator = _.bind(judge.eachValidators.format, el);
+      });
 
       describe('with', function() {
-        
-        var watcher;
-
-        beforeEach(function() {
-          watcher = new judge.Watcher(document.getElementById('foo_five_wi'));
+        it('returns invalid Validation when value does not match with', function() {
+          el.value = '123';
+          expect(validator({ with: '(?-mix:[A-Za-z]+)' }, { invalid: 'is invalid' })).toBeInvalidWith(['is invalid']);
         });
 
-        it('invalidates value matching with', function() {
-          expect(watcher.validate().valid).toEqual(false);
+        it('returns valid Validation when value matches with', function() {
+          el.value = 'AbC';
+          expect(validator({ with: '(?-mix:[A-Za-z]+)' }, {})).toBeValid();
         });
-
-        it('invalidates value not matching with', function() {
-          watcher.element.children[1].selected = true;
-          expect(watcher.validate().valid).toEqual(true);
-        });
-
       });
 
       describe('without', function() {
-
-        var watcher;
-
-        beforeEach(function() {
-          watcher = new judge.Watcher(document.getElementById('foo_five_wo'));
+        it('returns invalid Validation when value matches without', function() {
+          el.value = 'AbC';
+          expect(validator({ without: '(?-mix:[A-Za-z]+)' }, { invalid: 'is invalid' })).toBeInvalidWith(['is invalid']);
         });
 
-        it('validates value not matching with', function() {
-          expect(watcher.validate().valid).toEqual(true);
+        it('returns valid Validation when value does not match without', function() {
+          el.value = '123';
+          expect(validator({ without: '(?-mix:[A-Za-z]+)' }, {})).toBeValid();
         });
-
-        it('invalidates value matching with', function() {
-          watcher.element.children[1].selected = true;
-          expect(watcher.validate().valid).toEqual(false);
-        });
-
       });
-
     });
 
     describe('acceptance', function() {
-
-      var watcher;
-
       beforeEach(function() {
-        watcher = new judge.Watcher(document.getElementById('foo_six'));
+        validator = _.bind(judge.eachValidators.acceptance, el);
       });
-
-      it('validates when element is checked', function() {
-        watcher.element.checked = true;
-        expect(watcher.validate().valid).toEqual(true);        
+      it('returns valid Validation when el is checked', function() {
+        el.type = 'checkbox';
+        el.checked = true;
+        expect(validator({ accept: 1 }, {})).toBeValid();
       });
-
-      it('invalidates when element is not checked', function() {
-        expect(watcher.validate().valid).toEqual(false);
+      it('returns invalid Validation when el is not checked', function() {
+        el.type = 'checkbox';
+        expect(validator({ accept: 1 }, { accepted: 'must be accepted' })).toBeInvalidWith(['must be accepted']);
       });
-
     });
 
     describe('confirmation', function() {
-      
-      var watcher, conf;
-
+      var confEl;
       beforeEach(function() {
-        watcher = new judge.Watcher(document.getElementById('foo_seven'));
-        conf = document.getElementById('foo_seven_confirmation');
+        validator = _.bind(judge.eachValidators.confirmation, el);
+        el.id = 'pw';
+        confEl = document.createElement('input');
+        confEl.id = 'pw_confirmation';
+        document.body.appendChild(confEl);
       });
-
-      it('validates when confirmed', function() {
-        watcher.element.value = 'password';
-        conf.value = 'password';
-        expect(watcher.validate().valid).toEqual(true);
+      afterEach(function() {
+        document.body.removeChild(confEl);
       });
-
-      it('invalidates when not confirmed', function() {
-        watcher.element.value = 'password';
-        conf.value = 'wrongpassword';
-        expect(watcher.validate().valid).toEqual(false);
+      it('returns a valid Validation when values match', function() {
+        el.value = 'foo', confEl.value = 'foo';
+        expect(validator({}, {})).toBeValid();
       });
+      it('returns a valid Validation when values match', function() {
+        el.value = 'foo', confEl.value = 'bar';
+        expect(validator({}, { confirmation: 'must be confirmed' })).toBeInvalidWith(['must be confirmed']);
+      });
+    });
 
+    describe('uniqueness', function() {
+      var validation;
+      beforeEach(function() {
+        validator  = _.bind(judge.eachValidators.uniqueness, el);
+        el.value   = 'foo';
+        el.name    = 'user[vehicle][registration]';
+      });
+      it('returns a pending Validation', function() {
+        validation = validator({}, {});
+        expect(validation).toBePending();
+      });
+      it('makes request to correct path', function() {
+        runs(function() {
+          server.respondWith([200, {}, '[]']);
+          validation = validator({}, {});
+        });
+        runs(function() {
+          server.respond();
+        });
+        runs(function() {
+          expect(server.requests[0].url).toBe('/judge/validate?class=Vehicle&attribute=registration&value=foo&kind=uniqueness');
+        });
+      });
+      it('closes Validation as valid if the server responds with an empty JSON array', function() {
+        runs(function() {
+          server.respondWith([200, {}, '[]']);
+          validation = validator({}, {});
+        });
+        runs(function() {
+          server.respond();
+        });
+        runs(function() {
+          expect(validation).toBeValid();
+        });
+      });
+      it('closes Validation as invalid if the server responds with a JSON array of error messages', function() {
+        runs(function() {
+          server.respondWith([200, {}, '["already taken"]']);
+          validation = validator({}, {});
+        });
+        runs(function() {
+          server.respond();
+        });
+        runs(function() {
+          expect(validation).toBeInvalidWith(['already taken']);
+        });
+      });
     });
 
   });
-   
+
 });
