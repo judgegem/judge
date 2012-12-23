@@ -164,22 +164,24 @@
   judge.enginePath = '/judge';
 
   // Provides event dispatch behaviour when mixed into an object. Concept
-  // borrowed from Backbone.js, although this implementation is minimal by
-  // comparison.
+  // taken from Backbone.js, stripped down and altered.
+  // Backbone.js (c) 2010-2012 Jeremy Ashkenas, DocumentCloud Inc.
+  // http://backbonejs.org
   var Dispatcher = judge.Dispatcher = {
-    on: function(event, callback) {
+    on: function(event, callback, scope) {
       if (!_.isFunction(callback)) return this;
-      if (_.isUndefined(this.callbacks)) this.callbacks = {};
-      var callbacks = this.callbacks[event] || (this.callbacks[event] = []);
-      callbacks.push(callback);
+      this._events || (this._events = {});
+      var events = this._events[event] || (this._events[event] = []);
+      events.push({ callback: callback, scope: scope || this });
+      this.trigger('bind');
       return this;
     },
     trigger: function(event) {
-      if (!this.callbacks) return this;
+      if (!this._events) return this;
       var args      = _.rest(arguments),
-          callbacks = this.callbacks[event] || (this.callbacks[event] = []);
-      _.each(callbacks, function(callback) {
-        callback.apply(this, args);
+          events = this._events[event] || (this._events[event] = []);
+      _.each(events, function(event) {
+        event.callback.apply(event.scope, args);
       });
       return this;
     }
@@ -187,63 +189,47 @@
 
   // A queue of closed or pending Validation objects.
   var ValidationQueue = judge.ValidationQueue = function(element) {
-    this.element = element, this.closed = false;
-    this.validations = { pending: [], closed: [] }
-    this.attrValidators = JSON.parse(this.element.getAttribute('data-validate'));
+    this.element        = element;
+    this.validations    = [];
+    this.attrValidators = root.JSON.parse(this.element.getAttribute('data-validate'));
     
-    var
-      isClosed = function() {
-        if (this.pending.length === 0) this.close();
-      },
-      add = function(validation) {
-        if (this.closed) return null;
-        if (validation.closed()) {
-          this.validations.closed.push(validation);
-        } else {
-          this.validations.pending.push(validation);
-          validation.on('closed', _.bind(isClosed, this));
-        }
-        return this;
-      };
-
     var allValidators = _.extend(judge.eachValidators, judge.customValidators);
     _.each(this.attrValidators, function(av) {
       if (this.element.value.length || av.options.allow_blank !== true) {
         var method     = _.bind(allValidators[av.kind], this.element),
             validation = method(av.options, av.messages);
-        add.call(this, validation);
+        validation.on('close', this.tryClose, this);
+        this.on('bind', this.tryClose, this);
+        this.validations.push(validation);
       }
     }, this);
+    this.tryClose.call(this);
   };
   _.extend(ValidationQueue.prototype, Dispatcher, {
-    close: function() {
-      this.closed = true;
-      this.trigger('closed', this.status, this.getMessages());
-    },
-    status: function() {
-      if (this.validation.pending.length > 0) return 'pending';
-      return (this.getMessages().length === 0) ? 'valid' : 'invalid';
-    },
-    getMessages: function() {
-      return _.invoke(this.closed, 'getMessages');
+    tryClose: function() {
+      var report = _.reduce(this.validations, function(obj, validation) {
+        obj.statuses = _.union(obj.statuses, [validation.status()]);
+        obj.messages = _.union(obj.messages, _.compact(validation.messages));
+        return obj;
+      }, { statuses: [], messages: [] }, this);
+      if (_.contains(report.statuses, 'pending')) return false;
+      var status = _.contains(report.statuses, 'invalid') ? 'invalid' : 'valid';
+      this.trigger('close', status, report.messages);
+      this.trigger(status, report.messages);
     }
   });
 
   // Event-capable object returned by validator methods.
   var Validation = judge.Validation = function(messages) {
+    this.messages = null;
     if (_.isArray(messages)) this.close(messages);
     return this;
   };
   _.extend(Validation.prototype, Dispatcher, {
-    getMessages: function() {
-      return this.messages || null;
-    },
     close: function(messages) {
-      if (_.isUndefined(messages) || this.closed()) return null;
-      if (_.isString(messages)) messages = JSON.parse(messages);
-      if (!_.has(this, 'messages')) this.messages = [];
-      this.messages = messages;
-      this.trigger('closed', this.messages.length === 0, this.messages);
+      if (this.closed()) return null;
+      this.messages = _.isString(messages) ? root.JSON.parse(messages) : messages;
+      this.trigger('close', this.status(), this.messages);
       return this;
     },
     closed: function() {
@@ -369,8 +355,8 @@
         function(status, headers, text) {
           validation.close(text);
         },
-        function() {
-          throw new Error('Uniqueness validation request was unsuccessful');
+        function(status, headers, text) {
+          validation.close(['Request error: ' + status]);
         }
       );
       return validation;
@@ -381,8 +367,29 @@
   // to correspond to custom validators used in the model.
   judge.customValidators = {};
 
-  judge.validate = function(element, callback) {
-    return new ValidationQueue(element);
+  // Convenience method for validating a form element. Pass either a single
+  // callback or one for valid and one for invalid, e.g.
+  //
+  //   judge.validate(el, function(status, messages) {
+  //     /* status is 'valid' or 'invalid' */
+  //   });
+  //
+  //   judge.validate(el, function() {
+  //     /* valid */
+  //   },
+  //   function(messages) {
+  //     /* invalid */
+  //   });
+  judge.validate = function(element) {
+    var callbacks = _.rest(arguments),
+        queue     = new ValidationQueue(element);
+    if (callbacks.length > 1) {
+      queue.on('valid', callbacks[0]);
+      queue.on('invalid', callbacks[1]);
+    } else {
+      queue.on('close', callbacks[0]);
+    }
+    return queue;
   };
 
 }).call(this);
