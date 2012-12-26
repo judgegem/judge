@@ -2,7 +2,7 @@
 // (c) 2011–2012 Joe Corcoran
 // http://raw.github.com/joecorcoran/judge/master/LICENSE.txt
 
-// This is judge-core.js: the JavaScript part of Judge. Judge is a client-side
+// This is judge.js: the JavaScript part of Judge. Judge is a client-side
 // validation gem for Rails 3. You can find the Judge gem API documentation at
 // <http://joecorcoran.github.com/judge/>. Hopefully the comments here will help
 // you understand what's happening under the hood.

@@ -1,14 +1,12 @@
 src_files:
-  - spec/javascripts/helpers/jquery.js
   - vendor/assets/javascripts/json2.js
   - vendor/assets/javascripts/underscore.js
-  - app/assets/javascripts/judge-core.js
+  - app/assets/javascripts/judge.js
 helpers:
   - helpers/sinon.js
   - helpers/sinon-ie.js
-  - helpers/jasmine-jquery.js
   - helpers/customMatchers.js
 spec_dir:
   - spec/javascripts
 spec_files:
-  - judge-core-spec.js
+  - judge-spec.js
