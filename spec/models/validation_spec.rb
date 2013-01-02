@@ -1,42 +1,63 @@
-require "spec_helper"
+require 'active_support/hash_with_indifferent_access'
+require 'spec_helper'
 
-describe Judge::Validation do
+describe "validations" do
 
-  before(:all) { FactoryGirl.create(:user, :username => "existing") }
-  let(:validation_fail) { Judge::Validation.new("User", "username", "existing", "uniqueness") }
-  let(:validation_succeed) { Judge::Validation.new("User", "username", "new", "uniqueness") }
+  before(:all) do
+    FactoryGirl.create(:user, :username => "existing")
+  end
+  let(:valid_params) do
+    {
+      :klass => "User",
+      :attribute => "username",
+      :value => "new",
+      :kind => "uniqueness"
+    }.with_indifferent_access
+  end
+  let(:invalid_params) do
+    {
+      :klass => "User",
+      :attribute => "username",
+      :value => "existing",
+      :kind => "uniqueness"
+    }.with_indifferent_access
+  end
   after(:all) { User.destroy_all }
 
-  specify "#object" do
-    validation_fail.object.should be_a User
-    validation_fail.object.username.should eql "existing"
+  describe "when allowed" do
+    before(:each) { Judge.config.stub(:allows?).and_return(true) }
+
+    describe "with valid value" do
+      subject(:validation) { Judge.build_validation(valid_params) }
+      it { should be_a Judge::Validation }
+      specify { validation.amv.should be_a ActiveRecord::Validations::UniquenessValidator }
+      specify do
+        validation.record.should be_a User
+        validation.record.username.should eql "new"
+      end
+      specify do 
+        validation.as_json.should be_an Array
+        validation.as_json.should be_empty
+      end
+    end
+
+    describe "with invalid value" do
+      subject(:validation) { Judge.build_validation(invalid_params) }
+      it { should be_a Judge::Validation }
+      specify { validation.as_json.should eql ["Username \"existing\" has already been taken"] }
+    end
   end
 
-  describe "#errors" do
-
-    specify "when value is valid" do
-      validation_succeed.errors.should be_an Array
-      validation_succeed.errors.should be_empty
+  describe "when not allowed" do
+    subject(:validation) { Judge.build_validation(valid_params) }
+    it { should be_a Judge::NullValidation }
+    it "does not build object" do
+      validation.record.should eql validation
     end
-
-    specify "when value is invalid" do
-      validation_fail.errors.should be_an Array
-      validation_fail.errors.length.should eql 1
-      validation_fail.errors.first.should eql "Username \"existing\" has already been taken"
+    it "does not look up active model validator" do
+      validation.amv.should eql validation
     end
-
-  end
-
-  describe "#valid?" do
-
-    specify "when value is valid" do
-      validation_succeed.valid?.should eql true
-    end
-
-    specify "when value is invalid" do
-      validation_fail.valid?.should eql false
-    end
-
+    specify { validation.as_json.should eql ["Judge validation for User#username not allowed"] }
   end
 
 end

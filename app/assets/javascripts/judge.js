@@ -140,7 +140,7 @@
   // Build the URL necessary to send a GET request to the mounted validations
   // controller to check the validity of the given form element.
   var urlFor = judge.urlFor = function(el, kind) {
-    var path   = judge.enginePath + '/validate',
+    var path   = judge.enginePath,
         params = {
           'class'    : classFromName(el.name),
           'attribute': attrFromName(el.name),

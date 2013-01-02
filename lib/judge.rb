@@ -1,4 +1,5 @@
 require "judge/version"
+require "judge/config"
 require "judge/engine"
 require "judge/validator"
 require "judge/validator_collection"

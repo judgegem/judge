@@ -1,45 +1,62 @@
 module Judge
 
+  def self.build_validation(params)
+    params.keep_if { |key| %w{klass attribute value kind}.include?(key) }
+    if Judge.config.allows?(params[:klass], params[:attribute])
+      Validation.new(params)
+    else
+      NullValidation.new(params)
+    end
+  end
+
   class Validation
-
-    attr_accessor :klass, :attribute, :value, :kind
-    attr_reader :object, :amv
-
-    def initialize(klass, attribute, value, kind)
-      @klass     = klass.constantize
-      @attribute = attribute.to_sym
-      @value     = value
-      @kind      = kind.to_sym
-      @object    = build_object
-      @amv       = lookup_amv
+    def initialize(params)
+      @klass     = Object.const_get(params[:klass])
+      @attribute = params[:attribute].to_sym
+      @value     = params[:value]
+      @kind      = params[:kind].to_sym
       validate!
     end
 
-    def errors
-      object.errors.get(attribute) || []
+    def amv
+      @amv ||= begin
+        validators = @klass.validators_on(@attribute)
+        validators.keep_if { |amv| amv.kind == @kind }
+        validators.first
+      end
+    end
+
+    def record
+      @record ||= begin
+        rec = @klass.new
+        rec[@attribute] = @value
+        rec
+      end
     end
 
     def validate!
-      object.errors.delete(attribute)
-      amv.validate_each(object, attribute, value)
+      record.errors.delete(@attribute)
+      amv.validate_each(record, @attribute, @value)
+      self
     end
 
-    def valid?
-      errors.empty?
+    def as_json(options = {})
+      record.errors.get(@attribute) || []
+    end
+  end
+
+  class NullValidation
+    def initialize(params)
+      @params = params
     end
 
-    private
-
-    def build_object
-      obj = klass.new
-      obj[attribute] = value
-      obj
+    def as_json(options = {})
+      ["Judge validation for #{@params[:klass]}##{@params[:attribute]} not allowed"]
     end
 
-    def lookup_amv
-      klass.validators_on(attribute).select{ |amv| amv.kind == kind }.first
+    def method_missing(*args)
+      self
     end
-
   end
 
 end

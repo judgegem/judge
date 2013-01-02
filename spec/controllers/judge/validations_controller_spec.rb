@@ -12,7 +12,7 @@ describe Judge::ValidationsController do
   
   let(:valid_params) do
     {
-      :class => "User",
+      :klass => "User",
       :attribute => "username",
       :value => "invisibleman",
       :kind => "uniqueness"
@@ -21,27 +21,34 @@ describe Judge::ValidationsController do
 
   let(:invalid_params) do
     {
-      :class => "User",
+      :klass => "User",
       :attribute => "city",
       :value => "",
       :kind => "city"
     }.merge(base_params)
   end
 
-  describe "perform" do
-
-    it "responds with empty array if valid" do
-      xhr :get, :perform, valid_params, headers
-      response.should be_success
-      response.body.should eql "[]"
+  describe "GET 'index'" do
+    describe "when allowed" do
+      before(:each) { Judge.config.stub(:allows?).and_return(true) }
+      it "responds with empty JSON array if valid" do
+        xhr :get, :index, valid_params, headers
+        response.should be_success
+        response.body.should eql "[]"
+      end
+      it "responds with JSON array of error messages if invalid" do
+        xhr :get, :index, invalid_params, headers
+        response.should be_success
+        response.body.should eql "[\"City must be an approved city\"]"
+      end
     end
-
-    it "responds with array of error messages if invalid" do
-      xhr :get, :perform, invalid_params, headers
-      response.should be_success
-      response.body.should eql "[\"City must be an approved city\"]"
+    describe "when not allowed" do
+      it "responds with JSON array of error messages if class and attribute are not allowed in Judge config" do
+        xhr :get, :index, valid_params, headers
+        response.should be_success
+        response.body.should eql "[\"Judge validation for User#username not allowed\"]"
+      end
     end
-
   end
 
 end

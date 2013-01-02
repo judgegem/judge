@@ -1,4 +1,4 @@
-describe('judge-core', function() {
+describe('judge', function() {
   var server,
       uniquenessAttr = '[{"kind":"uniqueness","options":{},"messages":{}}]',
       presenceAttr   = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]',
@@ -405,7 +405,7 @@ describe('judge-core', function() {
           server.respond();
         });
         runs(function() {
-          expect(server.requests[0].url).toBe('/judge/validate?class=Vehicle&attribute=registration&value=foo&kind=uniqueness');
+          expect(server.requests[0].url).toBe('/judge?class=Vehicle&attribute=registration&value=foo&kind=uniqueness');
         });
       });
       it('closes Validation as valid if the server responds with an empty JSON array', function() {
