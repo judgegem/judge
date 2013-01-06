@@ -1,10 +1,12 @@
-require "judge/version"
-require "judge/config"
-require "judge/engine"
-require "judge/validator"
-require "judge/validator_collection"
-require "judge/message_collection"
-require "judge/form_builder"
-require "judge/html"
-require "judge/each_validator"
-require "judge/controller"
+files = [
+  'version',
+  'config',
+  'engine',
+  'validator',
+  'validator_collection',
+  'message_collection',
+  'form_builder',
+  'each_validator',
+  'controller',
+]
+files.each { |filename| require "judge/#{filename}" }
