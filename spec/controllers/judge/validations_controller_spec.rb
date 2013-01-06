@@ -1,10 +1,7 @@
-require "spec_helper"
+require 'active_support/hash_with_indifferent_access'
+require 'spec_helper'
 
 describe Judge::ValidationsController do
-
-  let(:base_params) do
-    { :use_route => :judge }
-  end
 
   let(:headers) do
     { :accept => "application/json" }
@@ -12,20 +9,22 @@ describe Judge::ValidationsController do
   
   let(:valid_params) do
     {
+      :use_route => :judge,
       :klass => "User",
       :attribute => "username",
       :value => "invisibleman",
       :kind => "uniqueness"
-    }.merge(base_params)
+    }
   end
 
   let(:invalid_params) do
     {
+      :use_route => :judge,
       :klass => "User",
       :attribute => "city",
       :value => "",
       :kind => "city"
-    }.merge(base_params)
+    }
   end
 
   describe "GET 'index'" do
@@ -47,6 +46,23 @@ describe Judge::ValidationsController do
         xhr :get, :index, valid_params, headers
         response.should be_success
         response.body.should eql "[\"Judge validation for User#username not allowed\"]"
+      end
+    end
+  end
+
+  describe "#validation" do
+    let(:controller) { Judge::ValidationsController.new }
+    let(:params) { valid_params.with_indifferent_access }
+    describe "when params allowed" do
+      before(:each) { Judge.config.stub(:allows?).and_return(true) }
+      it "returns a Validation object" do
+        controller.validation(params).should be_a Judge::Validation
+      end
+    end
+
+    describe "when params not allowed" do
+      it "returns a NullValidation object" do
+        controller.validation(params).should be_a Judge::NullValidation
       end
     end
   end

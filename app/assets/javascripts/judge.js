@@ -214,8 +214,8 @@
       }, { statuses: [], messages: [] }, this);
       if (_.contains(report.statuses, 'pending')) return false;
       var status = _.contains(report.statuses, 'invalid') ? 'invalid' : 'valid';
-      this.trigger('close', status, report.messages);
-      this.trigger(status, report.messages);
+      this.trigger('close', this.element, status, report.messages);
+      this.trigger(status, this.element, report.messages);
     }
   });
 

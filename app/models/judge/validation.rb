@@ -1,14 +1,5 @@
 module Judge
 
-  def self.build_validation(params)
-    params.keep_if { |key| %w{klass attribute value kind}.include?(key) }
-    if Judge.config.allows?(params[:klass], params[:attribute])
-      Validation.new(params)
-    else
-      NullValidation.new(params)
-    end
-  end
-
   class Validation
     def initialize(params)
       @klass     = Object.const_get(params[:klass])

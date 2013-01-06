@@ -24,12 +24,9 @@ describe "validations" do
   end
   after(:all) { User.destroy_all }
 
-  describe "when allowed" do
-    before(:each) { Judge.config.stub(:allows?).and_return(true) }
-
+  describe Judge::Validation do
     describe "with valid value" do
-      subject(:validation) { Judge.build_validation(valid_params) }
-      it { should be_a Judge::Validation }
+      subject(:validation) { Judge::Validation.new(valid_params) }
       specify { validation.amv.should be_a ActiveRecord::Validations::UniquenessValidator }
       specify do
         validation.record.should be_a User
@@ -42,15 +39,14 @@ describe "validations" do
     end
 
     describe "with invalid value" do
-      subject(:validation) { Judge.build_validation(invalid_params) }
+      subject(:validation) { Judge::Validation.new(invalid_params) }
       it { should be_a Judge::Validation }
       specify { validation.as_json.should eql ["Username \"existing\" has already been taken"] }
     end
   end
 
-  describe "when not allowed" do
-    subject(:validation) { Judge.build_validation(valid_params) }
-    it { should be_a Judge::NullValidation }
+  describe Judge::NullValidation do
+    subject(:validation) { Judge::NullValidation.new(valid_params) }
     it "does not build object" do
       validation.record.should eql validation
     end

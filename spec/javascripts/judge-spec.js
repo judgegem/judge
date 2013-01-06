@@ -25,7 +25,7 @@ describe('judge', function() {
       it('calls callback with status and messages', function() {
         var callback = jasmine.createSpy();
         judge.validate(el, callback);
-        expect(callback).toHaveBeenCalledWith('invalid', ['must not be blank']);
+        expect(callback).toHaveBeenCalledWith(el, 'invalid', ['must not be blank']);
       });
     });
     describe('when given two callbacks', function() {
@@ -38,7 +38,7 @@ describe('judge', function() {
       it('calls second callback wth messages when queue is closed as invalid', function() {
         var first = jasmine.createSpy(), second = jasmine.createSpy();
         judge.validate(el, first, second);
-        expect(second).toHaveBeenCalledWith(['must not be blank']);
+        expect(second).toHaveBeenCalledWith(el, ['must not be blank']);
       });
     });
   });
@@ -107,7 +107,7 @@ describe('judge', function() {
         callback = jasmine.createSpy();
         queue.on('close', callback);
         queue.validations[0].close([]);
-        expect(callback).toHaveBeenCalledWith('valid', []);
+        expect(callback).toHaveBeenCalledWith(el, 'valid', []);
       });
       it('triggers close event immediately if queued Validations are closed when event is bound', function() {
         el = document.createElement('input');
@@ -115,7 +115,7 @@ describe('judge', function() {
         queue = new judge.ValidationQueue(el);
         callback = jasmine.createSpy();
         queue.on('close', callback);
-        expect(callback).toHaveBeenCalledWith('invalid', ['must not be blank']);
+        expect(callback).toHaveBeenCalledWith(el, 'invalid', ['must not be blank']);
       });
       it('does not trigger close event if queued Validations are never closed', function() {
         el = document.createElement('input');
@@ -132,7 +132,7 @@ describe('judge', function() {
         queue = new judge.ValidationQueue(el);
         callback = jasmine.createSpy();
         queue.on('valid', callback);
-        expect(callback).toHaveBeenCalledWith([]);
+        expect(callback).toHaveBeenCalledWith(el, []);
       });
       it('triggers invalid event if any queued Validations are invalid when closed', function() {
         el = document.createElement('input');
@@ -140,7 +140,7 @@ describe('judge', function() {
         queue = new judge.ValidationQueue(el);
         callback = jasmine.createSpy();
         queue.on('invalid', callback);
-        expect(callback).toHaveBeenCalledWith(['must not be blank']);
+        expect(callback).toHaveBeenCalledWith(el, ['must not be blank']);
       });
     });
   });

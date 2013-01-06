@@ -1,9 +1,9 @@
 module Judge
   class ValidationsController < ::ApplicationController
-    respond_to :json
+    include Judge::Controller
 
     def index
-      respond_with(Judge.build_validation(params))
+      respond_with(validation(params))
     end
   end
 end
