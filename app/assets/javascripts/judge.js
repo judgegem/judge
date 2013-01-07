@@ -4,8 +4,7 @@
 
 // This is judge.js: the JavaScript part of Judge. Judge is a client-side
 // validation gem for Rails 3. You can find the Judge gem API documentation at
-// <http://joecorcoran.github.com/judge/>. Hopefully the comments here will help
-// you understand what's happening under the hood.
+// <http://judge.joecorcoran.co.uk>.
 
 (function() {
 
@@ -368,18 +367,7 @@
   judge.customValidators = {};
 
   // Convenience method for validating a form element. Pass either a single
-  // callback or one for valid and one for invalid, e.g.
-  //
-  //   judge.validate(el, function(status, messages) {
-  //     /* status is 'valid' or 'invalid' */
-  //   });
-  //
-  //   judge.validate(el, function() {
-  //     /* valid */
-  //   },
-  //   function(messages) {
-  //     /* invalid */
-  //   });
+  // callback or one for valid and one for invalid.
   judge.validate = function(element) {
     var callbacks = _.rest(arguments),
         queue     = new ValidationQueue(element);
