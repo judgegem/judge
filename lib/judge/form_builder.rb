@@ -48,7 +48,7 @@ module Judge
     end
 
     def time_zone_select(method, priority_zones = nil, options = {}, html_options = {})
-      html_options = add_validate_attr!(self.object, method, options, html_options)
+      add_validate_attr!(self.object, method, options, html_options)
       super
     end
 
