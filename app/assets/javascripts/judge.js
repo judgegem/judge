@@ -211,10 +211,11 @@
         obj.messages = _.union(obj.messages, _.compact(validation.messages));
         return obj;
       }, { statuses: [], messages: [] }, this);
-      if (_.contains(report.statuses, 'pending')) return false;
-      var status = _.contains(report.statuses, 'invalid') ? 'invalid' : 'valid';
-      this.trigger('close', this.element, status, report.messages);
-      this.trigger(status, this.element, report.messages);
+      if (!_.contains(report.statuses, 'pending')) {
+        var status = _.contains(report.statuses, 'invalid') ? 'invalid' : 'valid';
+        this.trigger('close', this.element, status, report.messages);
+        this.trigger(status, this.element, report.messages);
+      }
     }
   });
 
