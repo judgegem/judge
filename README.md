@@ -49,7 +49,7 @@ end
 
 Make sure your form uses the Judge::FormBuilder and add the :validate option to the field.
 
-```ruby
+```
 <%= form_for(@post, :builder => Judge::FormBuilder) do |f|%>
   <%= f.text_field :title, :validate => true %>
 <% end %>
@@ -147,7 +147,7 @@ class Post < ActiveRecord::Base
 end
 ```
 
-```ruby
+```
 <%= form_for(@post, :builder => Judge::FormBuilder) do |f| %>
   <%= text_field :title, :validate => true %>
 <% end %>
