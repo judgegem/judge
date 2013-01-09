@@ -234,7 +234,7 @@ https://github.com/joecorcoran/judge-simple_form
 gem "judge-simple_form", "~> x.x.x", :require => "judge/simple_form"
 ```
 
-```ruby
+```
 <%= simple_form_for(@user) do |f| %>
   <%= f.input :name, :validate => true %>
 <% end %>
