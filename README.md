@@ -13,6 +13,8 @@ It would be better to safely expose the validation information from our models t
 
 ## Installation
 
+Judge only supports Rails 3 and from version 2.0.0 onwards, you'll need Rails 3.1 or higher.
+
 Judge relies on [Underscore.js](underscore) in general and [JSON2.js](json2) for browsers that lack proper JSON support. If your application already makes use of these files, you can safely ignore the versions provided with Judge.
 
 ### With asset pipeline enabled (Rails >= 3.1)
