@@ -132,7 +132,7 @@ class FooValidator < ActiveModel::EachValidator
   declare_messages :not_foo
 
   def validate_each(record, attribute, value)
-    unless value == "foo"
+    unless value == 'foo'
       record.errors.add(:title, :not_foo)
     end
   end
@@ -163,7 +163,7 @@ Our client side validator would then look something like this:
 judge.customValidators.foo = function(options, messages) {
   var errorMessages = [];
   // 'this' refers to the DOM element
-  if (this.value !== "foo") {
+  if (this.value !== 'foo') {
     errorMessages.push(messages.not_foo);
   }
   return new judge.Validation(errorMessages);
@@ -217,7 +217,7 @@ If you use [Formtastic](https://github.com/justinfrench/formtastic) or [SimpleFo
 https://github.com/joecorcoran/judge-formtastic
 
 ```ruby
-gem "judge-formtastic", "~> x.x.x", :require => "judge/formtastic"
+gem 'judge-formtastic', '~> x.x.x', :require => 'judge/formtastic'
 ```
 
 ```
@@ -231,7 +231,7 @@ gem "judge-formtastic", "~> x.x.x", :require => "judge/formtastic"
 https://github.com/joecorcoran/judge-simple_form
 
 ```
-gem "judge-simple_form", "~> x.x.x", :require => "judge/simple_form"
+gem 'judge-simple_form', '~> x.x.x', :require => 'judge/simple_form'
 ```
 
 ```
