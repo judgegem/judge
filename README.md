@@ -153,7 +153,7 @@ end
 <% end %>
 ```
 
-Judge will look for the not_foo message at
+Judge will look for the `not_foo` message at
 *activerecord.errors.models.post.attributes.title.not_foo*
 first and then onwards down the [Rails I18n lookup chain](http://guides.rubyonrails.org/i18n.html#translations-for-active-record-models).
 
@@ -170,7 +170,7 @@ judge.customValidators.foo = function(options, messages) {
 };
 ```
 
-All client side validators must return a `Validation` – an object that can exist in three different states: `valid`, `invalid` or `pending`. If your validator function is synchronous, you can return a closed `Validation` simply by passing an array of error messages to the constructor.
+All client side validators must return a `Validation` – an object that can exist in three different states: *valid*, *invalid* or *pending*. If your validator function is synchronous, you can return a closed `Validation` simply by passing an array of error messages to the constructor.
 
 ```javascript
 new judge.Validation([]);
@@ -179,7 +179,7 @@ new judge.Validation(['must not be blank']);
   // => array has messages, this Validation is 'invalid'
 ```
 
-The pending state is provided for asynchronous validation; a `Validation` object we will close some time in the future. Let's look at an example, using jQuery's popular `ajax` function:
+The *pending* state is provided for asynchronous validation; a `Validation` object we will close some time in the future. Let's look at an example, using jQuery's popular `ajax` function:
 
 ```javascript
 judge.customValidators.bar = function() {
@@ -220,7 +220,7 @@ https://github.com/joecorcoran/judge-formtastic
 gem "judge-formtastic", "~> x.x.x", :require => "judge/formtastic"
 ```
 
-```ruby
+```
 <%= semantic_form_for(@user) do |f| %>
   <%= f.input :name, :validate => true %>
 <% end %>
@@ -230,7 +230,7 @@ gem "judge-formtastic", "~> x.x.x", :require => "judge/formtastic"
 
 https://github.com/joecorcoran/judge-simple_form
 
-```ruby
+```
 gem "judge-simple_form", "~> x.x.x", :require => "judge/simple_form"
 ```
 
