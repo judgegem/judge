@@ -230,7 +230,7 @@ gem 'judge-formtastic', '~> x.x.x', :require => 'judge/formtastic'
 
 https://github.com/joecorcoran/judge-simple_form
 
-```
+```ruby
 gem 'judge-simple_form', '~> x.x.x', :require => 'judge/simple_form'
 ```
 
