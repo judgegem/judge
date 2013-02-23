@@ -1,7 +1,6 @@
 # Judge
 
-<!-- travis:http://travis-ci.org/joecorcoran/judge -->
-<!-- semvertag:v2.0.0 -->
+[![Build status](https://secure.travis-ci.org/joecorcoran/judge.png?branch=master)](http://travis-ci.org/joecorcoran/judge)
 
 Judge allows easy client side form validation for Rails 3 by porting many `ActiveModel::Validation` features to JavaScript. The most common validations work through JSON strings stored within HTML5 data attributes and are executed purely on the client side. Wherever you need to, Judge provides a simple interface for AJAX validations too.
 
@@ -49,10 +48,10 @@ end
 
 Make sure your form uses the Judge::FormBuilder and add the :validate option to the field.
 
-```
-<%= form_for(@post, :builder => Judge::FormBuilder) do |f|%>
-  <%= f.text_field :title, :validate => true %>
-<% end %>
+```ruby
+form_for(@post, :builder => Judge::FormBuilder) do |f|
+  f.text_field :title, :validate => true
+end
 ```
 
 On the client side, you can now validate the title input.
@@ -147,10 +146,10 @@ class Post < ActiveRecord::Base
 end
 ```
 
-```
-<%= form_for(@post, :builder => Judge::FormBuilder) do |f| %>
-  <%= text_field :title, :validate => true %>
-<% end %>
+```ruby
+form_for(@post, :builder => Judge::FormBuilder) do |f|
+  text_field :title, :validate => true
+end
 ```
 
 Judge will look for the `not_foo` message at
@@ -220,10 +219,10 @@ https://github.com/joecorcoran/judge-formtastic
 gem 'judge-formtastic', '~> x.x.x', :require => 'judge/formtastic'
 ```
 
-```
-<%= semantic_form_for(@user) do |f| %>
-  <%= f.input :name, :validate => true %>
-<% end %>
+```ruby
+semantic_form_for(@user) do |f|
+  f.input :name, :validate => true
+end
 ```
 
 ### SimpleForm
@@ -235,7 +234,13 @@ gem 'judge-simple_form', '~> x.x.x', :require => 'judge/simple_form'
 ```
 
 ```
-<%= simple_form_for(@user) do |f| %>
-  <%= f.input :name, :validate => true %>
-<% end %>
+simple_form_for(@user) do |f|
+  f.input :name, :validate => true
+end
 ```
+
+### License
+
+Released under an MIT license (see LICENSE.txt).
+
+[blog.joecorcoran.co.uk](http://blog.joecorcoran.co.uk) | [@josephcorcoran](http://twitter.com/josephcorcoran)
