@@ -1,16 +1,17 @@
 module Judge
   module EachValidator
 
+    require 'set'
+
     def self.included(base)
+      base.send(:cattr_accessor, :messages_to_lookup) { Set.new }
       base.send(:extend, ClassMethods)
     end
 
     module ClassMethods
 
-      def declare_messages(*keys)
-        send :define_method, :messages_to_lookup do
-          keys
-        end
+      def uses_messages(*keys)
+        self.messages_to_lookup.merge(keys)
       end
 
     end

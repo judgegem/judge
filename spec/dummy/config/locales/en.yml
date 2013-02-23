@@ -8,6 +8,7 @@ en:
               taken: "%{attribute} \"%{value}\" has already been taken"
             city:
               not_valid_city: "%{attribute} must be an approved city"
+              no_towns: "%{attribute} can't be a town"
   errors:
     attributes:
       city:

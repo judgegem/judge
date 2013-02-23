@@ -125,11 +125,11 @@ judge.enginePath = '/whatever';
 
 ## Writing your own validators
 
-If you create a custom `EachValidator`, Judge provides a way to ensure that your I18n error messages are available on the client side. Simply pass to `declare_messages` any number of message keys and Judge will look up the translated messages. Let's run through an example.
+If you create a custom `EachValidator`, Judge provides a way to ensure that your I18n error messages are available on the client side. Simply pass to `uses_messages` any number of message keys and Judge will look up the translated messages. Let's run through an example.
 
 ```ruby
 class FooValidator < ActiveModel::EachValidator
-  declare_messages :not_foo
+  uses_messages :not_foo
 
   def validate_each(record, attribute, value)
     unless value == 'foo'
