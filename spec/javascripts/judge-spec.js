@@ -231,12 +231,12 @@ describe('judge', function() {
       });
       it('returns valid Validation when value is not in array', function() {
         el.value = 'baz';
-        expect(validator({ in: ['foo', 'bar'] }, {})).toBeValid();
+        expect(validator({ 'in': ['foo', 'bar'] }, {})).toBeValid();
       });
       it('returns invalid Validation when value is in array', function() {
         el.value = 'foo';
         var validation = validator(
-          { in: ['foo', 'bar'] },
+          { 'in': ['foo', 'bar'] },
           { exclusion: 'foo and bar are not allowed' }
         );
         expect(validation).toBeInvalidWith(['foo and bar are not allowed']);
@@ -249,11 +249,11 @@ describe('judge', function() {
       });
       it('returns valid Validation when value is in array', function() {
         el.value = 'foo';
-        expect(validator({ in: ['foo', 'bar'] }, {})).toBeValid();
+        expect(validator({ 'in': ['foo', 'bar'] }, {})).toBeValid();
       });
       it('returns invalid Validation when value is not in array', function() {
         el.value = 'baz';
-        expect(validator({ in: ['foo', 'bar'] }, { inclusion: 'must be foo or bar' })).toBeInvalidWith(['must be foo or bar']);
+        expect(validator({ 'in': ['foo', 'bar'] }, { inclusion: 'must be foo or bar' })).toBeInvalidWith(['must be foo or bar']);
       });
     });
 
@@ -326,12 +326,12 @@ describe('judge', function() {
       describe('with', function() {
         it('returns invalid Validation when value does not match with', function() {
           el.value = '123';
-          expect(validator({ with: '(?-mix:[A-Za-z]+)' }, { invalid: 'is invalid' })).toBeInvalidWith(['is invalid']);
+          expect(validator({ 'with': '(?-mix:[A-Za-z]+)' }, { invalid: 'is invalid' })).toBeInvalidWith(['is invalid']);
         });
 
         it('returns valid Validation when value matches with', function() {
           el.value = 'AbC';
-          expect(validator({ with: '(?-mix:[A-Za-z]+)' }, {})).toBeValid();
+          expect(validator({ 'with': '(?-mix:[A-Za-z]+)' }, {})).toBeValid();
         });
       });
 
