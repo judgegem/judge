@@ -405,7 +405,7 @@ describe('judge', function() {
           server.respond();
         });
         runs(function() {
-          expect(server.requests[0].url).toBe('/judge?class=Vehicle&attribute=registration&value=foo&kind=uniqueness');
+          expect(server.requests[0].url).toBe('/judge?klass=Vehicle&attribute=registration&value=foo&kind=uniqueness');
         });
       });
       it('closes Validation as valid if the server responds with an empty JSON array', function() {

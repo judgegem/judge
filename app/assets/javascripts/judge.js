@@ -142,7 +142,7 @@
   var urlFor = judge.urlFor = function(el, kind) {
     var path   = judge.enginePath,
         params = {
-          'class'    : classFromName(el.name),
+          'klass'    : classFromName(el.name),
           'attribute': attrFromName(el.name),
           'value'    : encodeURIComponent(el.value),
           'kind'     : kind

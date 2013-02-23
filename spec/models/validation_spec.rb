@@ -7,18 +7,18 @@ describe "validations" do
   end
   let(:valid_params) do
     {
-      :klass => "User",
-      :attribute => "username",
+      :klass => User,
+      :attribute => :username,
       :value => "new",
-      :kind => "uniqueness"
+      :kind => :uniqueness
     }.with_indifferent_access
   end
   let(:invalid_params) do
     {
-      :klass => "User",
-      :attribute => "username",
+      :klass => User,
+      :attribute => :username,
       :value => "existing",
-      :kind => "uniqueness"
+      :kind => :uniqueness
     }.with_indifferent_access
   end
   after(:all) { User.destroy_all }

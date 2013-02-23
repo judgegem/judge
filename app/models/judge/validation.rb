@@ -2,10 +2,10 @@ module Judge
 
   class Validation
     def initialize(params)
-      @klass     = Object.const_get(params[:klass])
-      @attribute = params[:attribute].to_sym
+      @klass     = params[:klass]
+      @attribute = params[:attribute]
       @value     = params[:value]
-      @kind      = params[:kind].to_sym
+      @kind      = params[:kind]
       validate!
     end
 
