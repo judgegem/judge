@@ -239,7 +239,7 @@ simple_form_for(@user) do |f|
 end
 ```
 
-### License
+## License
 
 Released under an MIT license (see LICENSE.txt).
 
