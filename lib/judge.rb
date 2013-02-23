@@ -5,8 +5,9 @@ files = [
   'validator',
   'validator_collection',
   'message_collection',
+  'html',
   'form_builder',
   'each_validator',
-  'controller',
+  'controller'
 ]
 files.each { |filename| require "judge/#{filename}" }

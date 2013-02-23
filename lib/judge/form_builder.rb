@@ -1,6 +1,8 @@
 module Judge
 
   class FormBuilder < ActionView::Helpers::FormBuilder
+
+    include Judge::Html
     
     %w{text_field text_area password_field}.each do |type|
       helper = <<-END
@@ -57,13 +59,8 @@ module Judge
       def add_validate_attr!(object, method, options, html_options = nil)
         options_to_merge = html_options || options
         if options.delete(:validate)
-          data = { "data-validate" => validators_for(object, method).to_json }
-          options_to_merge.merge!(data)
+          options_to_merge.merge! attrs_for(object, method)
         end
-      end
-
-      def validators_for(object, method)
-        Judge::ValidatorCollection.new(object, method)
       end
     
   end
