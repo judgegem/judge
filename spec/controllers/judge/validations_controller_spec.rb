@@ -1,4 +1,3 @@
-require 'active_support/hash_with_indifferent_access'
 require 'spec_helper'
 
 describe Judge::ValidationsController do
