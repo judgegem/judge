@@ -1,4 +1,4 @@
-// Judge {version}
+// Judge 2.0.0
 // (c) 2011–2012 Joe Corcoran
 // http://raw.github.com/joecorcoran/judge/master/LICENSE.txt
 
@@ -14,7 +14,7 @@
   var judge = root.judge = {},
       _     = root._;
 
-  judge.VERSION = '{version}';
+  judge.VERSION = '2.0.0';
 
   // Trying to be a bit more descriptive than the basic error types allow.
   var DependencyError = function(message) {
