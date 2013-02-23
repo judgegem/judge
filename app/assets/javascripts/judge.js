@@ -106,6 +106,7 @@
       };
       req.open('GET', url, true);
       req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      req.setRequestHeader('Accept', 'application/json');
       req.send();
     }
     return req;
