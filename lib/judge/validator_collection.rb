@@ -7,7 +7,7 @@ module Judge
     attr_reader :validators
     
     def initialize(object, method)
-      amvs = object.class.validators_on(method).reject { |amv| amv.kind == :uniqueness }
+      amvs = object.class.validators_on(method)
       @validators = amvs.map { |amv| Judge::Validator.new(object, method, amv) }
     end
 
