@@ -1,0 +1,70 @@
+require 'active_support/hash_with_indifferent_access'
+require 'spec_helper'
+
+describe Judge::ValidationsController do
+
+  let(:headers) do
+    { :accept => "application/json" }
+  end
+  
+  let(:valid_params) do
+    {
+      :use_route => :judge,
+      :klass => "User",
+      :attribute => "username",
+      :value => "invisibleman",
+      :kind => "uniqueness"
+    }
+  end
+
+  let(:invalid_params) do
+    {
+      :use_route => :judge,
+      :klass => "User",
+      :attribute => "city",
+      :value => "",
+      :kind => "city"
+    }
+  end
+
+  describe "GET 'index'" do
+    describe "when allowed" do
+      before(:each) { Judge.config.stub(:allows?).and_return(true) }
+      it "responds with empty JSON array if valid" do
+        xhr :get, :index, valid_params, headers
+        response.should be_success
+        response.body.should eql "[]"
+      end
+      it "responds with JSON array of error messages if invalid" do
+        xhr :get, :index, invalid_params, headers
+        response.should be_success
+        response.body.should eql "[\"City must be an approved city\"]"
+      end
+    end
+    describe "when not allowed" do
+      it "responds with JSON array of error messages if class and attribute are not allowed in Judge config" do
+        xhr :get, :index, valid_params, headers
+        response.should be_success
+        response.body.should eql "[\"Judge validation for User#username not allowed\"]"
+      end
+    end
+  end
+
+  describe "#validation" do
+    let(:controller) { Judge::ValidationsController.new }
+    let(:params) { valid_params.with_indifferent_access }
+    describe "when params allowed" do
+      before(:each) { Judge.config.stub(:allows?).and_return(true) }
+      it "returns a Validation object" do
+        controller.validation(params).should be_a Judge::Validation
+      end
+    end
+
+    describe "when params not allowed" do
+      it "returns a NullValidation object" do
+        controller.validation(params).should be_a Judge::NullValidation
+      end
+    end
+  end
+
+end

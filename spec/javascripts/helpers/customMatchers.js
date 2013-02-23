@@ -1,20 +1,27 @@
-var customMatchers = {
-  // custom jasmine-jquery matchers
-  // TODO: write as extension to jasmine-jquery
-  toHaveEvent: function(eventType){
-    return (this.actual.data('events')) && (typeof this.actual.data('events')[eventType] == 'object');
-  },
-  toHaveLive: function(eventType) {
-    var hasLive, actual = this.actual;
-    $.each($(document).data('events')['live'], function(i, item) {          
-      hasLive = ((item.selector == actual.selector) && (item.origType == eventType));
-      if (hasLive) return false;          
-    });        
-    return hasLive;
-  },
-  // other jasmine matchers
-  toBeInstanceOf: function(instanceType) {
-    return this.actual instanceof instanceType;
-  }
-};
+var customMatchers = (function() {
+  var hasStatus = function(validation, status) {
+        return (validation instanceof judge.Validation) && 
+          (validation.status() === status)
+      },
+      matchers = {
+        toBeInstanceOf: function(instanceType) {
+          return this.actual instanceof instanceType;
+        },
+        toBePending: function() {
+          return hasStatus(this.actual, 'pending');
+        },
+        toBeValid: function() {
+          return hasStatus(this.actual, 'valid');
+        },
+        toBeInvalid: function() {
+          return hasStatus(this.actual, 'invalid');
+        },
+        toBeInvalidWith: function(messages) {
+          return hasStatus(this.actual, 'invalid') &&
+            _.isEqual(this.actual.messages, messages);
+        }
+      };
+
+  return matchers;
+})();
 

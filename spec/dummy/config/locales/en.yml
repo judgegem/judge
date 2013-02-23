@@ -1,0 +1,21 @@
+en:
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            username:
+              taken: "%{attribute} \"%{value}\" has already been taken"
+            city:
+              not_valid_city: "%{attribute} must be an approved city"
+              no_towns: "%{attribute} can't be a town"
+  errors:
+    attributes:
+      city:
+        not_valid_city: "This is never reached"
+
+    messages:
+      not_an_integer: "%{attribute} must be an integer"
+      blank: "%{attribute} must not be blank"
+      greater_than: "%{attribute} must be greater than %{count}"
+      too_long: "%{attribute} is too long (must be less than %{count} characters)"

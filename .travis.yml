@@ -9,13 +9,20 @@ before_script:
   - "cd casperjs"
   - "git checkout tags/0.6.5"
   - "sudo ln -sf `pwd`/bin/casperjs /usr/local/bin/casperjs"
+  - "RAILS_ENV=test bundle exec rake app:db:schema:load"
 
 script: "bundle exec rake"
 
 notifications:
   recipients:
-    - joe@tribesports.com
+    - joecorcoran@gmail.com
+
+gemfile:
+  - "gemfiles/rails_3_1.gemfile"
+  - "gemfiles/rails_3_2.gemfile"
 
 branches:
   only:
     - master
+    - engine
+    - v1.6

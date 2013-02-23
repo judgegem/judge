@@ -7,3 +7,8 @@ doc
 rdoc
 gem_graph.png
 .rvmrc
+.rspec
+spec/dummy/tmp/**/*
+*.sqlite3
+.rspec
+gemfiles/*.lock
