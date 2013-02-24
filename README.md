@@ -6,9 +6,9 @@ Judge allows easy client side form validation for Rails 3 by porting many `Activ
 
 ## Rationale
 
-Whenever we need to give the user instant feedback on their form data, it's common to write some JavaScript to test input values. But since the integrity of our data is handled on the server side, whatever we write in Ruby has to be copied as closely as possible in JavaScript and we end up with some very unsatisfying duplication of application logic.
+Whenever we need to give the user instant feedback on their form data, it's common to write some JavaScript to test form element values. Since whatever code we write to manage our data integrity in Ruby has to be copied as closely as possible in JavaScript, we end up with some very unsatisfying duplication of application logic.
 
-It would be better to safely expose the validation information from our models to the client – this is where Judge steps in.
+In many cases it would be simpler to safely expose the validation information from our models to the client – this is where Judge steps in.
 
 ## Installation
 
@@ -18,7 +18,16 @@ Judge relies on [Underscore.js](underscore) in general and [JSON2.js](json2) for
 
 ### With asset pipeline enabled (Rails >= 3.1)
 
-Add `judge` to your Gemfile and run `bundle install`. That's it! If you need to be explicit in your asset manifest then something like this will do:
+Add `judge` to your Gemfile and run `bundle install`.
+
+Mount the engine in your routes file, as follows:
+
+```ruby
+# config/routes.rb
+mount Judge::Engine => '/judge'
+```
+
+Judge makes three JavaScript files available. You'll always need *judge.js* and *underscore.js*, whereas *json2.js* is only needed in older browsers. Add the following lines to *application.js*:
 
 ```
 //= require underscore
@@ -32,9 +41,14 @@ Add `judge` to your Gemfile and run `bundle install`. Then run
 
     $ rails generate judge:install path/to/your/js/dir
 
-to copy judge.js to your application. There are options to copy the dependencies too.
+to copy *judge.js* to your application. There are **--json2** and **--underscore** options to copy the dependencies too.
 
-    $ rails generate judge:install --json2 --underscore
+Mount the engine in your routes file, as follows:
+
+```ruby
+# config/routes.rb
+mount Judge::Engine => '/judge'
+```
     
 ## Getting started
 
@@ -72,7 +86,7 @@ judge.validate(document.getElementById('post_title'),
 
 ## Judge::FormBuilder
 
-You can use any of the methods from the standard ActionView::Helpers::FormBuilder – just add :validate => true to the options hash.
+You can use any of the methods from the standard ActionView::Helpers::FormBuilder – just add `:validate => true` to the options hash.
 
 ```ruby
 f.date_select :birthday, :validate => true
@@ -108,15 +122,25 @@ The *allow_blank* option is available everywhere it should be. Error messages ar
 
 ## Validating uniqueness
 
-Since validating a record's uniqueness requires an AJAX request, you need to take the extra step of mounting the Judge engine to your application. Do this in your *config/routes.rb* file:
+In order to validate uniqueness Judge sends requests to the mounted `Judge::Engine` path, which responds with a JSON representation of an error message array. The array is empty if the value is valid.
+
+Since this effectively means adding an open, queryable endpoint to your application, Judge is cautious and requires you to be explicit about which attributes from which models you would like to make available for validation via XHR. Allowed attributes are configurable as in the following example.
 
 ```ruby
-Rails.application.routes.draw do
-  mount Judge::Engine => '/judge'
+# config/initializers/judge.rb
+Judge.configure do
+  allow Post, :title, :body
 end
 ```
 
+## Mounting the engine at a different location
+
 You can choose a path other than `'/judge'` if you need to; just make sure to set this on the client side too:
+
+```ruby
+# config/routes.rb
+mount Judge::Engine => '/whatever'
+```
 
 ```javascript
 judge.enginePath = '/whatever';
@@ -182,11 +206,11 @@ The *pending* state is provided for asynchronous validation; a `Validation` obje
 
 ```javascript
 judge.customValidators.bar = function() {
+  // create a 'pending' validation
   var validation = new judge.Validation();
   $.ajax('/bar-checking-service').done(function(messages) {
-    // 'messages' is a JSON array of error messages
     // You can close a Validation with either an array
-    // or an unparsed JSON array
+    // or a string that represents a JSON array
     validation.close(messages);
   });
   return validation;
