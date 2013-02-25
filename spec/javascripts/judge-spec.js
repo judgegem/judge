@@ -446,6 +446,19 @@ describe('judge', function() {
       });
     });
 
+    describe('user added validator', function() {
+      beforeEach(function() {
+        judge.eachValidators.foo = function(options, messages) {
+          return new judge.Validation(['nope']);
+        };
+        validator = _.bind(judge.eachValidators.foo, el);
+      });
+      it('is callable in the same way as standard validators', function() {
+        var validation = validator({}, {});
+        expect(validation).toBeInvalid();
+      });
+    });
+
   });
 
 });

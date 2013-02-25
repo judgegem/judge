@@ -192,11 +192,10 @@
     this.element        = element;
     this.validations    = [];
     this.attrValidators = root.JSON.parse(this.element.getAttribute('data-validate'));
-    
-    var allValidators = _.extend(judge.eachValidators, judge.customValidators);
+
     _.each(this.attrValidators, function(av) {
       if (this.element.value.length || av.options.allow_blank !== true) {
-        var method     = _.bind(allValidators[av.kind], this.element),
+        var method     = _.bind(judge.eachValidators[av.kind], this.element),
             validation = method(av.options, av.messages);
         validation.on('close', this.tryClose, this);
         this.on('bind', this.tryClose, this);
@@ -363,10 +362,6 @@
       return validation;
     }
   };
-
-  // This object should contain any custom EachValidator methods, named
-  // to correspond to custom validators used in the model.
-  judge.customValidators = {};
 
   // Convenience method for validating a form element. Pass either a single
   // callback or one for valid and one for invalid.

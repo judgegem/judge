@@ -146,9 +146,9 @@ mount Judge::Engine => '/whatever'
 judge.enginePath = '/whatever';
 ```
 
-## Writing your own validators
+## Writing your own `EachValidator`
 
-If you create a custom `EachValidator`, Judge provides a way to ensure that your I18n error messages are available on the client side. Simply pass to `uses_messages` any number of message keys and Judge will look up the translated messages. Let's run through an example.
+If you write your own `ActiveModel::EachValidator`, Judge provides a way to ensure that your I18n error messages are available on the client side. Simply pass to `uses_messages` any number of message keys and Judge will look up the translated messages. Let's run through an example.
 
 ```ruby
 class FooValidator < ActiveModel::EachValidator
@@ -180,12 +180,12 @@ Judge will look for the `not_foo` message at
 *activerecord.errors.models.post.attributes.title.not_foo*
 first and then onwards down the [Rails I18n lookup chain](http://guides.rubyonrails.org/i18n.html#translations-for-active-record-models).
 
-Our client side validator would then look something like this:
+We then need to add our own validator method to the `judge.eachValidators` object on the client side:
 
 ```javascript
-judge.customValidators.foo = function(options, messages) {
+judge.eachValidators.foo = function(options, messages) {
   var errorMessages = [];
-  // 'this' refers to the DOM element
+  // 'this' refers to the form element
   if (this.value !== 'foo') {
     errorMessages.push(messages.not_foo);
   }
