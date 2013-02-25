@@ -239,7 +239,7 @@ If you use [Formtastic](https://github.com/justinfrench/formtastic) or [SimpleFo
 https://github.com/joecorcoran/judge-formtastic
 
 ```ruby
-gem 'judge-formtastic', '~> x.x.x', :require => 'judge/formtastic'
+gem 'judge-formtastic'
 ```
 
 ```ruby
@@ -253,7 +253,7 @@ end
 https://github.com/joecorcoran/judge-simple_form
 
 ```ruby
-gem 'judge-simple_form', '~> x.x.x', :require => 'judge/simple_form'
+gem 'judge-simple_form'
 ```
 
 ```
