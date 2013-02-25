@@ -218,16 +218,15 @@ judge.customValidators.bar = function() {
 In the unlikely event that you don't already use a library with AJAX capability, a basic function is provided for making GET requests as follows:
 
 ```javascript
-judge.get('/something',
-  function(status, headers, text) {
-    // success (status code 20x)
+judge.get('/something', {
+  success: function(status, headers, text) {
+    // status code 20x
   },
-  function(status, headers, text) {
-    // error (any other status code)
+  error: function(status, headers, text) {
+    // any other status code
   }
-);
+});
 ```
-
 
 ## Judge extensions
 

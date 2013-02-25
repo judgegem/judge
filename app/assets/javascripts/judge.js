@@ -94,13 +94,13 @@
   // Performs a GET request using the browser's XHR object. This provides very
   // basic ajax capability and was written specifically for use in the provided
   // uniqueness validator without requiring jQuery.
-  var get = judge.get = function(url, success, error) {
+  var get = judge.get = function(url, callbacks) {
     var req = reqObj();
     if (!!req) {
       req.onreadystatechange = function() {
         if (req.readyState === 4) {
           req.onreadystatechange = void 0;
-          var callback = /^20\d$/.test(req.status) ? success : error;
+          var callback = /^20\d$/.test(req.status) ? callbacks.success : callbacks['error'];
           callback(req.status, req.responseHeaders, req.responseText);
         }
       };
@@ -351,14 +351,14 @@
     // ActiveModel::Validations::UniquenessValidator
     uniqueness: function(options, messages) {
       var validation = new Validation();          
-      get(urlFor(this, 'uniqueness'),
-        function(status, headers, text) {
+      get(urlFor(this, 'uniqueness'), {
+        success: function(status, headers, text) {
           validation.close(text);
         },
-        function(status, headers, text) {
+        error: function(status, headers, text) {
           validation.close(['Request error: ' + status]);
         }
-      );
+      });
       return validation;
     }
   };
