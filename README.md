@@ -12,11 +12,11 @@ In many cases it would be simpler to safely expose the validation information fr
 
 ## Installation
 
-Judge only supports Rails 3 and from version 2.0.0 onwards, you'll need Rails 3.1 or higher.
+Judge only supports Rails 3.1 or higher.
 
 Judge relies on [Underscore.js](underscore) in general and [JSON2.js](json2) for browsers that lack proper JSON support. If your application already makes use of these files, you can safely ignore the versions provided with Judge.
 
-### With asset pipeline enabled (Rails >= 3.1)
+### With asset pipeline enabled
 
 Add `judge` to your Gemfile and run `bundle install`.
 
@@ -124,12 +124,12 @@ The *allow_blank* option is available everywhere it should be. Error messages ar
 
 In order to validate uniqueness Judge sends requests to the mounted `Judge::Engine` path, which responds with a JSON representation of an error message array. The array is empty if the value is valid.
 
-Since this effectively means adding an open, queryable endpoint to your application, Judge is cautious and requires you to be explicit about which attributes from which models you would like to make available for validation via XHR. Allowed attributes are configurable as in the following example.
+Since this effectively means adding an open, queryable endpoint to your application, Judge is cautious and requires you to be explicit about which attributes from which models you would like to expose for validation via XHR. Allowed attributes are configurable as in the following example. Note that you are only required to do this for `uniqueness` and any other validators you write that make requests to the server.
 
 ```ruby
 # config/initializers/judge.rb
 Judge.configure do
-  allow Post, :title, :body
+  expose Post, :title, :body
 end
 ```
 

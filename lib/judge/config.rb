@@ -4,27 +4,27 @@ module Judge
   class Config
     include Singleton
 
-    @@allowed = {}
+    @@exposed = {}
 
-    def allow(klass, *attributes)
-      attrs = (@@allowed[klass] ||= [])
+    def expose(klass, *attributes)
+      attrs = (@@exposed[klass] ||= [])
       attrs.concat(attributes).uniq!
     end
 
-    def allowed
-      @@allowed
+    def exposed
+      @@exposed
     end
 
-    def allows?(klass, attribute)
-      @@allowed.has_key?(klass) && @@allowed[klass].include?(attribute)
+    def exposed?(klass, attribute)
+      @@exposed.has_key?(klass) && @@exposed[klass].include?(attribute)
     end
 
-    def disallow(klass, *attributes)
+    def unexpose(klass, *attributes)
       attributes.each do |a|
-        @@allowed[klass].delete(a)
+        @@exposed[klass].delete(a)
       end
-      if attributes.empty? || @@allowed[klass].empty?
-        @@allowed.delete(klass)
+      if attributes.empty? || @@exposed[klass].empty?
+        @@exposed.delete(klass)
       end
     end
   end

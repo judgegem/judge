@@ -8,7 +8,7 @@ module Judge
 
     def validation(params)
       params = normalize_validation_params(params)
-      if params[:klass] && Judge.config.allows?(params[:klass], params[:attribute])
+      if params[:klass] && Judge.config.exposed?(params[:klass], params[:attribute])
         Validation.new(params)
       else
         NullValidation.new(params)

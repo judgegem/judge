@@ -28,7 +28,7 @@ describe Judge::ValidationsController do
 
   describe "GET 'index'" do
     describe "when allowed" do
-      before(:each) { Judge.config.stub(:allows?).and_return(true) }
+      before(:each) { Judge.config.stub(:exposed?).and_return(true) }
       it "responds with empty JSON array if valid" do
         xhr :get, :index, valid_params, headers
         response.should be_success
@@ -53,7 +53,7 @@ describe Judge::ValidationsController do
     let(:controller) { Judge::ValidationsController.new }
     let(:params) { valid_params.with_indifferent_access }
     describe "when params allowed" do
-      before(:each) { Judge.config.stub(:allows?).and_return(true) }
+      before(:each) { Judge.config.stub(:exposed?).and_return(true) }
       it "returns a Validation object" do
         controller.validation(params).should be_a Judge::Validation
       end
