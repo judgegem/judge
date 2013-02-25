@@ -71,17 +71,15 @@ end
 On the client side, you can now validate the title input.
 
 ```javascript
-judge.validate(document.getElementById('post_title'),
-  function(element) {
-    // valid
+judge.validate(document.getElementById('post_title'), {
+  valid: function(element) {
     element.style.border = '1px solid green';
   },
-  function(element, messages) {
-    // invalid
+  invalid: function(element, messages) {
     element.style.border = '1px solid red';
     alert(messages.join(','));
   }
-);
+});
 ```
 
 ## Judge::FormBuilder

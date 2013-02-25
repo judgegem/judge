@@ -363,16 +363,19 @@
     }
   };
 
-  // Convenience method for validating a form element. Pass either a single
+  var isCallbacksObj = function(obj) {
+    return _.isObject(obj) && _.has(obj, 'valid') && _.has(obj, 'invalid');
+  };
+
+  // Method for validating a form element. Pass either a single
   // callback or one for valid and one for invalid.
-  judge.validate = function(element) {
-    var callbacks = _.rest(arguments),
-        queue     = new ValidationQueue(element);
-    if (callbacks.length > 1) {
-      queue.on('valid', callbacks[0]);
-      queue.on('invalid', callbacks[1]);
-    } else {
-      queue.on('close', callbacks[0]);
+  judge.validate = function(element, callbacks) {
+    var queue = new ValidationQueue(element);
+    if (_.isFunction(callbacks)) {
+      queue.on('close', callbacks);
+    } else if (isCallbacksObj(callbacks)) {
+      queue.on('valid', callbacks.valid);
+      queue.on('invalid', callbacks.invalid);
     }
     return queue;
   };

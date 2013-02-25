@@ -28,16 +28,22 @@ describe('judge', function() {
         expect(callback).toHaveBeenCalledWith(el, 'invalid', ['must not be blank']);
       });
     });
-    describe('when given two callbacks', function() {
+    describe('when given named callbacks', function() {
       it('calls first callback when queue is closed as valid', function() {
         var first = jasmine.createSpy(), second = jasmine.createSpy();
         el.value = 'foo';
-        judge.validate(el, first, second);
+        judge.validate(el, {
+          valid: first,
+          invalid: second
+        });
         expect(first).toHaveBeenCalled();
       });
       it('calls second callback wth messages when queue is closed as invalid', function() {
         var first = jasmine.createSpy(), second = jasmine.createSpy();
-        judge.validate(el, first, second);
+        judge.validate(el, {
+          valid: first,
+          invalid: second
+        });
         expect(second).toHaveBeenCalledWith(el, ['must not be blank']);
       });
     });
