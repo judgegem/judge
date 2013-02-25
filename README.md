@@ -191,6 +191,8 @@ judge.eachValidators.foo = function(options, messages) {
 };
 ```
 
+## `judge.Validation`
+
 All client side validators must return a `Validation` – an object that can exist in three different states: *valid*, *invalid* or *pending*. If your validator function is synchronous, you can return a closed `Validation` simply by passing an array of error messages to the constructor.
 
 ```javascript
