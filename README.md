@@ -112,7 +112,7 @@ end
 * acceptance;
 * confirmation (input and confirmation input must have matching ids);
 * uniqueness;
-* any `EachValidator` that you have written, provided you add a JavaScript version too and add it to `judge.customValidators`.
+* any `EachValidator` that you have written, provided you add a JavaScript version too and add it to `judge.eachValidators`.
 
 Options like *if*, *unless* and *on* are not available as they relate to record persistence.
 
@@ -205,12 +205,28 @@ new judge.Validation(['must not be blank']);
 The *pending* state is provided for asynchronous validation; a `Validation` object we will close some time in the future. Let's look at an example, using jQuery's popular `ajax` function:
 
 ```javascript
-judge.customValidators.bar = function() {
+judge.eachValidators.bar = function() {
   // create a 'pending' validation
   var validation = new judge.Validation();
   $.ajax('/bar-checking-service').done(function(messages) {
     // You can close a Validation with either an array
     // or a string that represents a JSON array
+    validation.close(messages);
+  });
+  return validation;
+};
+```
+
+There are helper functions, `judge.pending()` and `judge.closed()` for creating a new `Validation` too.
+
+```javascript
+judge.eachValidators.bar = function() {
+  return judge.closed(['not valid']);
+};
+
+judge.eachValidators.bar = function() {
+  var validation = new judge.pending();
+  doAsyncStuff(function(messages) {
     validation.close(messages);
   });
   return validation;
