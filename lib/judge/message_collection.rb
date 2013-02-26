@@ -19,6 +19,7 @@ module Judge
     end
 
     def generate_messages!
+      return if @kind == :uniqueness
       %w{base options integer custom blank}.each do |type|
         @messages = @messages.merge(self.send(:"#{type}_messages"))
       end

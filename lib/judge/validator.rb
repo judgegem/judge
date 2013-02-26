@@ -4,9 +4,11 @@ module Judge
 
     attr_reader :active_model_validator, :kind, :options, :method, :messages
 
+    REJECTED_OPTIONS = [:if, :on, :unless, :tokenizer, :scope, :case_sensitive]
+
     def initialize(object, method, amv)
       @kind     = amv.kind
-      @options  = amv.options.reject { |key| [:if, :on, :unless, :tokenizer].include?(key)  }
+      @options  = amv.options.reject { |key| REJECTED_OPTIONS.include?(key)  }
       @method   = method
       @messages = Judge::MessageCollection.new(object, method, amv)
     end
