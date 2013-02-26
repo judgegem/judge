@@ -2,7 +2,7 @@ module Judge
   class ValidationsController < ::ApplicationController
     include Judge::Controller
 
-    def index
+    def build
       respond_with(validation(params))
     end
   end
