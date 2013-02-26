@@ -241,13 +241,21 @@
     }
   });
 
+  // Convenience methods for creating Validation objects in different states.
+  var pending = judge.pending = function() {
+    return new Validation();
+  };
+  var closed = judge.closed = function(messages) {
+    return new Validation(messages);
+  };
+
   // Ported ActiveModel validators.
   // See <http://api.rubyonrails.org/classes/ActiveModel/Validations.html> for
   // the originals.
   judge.eachValidators = {
     // ActiveModel::Validations::PresenceValidator
     presence: function(options, messages) {
-      return new Validation(this.value.length ? [] : [messages.blank]);
+      return closed(this.value.length ? [] : [messages.blank]);
     },
     
     // ActiveModel::Validations::LengthValidator
@@ -264,7 +272,7 @@
           msgs.push(messages[properties.message]);
         }
       }, this);
-      return new Validation(msgs);
+      return closed(msgs);
     },
     
     // ActiveModel::Validations::ExclusionValidator
@@ -272,7 +280,7 @@
       var stringIn = _(options['in']).map(function(o) {
         return o.toString();
       });
-      return new Validation(
+      return closed(
         _.include(stringIn, this.value) ? [messages.exclusion] : []
       );
     },
@@ -282,7 +290,7 @@
       var stringIn = _(options['in']).map(function(o) {
         return o.toString();
       });
-      return new Validation(
+      return closed(
         !_.include(stringIn, this.value) ? [messages.inclusion] : []
       );
     },
@@ -312,7 +320,7 @@
           }
         });
       }
-      return new Validation(msgs);
+      return closed(msgs);
     },
     
     // ActiveModel::Validations::FormatValidator
@@ -330,12 +338,12 @@
           msgs.push(messages.invalid);
         }
       }
-      return new Validation(msgs);
+      return closed(msgs);
     },
     
     // ActiveModel::Validations::AcceptanceValidator
     acceptance: function(options, messages) {
-      return new Validation(this.checked === true ? [] : [messages.accepted]);
+      return closed(this.checked === true ? [] : [messages.accepted]);
     },
     
     // ActiveModel::Validations::ConfirmationValidator
@@ -343,14 +351,14 @@
       var id       = this.getAttribute('id'),
           confId   = id + '_confirmation',
           confElem = root.document.getElementById(confId);
-      return new Validation(
+      return closed(
         this.value === confElem.value ? [] : [messages.confirmation]
       );
     },
 
     // ActiveModel::Validations::UniquenessValidator
     uniqueness: function(options, messages) {
-      var validation = new Validation();          
+      var validation = pending();          
       get(urlFor(this, 'uniqueness'), {
         success: function(status, headers, text) {
           validation.close(text);
