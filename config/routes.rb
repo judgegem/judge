@@ -1,3 +1,3 @@
 Judge::Engine.routes.draw do
-  root :to => "validations#index", :as => :validations, :via => :get
+  root :to => "validations#build", :as => :build_validation, :via => :get
 end
