@@ -1,5 +1,5 @@
 module Judge
-  class ValidationsController < ::ApplicationController
+  class ValidationsController < ActionController::Base
     include Judge::Controller
 
     def build
