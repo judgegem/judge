@@ -1,3 +1,5 @@
+require 'uri'
+
 module Judge
   module Controller
 
@@ -19,9 +21,10 @@ module Judge
 
       def normalize_validation_params(params)
         params.keep_if { |key| %w{klass attribute value kind}.include?(key) }
-        params[:klass] = find_klass(params[:klass])
+        params[:klass]     = find_klass(params[:klass])
         params[:attribute] = params[:attribute].to_sym
-        params[:kind] = params[:kind].to_sym
+        params[:value]     = URI.decode(params[:value])
+        params[:kind]      = params[:kind].to_sym
         params
       end
 

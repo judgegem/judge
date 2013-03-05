@@ -144,10 +144,10 @@
         params = {
           'klass'    : classFromName(el.name),
           'attribute': attrFromName(el.name),
-          'value'    : encodeURIComponent(el.value),
+          'value'    : el.value,
           'kind'     : kind
         };
-    return encodeURI(path + queryString(params));
+    return path + queryString(params);
   };
 
   // Convert an object literal into an encoded query string.

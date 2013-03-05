@@ -395,8 +395,8 @@ describe('judge', function() {
       var validation;
       beforeEach(function() {
         validator  = _.bind(judge.eachValidators.uniqueness, el);
-        el.value   = 'foo';
-        el.name    = 'user[vehicle][registration]';
+        el.value   = 'leader@team.com';
+        el.name    = 'team[leader][email]';
       });
       it('returns a pending Validation', function() {
         validation = validator({}, {});
@@ -411,7 +411,8 @@ describe('judge', function() {
           server.respond();
         });
         runs(function() {
-          expect(server.requests[0].url).toBe('/judge?klass=Vehicle&attribute=registration&value=foo&kind=uniqueness');
+          console.log(server.requests);
+          expect(server.requests[0].url).toBe('/judge?klass=Leader&attribute=email&value=leader%40team.com&kind=uniqueness');
         });
       });
       it('closes Validation as valid if the server responds with an empty JSON array', function() {
