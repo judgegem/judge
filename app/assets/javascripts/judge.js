@@ -99,7 +99,7 @@
     if (!!req) {
       req.onreadystatechange = function() {
         if (req.readyState === 4) {
-          req.onreadystatechange = void 0;
+          req.onreadystatechange = function() {};
           var callback = /^20\d$/.test(req.status) ? callbacks.success : callbacks['error'];
           callback(req.status, req.responseHeaders, req.responseText);
         }
