@@ -1,5 +1,5 @@
 // Judge 2.0.3
-// (c) 2011-2012 Joe Corcoran
+// (c) 2011-2013 Joe Corcoran
 // http://raw.github.com/joecorcoran/judge/master/LICENSE.txt
 
 // This is judge.js: the JavaScript part of Judge. Judge is a client-side
