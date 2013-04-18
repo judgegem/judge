@@ -10,13 +10,13 @@
       "spec/javascripts/support/tap-reporter.js",
       "spec/javascripts/support/tap-runner.js",
       "spec/javascripts/judge-spec.js"
-    ]
-  },
-  "browsers": {
-    "ie": [6, 7, 8, 9],
-    "firefox": [20],
-    "chrome": [26],
-    "safari": [6.0],
-    "opera": [12]
+    ],
+    "browsers": {
+      "ie": [6, 7, 8, 9],
+      "firefox": [20],
+      "chrome": [26],
+      "safari": [6.0],
+      "opera": [12]
+    }
   }
 }
