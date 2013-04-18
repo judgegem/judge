@@ -18,7 +18,9 @@
       "firefox": [3.6, 19],
       "chrome": [25],
       "safari": [6],
-      "opera": [12]
+      "opera": [12],
+      "iphone": [6],
+      "ipad": [6]
     }
   }
 }
