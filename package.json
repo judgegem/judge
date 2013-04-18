@@ -9,8 +9,8 @@
       "spec/javascripts/helpers/customMatchers.js",
       "spec/javascripts/support/jasmine.js",
       "spec/javascripts/support/tap-reporter.js",
-      "spec/javascripts/support/tap-runner.js",
-      "spec/javascripts/judge-spec.js"
+      "spec/javascripts/judge-spec.js",
+      "spec/javascripts/support/tap-runner.js"
     ],
     "browsers": {
       "ie": [6, 7, 8, 9],
