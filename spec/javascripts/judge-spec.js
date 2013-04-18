@@ -411,7 +411,6 @@ describe('judge', function() {
           server.respond();
         });
         runs(function() {
-          console.log(server.requests);
           expect(server.requests[0].url).toBe('/judge?klass=Leader&attribute=email&value=leader%40team.com&kind=uniqueness');
         });
       });
