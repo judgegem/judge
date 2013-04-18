@@ -1,5 +1,6 @@
 {
-  "name": "judge.js",
+  "name": "judge",
+  "version": "2.0.3",
   "testling": {
     "scripts": [
       "vendor/assets/javascripts/*.js",
