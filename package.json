@@ -7,6 +7,7 @@
       "spec/javascripts/helpers/sinon.js",
       "spec/javascripts/helpers/sinon-ie.js",
       "spec/javascripts/helpers/customMatchers.js",
+      "spec/javascripts/support/jasmine.js",
       "spec/javascripts/support/tap-reporter.js",
       "spec/javascripts/support/tap-runner.js",
       "spec/javascripts/judge-spec.js"
