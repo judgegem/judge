@@ -9,8 +9,8 @@ module Judge
     end
 
     def validation(params)
-      params = normalize_validation_params(params)
-      if params[:klass] && Judge.config.exposed?(params[:klass], params[:attribute])
+      params = normalized_params(params)
+      if params_present?(params) && params_exposed?(params)
         Validation.new(params)
       else
         NullValidation.new(params)
@@ -19,12 +19,22 @@ module Judge
 
     private
 
-      def normalize_validation_params(params)
-        params.keep_if { |key| %w{klass attribute value kind}.include?(key) }
-        params[:klass]     = find_klass(params[:klass])
-        params[:attribute] = params[:attribute].to_sym
-        params[:value]     = URI.decode(params[:value])
-        params[:kind]      = params[:kind].to_sym
+      REQUIRED_PARAMS = %w{klass attribute value kind}
+
+      def params_exposed?(params)
+        Judge.config.exposed?(params[:klass], params[:attribute])
+      end
+
+      def params_present?(params)
+        params.keys == REQUIRED_PARAMS && params.values.all?
+      end
+
+      def normalized_params(params)
+        params = params.dup.keep_if { |k| REQUIRED_PARAMS.include?(k) }
+        params[:klass]     = find_klass(params[:klass]) if params[:klass]
+        params[:attribute] = params[:attribute].to_sym  if params[:attribute]
+        params[:value]     = URI.decode(params[:value]) if params[:value]
+        params[:kind]      = params[:kind].to_sym       if params[:kind]
         params
       end
 
