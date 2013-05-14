@@ -254,7 +254,7 @@ If you use [Formtastic](https://github.com/justinfrench/formtastic) or [SimpleFo
 
 ### Formtastic
 
-https://github.com/joecorcoran/judge-formtastic
+[https://github.com/joecorcoran/judge-formtastic](https://github.com/joecorcoran/judge-formtastic)
 
 ```ruby
 gem 'judge-formtastic'
@@ -268,7 +268,7 @@ end
 
 ### SimpleForm
 
-https://github.com/joecorcoran/judge-simple_form
+[https://github.com/joecorcoran/judge-simple_form](https://github.com/joecorcoran/judge-simple_form)
 
 ```ruby
 gem 'judge-simple_form'
@@ -282,6 +282,6 @@ end
 
 ## License
 
-Released under an MIT license (see LICENSE.txt).
+[Released under an MIT license](https://github.com/joecorcoran/judge/blob/master/LICENSE.txt).
 
 [blog.joecorcoran.co.uk](http://blog.joecorcoran.co.uk) | [@josephcorcoran](http://twitter.com/josephcorcoran)
