@@ -1,4 +1,4 @@
-# Judge
+# [Judge](http://rubygems.org/gems/judge)
 
 [![Build status](https://secure.travis-ci.org/joecorcoran/judge.png?branch=master)](http://travis-ci.org/joecorcoran/judge)
 
@@ -172,12 +172,12 @@ end
 
 ```ruby
 form_for(@post, :builder => Judge::FormBuilder) do |f|
-  text_field :title, :validate => true
+  f.text_field :title, :validate => true
 end
 ```
 
 Judge will look for the `not_foo` message at
-*activerecord.errors.models.post.attributes.title.not_foo*
+`activerecord.errors.models.post.attributes.title.not_foo`
 first and then onwards down the [Rails I18n lookup chain](http://guides.rubyonrails.org/i18n.html#translations-for-active-record-models).
 
 We then need to add our own validator method to the `judge.eachValidators` object on the client side:
@@ -280,8 +280,8 @@ simple_form_for(@user) do |f|
 end
 ```
 
-## License
+## Credit
+
+Created by [Joe Corcoran](mailto:joecorcoran@gmail.com), whose [blog](http://blog.joecorcoran.co.uk) and [tweets](http://twitter.com/josephcorcoran) you can read on the world wide internet. Thank you to every user, email corresponder and pull request submitter.
 
 [Released under an MIT license](https://github.com/joecorcoran/judge/blob/master/LICENSE.txt).
-
-[blog.joecorcoran.co.uk](http://blog.joecorcoran.co.uk) | [@josephcorcoran](http://twitter.com/josephcorcoran)
