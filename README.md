@@ -41,7 +41,9 @@ Judge makes three JavaScript files available. You'll always need *judge.js* and 
 
 Add `judge` to your Gemfile and run `bundle install`. Then run
 
-    $ rails generate judge:install path/to/your/js/dir
+```bash
+$ rails generate judge:install path/to/your/js/dir
+```
 
 to copy *judge.js* to your application. There are **--json2** and **--underscore** options to copy the dependencies too.
 
