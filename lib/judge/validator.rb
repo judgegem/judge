@@ -4,7 +4,7 @@ module Judge
 
     attr_reader :active_model_validator, :kind, :options, :method, :messages
 
-    REJECTED_OPTIONS = [:if, :on, :unless, :tokenizer, :scope, :case_sensitive]
+    REJECTED_OPTIONS = [:case_sensitive]
 
     def initialize(object, method, amv)
       @kind     = amv.kind
