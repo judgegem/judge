@@ -31,7 +31,7 @@ module Judge
         # Apparently, uniqueness validations always have the case_sensitive option, even
         # when it is not explicitly used (in which case it has value true). Hence, we only
         # report the validation as unsupported when case_sensitive is set to false.
-        (amv.options.keys & UNSUPPORTED_OPTIONS).length == 1 && amv.options[:case_sensitive] == false
+        (amv.options.keys & UNSUPPORTED_OPTIONS).length > 1 || amv.options[:case_sensitive] == false
       end
 
   end
