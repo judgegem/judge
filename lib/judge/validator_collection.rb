@@ -9,7 +9,7 @@ module Judge
     def initialize(object, method)
       amvs = object.class.validators_on(method)
       amvs = amvs.reject { |amv| reject?(amv) }
-      amvs = amvs.reject { |amv| unsupported_options?(amv) && reject?(amv) != false } if Judge.config.ignore_unsupported_validators
+      amvs = amvs.reject { |amv| unsupported_options?(amv) && reject?(amv) != false } if Judge.config.ignore_unsupported_validators?
       @validators = amvs.map { |amv| Judge::Validator.new(object, method, amv) }
     end
 

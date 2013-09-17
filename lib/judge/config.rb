@@ -5,8 +5,7 @@ module Judge
     include Singleton
 
     @@exposed = {}
-
-    cattr_accessor :ignore_unsupported_validators
+    @@ignore_unsupported_validators = false
 
     def expose(klass, *attributes)
       attrs = (@@exposed[klass] ||= [])
@@ -28,6 +27,14 @@ module Judge
       if attributes.empty? || @@exposed[klass].empty?
         @@exposed.delete(klass)
       end
+    end
+    
+    def ignore_unsupported_validators(status)
+      @@ignore_unsupported_validators = status
+    end
+
+    def ignore_unsupported_validators?
+      @@ignore_unsupported_validators
     end
   end
 
