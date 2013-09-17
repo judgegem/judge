@@ -18,7 +18,7 @@ describe Judge::ValidatorCollection do
     vc.should respond_to :each
   end
   
-  it "respects the ignore_unsupported_validators configuration option" do
+  it "respects the global ignore_unsupported_validators configuration option" do
     vc.validators.length.should eq 2
     Judge::ValidatorCollection.new(FactoryGirl.build(:user), :country).validators.length.should eq 2
     Judge::ValidatorCollection.new(FactoryGirl.build(:user), :bio).validators.length.should eq 2
@@ -30,4 +30,10 @@ describe Judge::ValidatorCollection do
     Judge::ValidatorCollection.new(FactoryGirl.build(:user), :dob).validators.length.should eq 1
   end
 
+  it "respects the per-validator judge configuration option" do
+    Judge::ValidatorCollection.new(FactoryGirl.build(:user), :team_id).validators.length.should eq 1
+    Judge::ValidatorCollection.new(FactoryGirl.build(:user), :discipline_id).validators.length.should eq 2    
+    Judge::ValidatorCollection.new(FactoryGirl.build(:user), :time_zone).validators.length.should eq 1    
+  end
+  
 end
