@@ -15,4 +15,12 @@ class User < ActiveRecord::Base
   validates :time_zone,     :presence => true
   validates :discipline_id, :presence => true
   validates :city,          :city => true
+  validates :name,          :length => { :maximum => 10 }, :if => Proc.new { false }
+  validates :bio,           :uniqueness => true
+  validates :country,       :uniqueness => { :case_sensitive => false }
+  validates :dob,           :uniqueness => true, :unless => Proc.new { true }
+  validates :team_id,       :numericality => { :only_integer => true, :judge => :ignore }
+  validates :discipline_id, :uniqueness => { :judge => :force }, :if => Proc.new { false }
+  validates :time_zone,     :presence => { :judge => :ignore }
+  validates :gender,        :presence => { :judge => :unknown_option }
 end
