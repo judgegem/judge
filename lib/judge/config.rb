@@ -6,6 +6,8 @@ module Judge
 
     @@exposed = {}
 
+    cattr_accessor :ignore_unsupported_validators
+
     def expose(klass, *attributes)
       attrs = (@@exposed[klass] ||= [])
       attrs.concat(attributes).uniq!

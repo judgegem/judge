@@ -7,7 +7,8 @@ module Judge
     attr_reader :validators
     
     def initialize(object, method)
-      amvs = object.class.validators_on(method).reject { |amv| unsupported_options?(amv) }
+      amvs = object.class.validators_on(method)
+      amvs = amvs.reject { |amv| unsupported_options?(amv) } if Judge.config.ignore_unsupported_validators
       @validators = amvs.map { |amv| Judge::Validator.new(object, method, amv) }
     end
 
@@ -31,7 +32,8 @@ module Judge
         # Apparently, uniqueness validations always have the case_sensitive option, even
         # when it is not explicitly used (in which case it has value true). Hence, we only
         # report the validation as unsupported when case_sensitive is set to false.
-        (amv.options.keys & UNSUPPORTED_OPTIONS).length > 1 || amv.options[:case_sensitive] == false
+        unsupported = amv.options.keys & UNSUPPORTED_OPTIONS
+        unsupported.length > 1 || unsupported != [:case_sensitive] || amv.options[:case_sensitive] == false
       end
 
   end
