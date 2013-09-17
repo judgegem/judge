@@ -36,4 +36,8 @@ describe Judge::ValidatorCollection do
     Judge::ValidatorCollection.new(FactoryGirl.build(:user), :time_zone).validators.length.should eq 1    
   end
   
+  it "ignores unknown per-validator judge configuration options" do
+    Judge::ValidatorCollection.new(FactoryGirl.build(:user), :gender).validators.length.should eq 2
+  end
+  
 end

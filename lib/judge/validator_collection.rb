@@ -37,10 +37,14 @@ module Judge
         unsupported.length > 1 || unsupported != [:case_sensitive] || amv.options[:case_sensitive] == false
       end
       
-      # decide wether to reject a validation based on the presence of the judge option
+      # decides whether to reject a validation based on the presence of the judge option.
+      # return values:
+      #   true  when :judge => :ignore is present in the options
+      #   false when :judge => :force is present
+      #   nil otherwise (e.g. when no :judge option or an unknown option is present)
       def reject?(amv)
-        return if amv.options[:judge].nil?
-        !amv.options[:judge]
+        return unless [:force, :ignore].include?( amv.options[:judge] )
+        amv.options[:judge] == :ignore ? true : false
       end
 
   end
