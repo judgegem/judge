@@ -15,4 +15,8 @@ class User < ActiveRecord::Base
   validates :time_zone,     :presence => true
   validates :discipline_id, :presence => true
   validates :city,          :city => true
+  validates :name,          :length => { :maximum => 10 }, :if => Proc.new { false }
+  validates :bio,           :uniqueness => true
+  validates :country,       :uniqueness => { :case_sensitive => false }
+  validates :dob,           :uniqueness => true, :unless => Proc.new { true }
 end
