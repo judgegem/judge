@@ -20,6 +20,7 @@ notifications:
 gemfile:
   - "gemfiles/rails_3_1.gemfile"
   - "gemfiles/rails_3_2.gemfile"
+  - "gemfiles/rails_4.gemfile"
 
 branches:
   only:
