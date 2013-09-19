@@ -27,3 +27,8 @@ branches:
     - master
     - engine
     - v1.6
+
+matrix:
+  exclude:
+    - rvm: 1.9.2
+    - gemfile: "gemfiles/rails_4.gemfile"
