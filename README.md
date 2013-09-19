@@ -2,9 +2,7 @@
 
 [![Build status](https://secure.travis-ci.org/joecorcoran/judge.png?branch=master)](http://travis-ci.org/joecorcoran/judge)
 
-[![browser support](https://ci.testling.com/joecorcoran/judge.png)](https://ci.testling.com/joecorcoran/judge)
-
-Judge allows easy client side form validation for Rails 3 by porting many `ActiveModel::Validation` features to JavaScript. The most common validations work through JSON strings stored within HTML5 data attributes and are executed purely on the client side. Wherever you need to, Judge provides a simple interface for AJAX validations too.
+Judge allows easy client side form validation for Rails by porting many `ActiveModel::Validation` features to JavaScript. The most common validations work through JSON strings stored within HTML5 data attributes and are executed purely on the client side. Wherever you need to, Judge provides a simple interface for AJAX validations too.
 
 ## Rationale
 
@@ -14,7 +12,7 @@ In many cases it would be simpler to safely expose the validation information fr
 
 ## Installation
 
-Judge only supports Rails 3.1 or higher.
+Judge supports Rails >= 3.1.
 
 Judge relies on [Underscore.js](underscore) in general and [JSON2.js](json2) for browsers that lack proper JSON support. If your application already makes use of these files, you can safely ignore the versions provided with Judge.
 
