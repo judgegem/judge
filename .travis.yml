@@ -1,6 +1,9 @@
+language: ruby
+
 rvm:
   - 1.9.2
   - 1.9.3
+  - 2.0.0
 
 before_script:
   - "export DISPLAY=:99.0"
@@ -13,22 +16,12 @@ before_script:
 
 script: "bundle exec rake"
 
-notifications:
-  recipients:
-    - joecorcoran@gmail.com
-
 gemfile:
   - "gemfiles/rails_3_1.gemfile"
   - "gemfiles/rails_3_2.gemfile"
   - "gemfiles/rails_4.gemfile"
 
-branches:
-  only:
-    - master
-    - engine
-    - v1.6
-
 matrix:
   exclude:
     - rvm: 1.9.2
-    - gemfile: "gemfiles/rails_4.gemfile"
+      gemfile: "gemfiles/rails_4.gemfile"
