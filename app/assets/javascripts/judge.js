@@ -326,16 +326,18 @@
     // ActiveModel::Validations::FormatValidator
     format: function(options, messages) {
       var msgs  = [];
-      if (_(options).has('with')) {
-        var withReg = convertRegExp(options['with']);
-        if (!withReg.test(this.value)) {
-          msgs.push(messages.invalid);
+      if (!(_(options).has('allow_blank') && !this.value.length)) {
+        if (_(options).has('with')) {
+          var withReg = convertRegExp(options['with']);
+          if (!withReg.test(this.value)) {
+            msgs.push(messages.invalid);
+          }
         }
-      }
-      if (_(options).has('without')) {
-        var withoutReg = convertRegExp(options.without);
-        if (withoutReg.test(this.value)) {
-          msgs.push(messages.invalid);
+        if (_(options).has('without')) {
+          var withoutReg = convertRegExp(options.without);
+          if (withoutReg.test(this.value)) {
+            msgs.push(messages.invalid);
+          }
         }
       }
       return closed(msgs);
