@@ -5,8 +5,9 @@ pkg/*
 docs
 doc
 rdoc
-gem_graph.png
 .rvmrc
+.ruby-version
+.ruby-gemset
 .rspec
 spec/dummy/tmp/**/*
 *.sqlite3
