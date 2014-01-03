@@ -1,8 +1,11 @@
+require 'rack'
+
 class JavascriptSpecServer < Struct.new(:port, :root)
+
   def boot
     thread = Thread.new do
       app = Rack::File.new(root)
-      Rack::Server.start(:app => app, :Port => port)
+      Rack::Server.start(:app => app, :Port => port, :AccessLog => [])
     end
     thread.join(0.1) until ready?
   end
