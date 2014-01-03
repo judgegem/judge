@@ -14,9 +14,10 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency     'rails',              '>= 3.1'    
 
-  s.add_development_dependency 'rspec-rails',        '~> 2.13.0'
+  s.add_development_dependency 'rspec-rails',            '~> 2.13'
+  s.add_development_dependency 'rspec-extra-formatters', '~> 1.0'
   s.add_development_dependency 'jquery-rails'
-  s.add_development_dependency 'sqlite3',            '~> 1.3.7'
-  s.add_development_dependency 'factory_girl',       '~> 2.6'
-  s.add_development_dependency 'appraisal',          '~> 0.5.1'
+  s.add_development_dependency 'sqlite3',                '~> 1.3.7'
+  s.add_development_dependency 'factory_girl',           '~> 2.6'
+  s.add_development_dependency 'appraisal',              '~> 0.5.1'
 end
