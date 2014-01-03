@@ -3,19 +3,13 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.0
 
 before_script:
   - "RAILS_ENV=test bundle exec rake app:db:schema:load"
 
-script: "bundle exec rake spec"
+script: "bundle exec rake"
 
 gemfile:
   - "gemfiles/rails_3_1.gemfile"
   - "gemfiles/rails_3_2.gemfile"
   - "gemfiles/rails_4.gemfile"
-
-matrix:
-  include:
-    - rvm: 2.1.0
-      script: "bundle exec rake js"
