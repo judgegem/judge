@@ -6,10 +6,6 @@ rvm:
   - 2.0.0
 
 before_script:
-  - "git clone git://github.com/n1k0/casperjs.git"
-  - "cd casperjs"
-  - "git checkout tags/1.0.4"
-  - "sudo ln -sf `pwd`/bin/casperjs /usr/local/bin/casperjs"
   - "RAILS_ENV=test bundle exec rake app:db:schema:load"
 
 script: "bundle exec rake"
