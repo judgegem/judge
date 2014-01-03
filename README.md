@@ -304,6 +304,15 @@ simple_form_for(@user) do |f|
 end
 ```
 
+## Contributing
+
+Fork this repo and submit a pull request with an explanation of the changes you've made. If you're thinking of making a relatively big change, open an issue and let's discuss it first! :)
+
+Run tests (the JavaScript tests require [PhantomJS](http://phantomjs.org/)):
+```bash
+$ rake
+```
+
 ## Credit
 
 Created by [Joe Corcoran](mailto:joecorcoran@gmail.com), whose [blog](http://blog.joecorcoran.co.uk) and [tweets](http://twitter.com/josephcorcoran) you can read on the world wide internet. Thank you to every user, email corresponder and pull request submitter.
