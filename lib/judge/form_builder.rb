@@ -4,7 +4,7 @@ module Judge
 
     include Judge::Html
 
-    %w{text_field text_area password_field email_field number_field phone_field range_field search_field telephone_field url_field}.each do |type|
+    %w{text_field text_area password_field email_field number_field phone_field range_field search_field telephone_field url_field file_field}.each do |type|
       helper = <<-END
         def #{type}(method, options = {})
           add_validate_attr!(self.object, method, options)
