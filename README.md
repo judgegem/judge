@@ -116,8 +116,6 @@ end
 * uniqueness;
 * any `EachValidator` that you have written, provided you add a JavaScript version too and add it to `judge.eachValidators`.
 
-Options like *if*, *unless* and *on* are not available as they relate to record persistence.
-
 The *allow_blank* option is available everywhere it should be. Error messages are looked up according to the [Rails i18n API](http://guides.rubyonrails.org/i18n.html#translations-for-active-record-models).
 
 ## Validating uniqueness
@@ -144,6 +142,32 @@ mount Judge::Engine => '/whatever'
 
 ```javascript
 judge.enginePath = '/whatever';
+```
+
+## Unsupported validator options
+
+The `:tokenizer` option is not currently supported.
+
+Options like `:if`, `:unless` and `:on` are not relevant to Judge. They are reliant on areas of your application that Judge does not expose on the client side.
+
+By default, Judge drops these options on the client side. This seems to work well for the common case, but if you want to ignore validators with unsupported options at global level, do the following in your config.
+
+```ruby
+Judge.configure do
+  ignore_unsupported_validators true
+end
+```
+
+You can set this behaviour at the validator level too. In your model, use the `:judge` option.
+
+```ruby
+validates :foo, :presence => { :judge => :ignore }
+```
+
+If you've set unsupported validators to be ignored globally, you can still turn them back on at the validator level.
+
+```ruby
+validates :foo, :presence => { :judge => :force }
 ```
 
 ## Writing your own `EachValidator`
@@ -278,6 +302,15 @@ gem 'judge-simple_form'
 simple_form_for(@user) do |f|
   f.input :name, :validate => true
 end
+```
+
+## Contributing
+
+Fork this repo and submit a pull request with an explanation of the changes you've made. If you're thinking of making a relatively big change, open an issue and let's discuss it first! :)
+
+Run tests (the JavaScript tests require [PhantomJS](http://phantomjs.org/)):
+```bash
+$ rake
 ```
 
 ## Credit

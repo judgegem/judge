@@ -62,7 +62,7 @@
 
   // Some nifty numerical helpers.
   var
-    isInt  = function(value) { return value === +value && value === (value|0); },
+    isInt  = function(value) { return Math.round(value) == value; },
     isEven = function(value) { return (value % 2 === 0) ? true : false; },
     isOdd  = function(value) { return !isEven(value); };
 
