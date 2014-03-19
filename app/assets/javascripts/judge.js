@@ -194,6 +194,7 @@
     this.attrValidators = root.JSON.parse(this.element.getAttribute('data-validate'));
 
     _.each(this.attrValidators, function(av) {
+      av.options || (av.options = {});
       if (this.element.value.length || av.options.allow_blank !== true || (av.kind == "format" && av.options.allow_blank === true)) {
         var method     = _.bind(judge.eachValidators[av.kind], this.element),
             validation = method(av.options, av.messages);
