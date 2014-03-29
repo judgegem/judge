@@ -75,10 +75,16 @@
     var on = string.split('-')[0];
     return (/m/.test(on)) ? 'm' : '';
   };
+  var convertSource = function(string) {
+    var newSource = string.replace(/\\\\/g, '\\')
+    newSource = newSource.replace('\\\A', '^');
+    newSource = newSource.replace('\\\z', '$');
+    return newSource;
+  };
   var convertRegExp = function(string) {
     var parts  = string.slice(1, -1).split(':'),
         flags  = parts.shift().replace('?', ''),
-        source = parts.join(':').replace(/\\\\/g, '\\');
+        source = convertSource(parts.join(':'));
     return new RegExp(source, convertFlags(flags));
   };
 
