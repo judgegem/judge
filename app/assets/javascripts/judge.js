@@ -119,36 +119,40 @@
   };
 
   // Some helper methods for working with Rails-style input attributes.
-  var
-    attrFromName = function(name) {
-      var matches, attr = '';
-      if (matches = name.match(/\[(\w+)\]$/)) {
-        attr = matches[1];
-      }
-      return attr;
-    };
-    classFromName = function(name) {
-      var bracketed, klass = '';
-      if (bracketed = name.match(/\[(\w+)\]/g)) {
-        klass = (bracketed.length > 1) ? camelize(debracket(bracketed[0])) : name.match(/^\w+/)[0];
-      }
-      return klass;
-    };
-    debracket = function(str) {
-      return str.replace(/\[|\]/g, '');
-    };
-    camelize = function(str) {
-      return str.replace(/(^[a-z]|\_[a-z])/g, function($1) {
-        return $1.toUpperCase().replace('_','');
-      });
-    };
+  var attrFromName = function(name) {
+    var matches, attr = '';
+    if (matches = name.match(/\[(\w+)\]$/)) {
+      attr = matches[1];
+    }
+    return attr;
+  };
+  var classFromName = function(name) {
+    var bracketed, klass = '';
+    if (bracketed = name.match(/\[(\w+)\]/g)) {
+      klass = (bracketed.length > 1) ? camelize(debracket(bracketed[0])) : name.match(/^\w+/)[0];
+    }
+    return klass;
+  };
+  var debracket = function(str) {
+    return str.replace(/\[|\]/g, '');
+  };
+  var camelize = function(str) {
+    return str.replace(/(^[a-z]|\_[a-z])/g, function($1) {
+      return $1.toUpperCase().replace('_','');
+    });
+  };
+  // Allow for overriding the class name to be sent to judge to allow for namespace modules
+  var classFromEl = function(el) {
+    var klass = el.getAttribute('data-model-class');
+    return klass || classFromName(el.name);
+  }
 
   // Build the URL necessary to send a GET request to the mounted validations
   // controller to check the validity of the given form element.
   var urlFor = judge.urlFor = function(el, kind) {
     var path   = judge.enginePath,
         params = {
-          'klass'    : classFromName(el.name),
+          'klass'    : classFromEl(el),
           'attribute': attrFromName(el.name),
           'value'    : el.value,
           'kind'     : kind
