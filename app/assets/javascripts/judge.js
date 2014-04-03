@@ -72,8 +72,7 @@
   // with an XRegExp plugin which will port some Ruby regexp features to
   // JavaScript.
   var convertFlags = function(string) {
-    var on = string.split('-')[0];
-    return (/m/.test(on)) ? 'm' : '';
+    return string.replace(/[^im]/g, '');
   };
   var convertSource = function(string) {
     var newSource = string.replace(/\\\\/g, '\\')
