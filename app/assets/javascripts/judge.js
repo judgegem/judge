@@ -65,6 +65,7 @@
     isInt  = function(value) { return Math.round(value) == value; },
     isEven = function(value) { return (value % 2 === 0) ? true : false; },
     isOdd  = function(value) { return !isEven(value); };
+    isZero = function(value) { return value == 0; }
 
   // Converts a Ruby regular expression, given as a string, into JavaScript.
   // This is rudimentary at best, as there are many, many differences between
@@ -194,7 +195,7 @@
     this.attrValidators = root.JSON.parse(this.element.getAttribute('data-validate'));
 
     _.each(this.attrValidators, function(av) {
-      if (this.element.value.length || av.options.allow_blank !== true) {
+      if (av.kind == "length" || this.element.value.length || av.options.allow_blank !== true) {
         var method     = _.bind(judge.eachValidators[av.kind], this.element),
             validation = method(av.options, av.messages);
         validation.on('close', this.tryClose, this);
@@ -267,7 +268,7 @@
             is:      { operator: '!=', message: 'wrong_length' }
           };
       _(types).each(function(properties, type) {
-        var invalid = operate(this.value.length, properties.operator, options[type]);
+        var invalid = !(isZero(this.value.length) && options.allow_blank) && operate(this.value.length, properties.operator, options[type]);
         if (_(options).has(type) && invalid) {
           msgs.push(messages[properties.message]);
         }
