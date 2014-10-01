@@ -78,7 +78,7 @@
   var convertRegExp = function(string) {
     var parts  = string.slice(1, -1).split(':'),
         flags  = parts.shift().replace('?', ''),
-        source = parts.join(':').replace(/\\\\/g, '\\');
+        source = parts.join(':').replace(/\\\\/g, '\\').replace('\\A', '^').replace('\\z', '$');
     return new RegExp(source, convertFlags(flags));
   };
 
@@ -257,7 +257,7 @@
     presence: function(options, messages) {
       return closed(this.value.length ? [] : [messages.blank]);
     },
-    
+
     // ActiveModel::Validations::LengthValidator
     length: function(options, messages) {
       var msgs = [],
@@ -274,7 +274,7 @@
       }, this);
       return closed(msgs);
     },
-    
+
     // ActiveModel::Validations::ExclusionValidator
     exclusion: function(options, messages) {
       var stringIn = _(options['in']).map(function(o) {
@@ -284,7 +284,7 @@
         _.include(stringIn, this.value) ? [messages.exclusion] : []
       );
     },
-    
+
     // ActiveModel::Validations::InclusionValidator
     inclusion: function(options, messages) {
       var stringIn = _(options['in']).map(function(o) {
@@ -294,7 +294,7 @@
         !_.include(stringIn, this.value) ? [messages.inclusion] : []
       );
     },
-    
+
     // ActiveModel::Validations::NumericalityValidator
     numericality: function(options, messages) {
       var operators = {
@@ -305,7 +305,7 @@
             less_than_or_equal_to: '<='
           },
           msgs = [],
-          parsedValue = parseFloat(this.value, 10); 
+          parsedValue = parseFloat(this.value, 10);
 
       if (isNaN(Number(this.value))) {
         msgs.push(messages.not_a_number);
@@ -322,7 +322,7 @@
       }
       return closed(msgs);
     },
-    
+
     // ActiveModel::Validations::FormatValidator
     format: function(options, messages) {
       var msgs  = [];
@@ -340,12 +340,12 @@
       }
       return closed(msgs);
     },
-    
+
     // ActiveModel::Validations::AcceptanceValidator
     acceptance: function(options, messages) {
       return closed(this.checked === true ? [] : [messages.accepted]);
     },
-    
+
     // ActiveModel::Validations::ConfirmationValidator
     confirmation: function(options, messages) {
       var id       = this.getAttribute('id'),
@@ -358,7 +358,7 @@
 
     // ActiveModel::Validations::UniquenessValidator
     uniqueness: function(options, messages) {
-      var validation = pending();          
+      var validation = pending();
       get(urlFor(this, 'uniqueness'), {
         success: function(status, headers, text) {
           validation.close(text);
