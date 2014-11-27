@@ -1,8 +1,9 @@
 describe('judge', function() {
   var server,
-      uniquenessAttr = '[{"kind":"uniqueness","options":{},"messages":{}}]',
-      presenceAttr   = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]',
-      mixedAttr      = '[{"kind":"uniqueness","options":{},"messages":{}},{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]';
+      uniquenessAttr   = '[{"kind":"uniqueness","options":{},"messages":{}}]',
+      presenceAttr     = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]',
+      uniqPresenceAttr = '[{"kind":"uniqueness","options":{},"messages":{}},{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]',
+      mixedAttr        = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}},{"kind":"inclusion","options":{"in":["a","b"]},"messages":{"inclusion":"must be a or b"}}]';
 
   beforeEach(function() {
     this.addMatchers(customMatchers);
@@ -16,7 +17,7 @@ describe('judge', function() {
     var el;
     beforeEach(function() {
       el = document.createElement('input');
-      el.setAttribute('data-validate', presenceAttr);
+      el.setAttribute('data-validate', mixedAttr);
     });
     it('returns a ValidationQueue', function() {
       expect(judge.validate(el)).toEqual(jasmine.any(judge.ValidationQueue));
@@ -24,19 +25,22 @@ describe('judge', function() {
     describe('when given one callback', function() {
       it('calls callback with status and messages', function() {
         var callback = jasmine.createSpy();
+        el.value = '';
         judge.validate(el, callback);
-        expect(callback).toHaveBeenCalledWith(el, 'invalid', ['must not be blank']);
+        expect(callback).toHaveBeenCalledWith(el, 'invalid', ['must not be blank', 'must be a or b']);
+        expect(callback.callCount).toEqual(1);
       });
     });
     describe('when given named callbacks', function() {
       it('calls first callback when queue is closed as valid', function() {
         var first = jasmine.createSpy(), second = jasmine.createSpy();
-        el.value = 'foo';
+        el.value = 'a';
         judge.validate(el, {
           valid: first,
           invalid: second
         });
         expect(first).toHaveBeenCalled();
+        expect(first.callCount).toEqual(1);
       });
       it('calls second callback wth messages when queue is closed as invalid', function() {
         var first = jasmine.createSpy(), second = jasmine.createSpy();
@@ -44,7 +48,8 @@ describe('judge', function() {
           valid: first,
           invalid: second
         });
-        expect(second).toHaveBeenCalledWith(el, ['must not be blank']);
+        expect(second).toHaveBeenCalledWith(el, ['must not be blank', 'must be a or b']);
+        expect(second.callCount).toEqual(1);
       });
     });
   });
@@ -82,7 +87,7 @@ describe('judge', function() {
       spyOn(object, 'trigger');
       var callback = jasmine.createSpy();
       object.on('eventName', callback);
-      expect(object.trigger).toHaveBeenCalledWith('bind');
+      expect(object.trigger).toHaveBeenCalledWith('bind', 'eventName');
     });
   });
 
@@ -91,7 +96,7 @@ describe('judge', function() {
     describe('constructor', function() {
       beforeEach(function() {
         el = document.createElement('input');
-        el.setAttribute('data-validate', mixedAttr);
+        el.setAttribute('data-validate', uniqPresenceAttr);
         queue = new judge.ValidationQueue(el);
       });
       it('creates Validation objects from data attr', function() {
@@ -111,9 +116,13 @@ describe('judge', function() {
         el.setAttribute('data-validate', uniquenessAttr);
         queue = new judge.ValidationQueue(el);
         callback = jasmine.createSpy();
+
         queue.on('close', callback);
+        expect(callback).not.toHaveBeenCalled();
+
         queue.validations[0].close([]);
         expect(callback).toHaveBeenCalledWith(el, 'valid', []);
+        expect(callback.callCount).toEqual(1);
       });
       it('triggers close event immediately if queued Validations are closed when event is bound', function() {
         el = document.createElement('input');
@@ -122,6 +131,7 @@ describe('judge', function() {
         callback = jasmine.createSpy();
         queue.on('close', callback);
         expect(callback).toHaveBeenCalledWith(el, 'invalid', ['must not be blank']);
+        expect(callback.callCount).toEqual(1);
       });
       it('does not trigger close event if queued Validations are never closed', function() {
         el = document.createElement('input');
@@ -139,6 +149,7 @@ describe('judge', function() {
         callback = jasmine.createSpy();
         queue.on('valid', callback);
         expect(callback).toHaveBeenCalledWith(el, []);
+        expect(callback.callCount).toEqual(1);
       });
       it('triggers invalid event if any queued Validations are invalid when closed', function() {
         el = document.createElement('input');
@@ -147,6 +158,7 @@ describe('judge', function() {
         callback = jasmine.createSpy();
         queue.on('invalid', callback);
         expect(callback).toHaveBeenCalledWith(el, ['must not be blank']);
+        expect(callback.callCount).toEqual(1);
       });
     });
   });
