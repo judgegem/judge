@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = Judge::VERSION
   s.homepage = 'http://github.com/joecorcoran/judge'
   s.summary = 'Client side validation for Rails'
-  s.description = 'Validate Rails 3 forms on the client side, simply'
+  s.description = 'Validate Rails forms on the client side, simply'
   s.email = 'joecorcoran@gmail.com'
   s.authors = ['Joe Corcoran']
   s.files = Dir['{app,config,lib,vendor}/**/*'] + ['LICENSE.txt', 'README.md']
@@ -20,5 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'jquery-rails'
   s.add_development_dependency 'sqlite3',                '~> 1.3'
   s.add_development_dependency 'factory_girl',           '~> 2.6'
-  s.add_development_dependency 'appraisal',              '~> 0.5'
+  s.add_development_dependency 'appraisal',              '~> 1.0'
 end

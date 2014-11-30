@@ -310,7 +310,13 @@ Fork this repo and submit a pull request with an explanation of the changes you'
 
 Run tests (the JavaScript tests require [PhantomJS](http://phantomjs.org/)):
 ```bash
-$ rake
+$ bundle exec rake
+```
+
+To test against all supported minor versions of Rails:
+```bash
+$ bundle exec rake appraisal:install
+$ bundle exec rake appraisal
 ```
 
 ## Credit
