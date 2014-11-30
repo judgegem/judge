@@ -168,20 +168,22 @@
   // Backbone.js (c) 2010-2012 Jeremy Ashkenas, DocumentCloud Inc.
   // http://backbonejs.org
   var Dispatcher = judge.Dispatcher = {
-    on: function(event, callback, scope) {
+    on: function(eventName, callback, scope) {
       if (!_.isFunction(callback)) return this;
       this._events || (this._events = {});
-      var events = this._events[event] || (this._events[event] = []);
+      var events = this._events[eventName] || (this._events[eventName] = []);
       events.push({ callback: callback, scope: scope || this });
-      this.trigger('bind');
+      if (eventName !== 'bind') {
+        this.trigger('bind', eventName);
+      }
       return this;
     },
-    trigger: function(event) {
+    trigger: function(eventName) {
       if (!this._events) return this;
-      var args      = _.rest(arguments),
-          events = this._events[event] || (this._events[event] = []);
-      _.each(events, function(event) {
-        event.callback.apply(event.scope, args);
+      var args   = _.rest(arguments),
+          events = this._events[eventName] || (this._events[eventName] = []);
+      _.each(events, function(eventObj) {
+        eventObj.callback.apply(eventObj.scope, args);
       });
       return this;
     }
@@ -198,23 +200,31 @@
         var method     = _.bind(judge.eachValidators[av.kind], this.element),
             validation = method(av.options, av.messages);
         validation.on('close', this.tryClose, this);
-        this.on('bind', this.tryClose, this);
         this.validations.push(validation);
       }
     }, this);
-    this.tryClose.call(this);
+
+    this.on('bind', this.tryClose, this);
   };
+
   _.extend(ValidationQueue.prototype, Dispatcher, {
-    tryClose: function() {
+    tryClose: function(eventName) {
       var report = _.reduce(this.validations, function(obj, validation) {
         obj.statuses = _.union(obj.statuses, [validation.status()]);
         obj.messages = _.union(obj.messages, _.compact(validation.messages));
         return obj;
       }, { statuses: [], messages: [] }, this);
+
       if (!_.contains(report.statuses, 'pending')) {
         var status = _.contains(report.statuses, 'invalid') ? 'invalid' : 'valid';
+
+        // handle single callback
         this.trigger('close', this.element, status, report.messages);
-        this.trigger(status, this.element, report.messages);
+
+        // handle named callbacks
+        if (status === eventName) {
+          this.trigger(status, this.element, report.messages);
+        }
       }
     }
   });
