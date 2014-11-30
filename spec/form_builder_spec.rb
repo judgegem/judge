@@ -2,7 +2,11 @@ require "spec_helper"
 
 describe Judge::FormBuilder do
 
-  let(:builder) { Judge::FormBuilder.new(:user, FactoryGirl.build(:user), ActionView::Base.new, {}, nil) }
+  let(:builder) do
+    args = [:user, FactoryGirl.build(:user), ActionView::Base.new, {}]
+    args << nil if Rails::VERSION::MAJOR == 3
+    Judge::FormBuilder.new(*args)
+  end
   let(:categories) do
     category = FactoryGirl.build(:category)
     sport = FactoryGirl.build(:sport)
