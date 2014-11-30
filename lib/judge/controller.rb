@@ -1,4 +1,5 @@
 require 'uri'
+require 'responders'
 
 module Judge
   module Controller
