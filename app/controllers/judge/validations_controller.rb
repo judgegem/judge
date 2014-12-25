@@ -3,7 +3,7 @@ module Judge
     include Judge::Controller
 
     def build
-      respond_with(validation(params))
+      render json: validation(params)
     end
   end
 end
