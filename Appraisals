@@ -16,5 +16,4 @@ end
 
 appraise 'rails_4_2' do
   gem 'rails', '4.2.0.rc1'
-  gem 'responders', '~> 2.0'
 end

@@ -1,13 +1,7 @@
 require 'uri'
-require 'responders'
 
 module Judge
   module Controller
-
-    def self.included(base)
-      base.clear_respond_to
-      base.respond_to(:json)
-    end
 
     def validation(params)
       params = normalized_params(params)

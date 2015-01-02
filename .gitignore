@@ -10,6 +10,7 @@ rdoc
 .ruby-gemset
 .rspec
 spec/dummy/tmp/**/*
+spec/dummy/log/**/*
 *.sqlite3
 .rspec
 gemfiles/*.lock
