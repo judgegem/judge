@@ -136,6 +136,11 @@
         return $1.toUpperCase().replace('_','');
       });
     };
+    originalValue = function(el) {
+      var validations = JSON.parse(el.getAttribute('data-validate'));
+      var validation = _.filter(validations, function (validation) { return validation.kind == "uniqueness"})[0];
+      return validation.original_value;
+    };
 
   // Build the URL necessary to send a GET request to the mounted validations
   // controller to check the validity of the given form element.
@@ -147,6 +152,9 @@
           'value'    : el.value,
           'kind'     : kind
         };
+        if (kind == 'uniqueness') {
+          params['original_value'] = originalValue(el);
+        }
     return path + queryString(params);
   };
 
@@ -265,7 +273,7 @@
     presence: function(options, messages) {
       return closed(this.value.length ? [] : [messages.blank]);
     },
-    
+
     // ActiveModel::Validations::LengthValidator
     length: function(options, messages) {
       var msgs = [],
@@ -282,7 +290,7 @@
       }, this);
       return closed(msgs);
     },
-    
+
     // ActiveModel::Validations::ExclusionValidator
     exclusion: function(options, messages) {
       var stringIn = _(options['in']).map(function(o) {
@@ -292,7 +300,7 @@
         _.include(stringIn, this.value) ? [messages.exclusion] : []
       );
     },
-    
+
     // ActiveModel::Validations::InclusionValidator
     inclusion: function(options, messages) {
       var stringIn = _(options['in']).map(function(o) {
@@ -302,7 +310,7 @@
         !_.include(stringIn, this.value) ? [messages.inclusion] : []
       );
     },
-    
+
     // ActiveModel::Validations::NumericalityValidator
     numericality: function(options, messages) {
       var operators = {
@@ -313,7 +321,7 @@
             less_than_or_equal_to: '<='
           },
           msgs = [],
-          parsedValue = parseFloat(this.value, 10); 
+          parsedValue = parseFloat(this.value, 10);
 
       if (isNaN(Number(this.value))) {
         msgs.push(messages.not_a_number);
@@ -330,7 +338,7 @@
       }
       return closed(msgs);
     },
-    
+
     // ActiveModel::Validations::FormatValidator
     format: function(options, messages) {
       var msgs  = [];
@@ -348,12 +356,12 @@
       }
       return closed(msgs);
     },
-    
+
     // ActiveModel::Validations::AcceptanceValidator
     acceptance: function(options, messages) {
       return closed(this.checked === true ? [] : [messages.accepted]);
     },
-    
+
     // ActiveModel::Validations::ConfirmationValidator
     confirmation: function(options, messages) {
       var id       = this.getAttribute('id'),
@@ -366,7 +374,7 @@
 
     // ActiveModel::Validations::UniquenessValidator
     uniqueness: function(options, messages) {
-      var validation = pending();          
+      var validation = pending();
       get(urlFor(this, 'uniqueness'), {
         success: function(status, headers, text) {
           validation.close(text);

@@ -5,15 +5,16 @@ describe Judge::ValidationsController, type: :controller do
   let(:headers) do
     { :accept => "application/json" }
   end
-  
+
   let(:valid_params) do
     {
       :use_route => :judge,
       :format => :json,
       :klass => "User",
       :attribute => "username",
-      :value => "invisibleman",
-      :kind => "uniqueness"
+      :value => "tinbucktwo",
+      :kind => "uniqueness",
+      :original_value => "tinbucktwo"
     }
   end
 
@@ -24,7 +25,8 @@ describe Judge::ValidationsController, type: :controller do
       :klass => "User",
       :attribute => "city",
       :value => "",
-      :kind => "city"
+      :kind => "city",
+      :original_value => "nil"
     }
   end
 
@@ -32,6 +34,12 @@ describe Judge::ValidationsController, type: :controller do
     describe "when allowed" do
       before(:each) { Judge.config.stub(:exposed?).and_return(true) }
       it "responds with empty JSON array if valid" do
+        get :build, valid_params, headers
+        response.should be_success
+        response.body.should eql "[]"
+      end
+      it "responds with empty JSON array if original_value equals the value" do
+        FactoryGirl.create(:user, username: 'tinbucktwo')
         get :build, valid_params, headers
         response.should be_success
         response.body.should eql "[]"
