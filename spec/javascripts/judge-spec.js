@@ -462,6 +462,23 @@ describe('judge', function() {
           expect(validation).toBeInvalidWith(['Request error: 500']);
         });
       });
+      describe('specified class name', function() {
+        beforeEach(function() {
+          el.setAttribute('data-model-class', 'MyModule::Leader');
+        });
+        it('makes request using specified class name if it is present', function() {
+            runs(function() {
+            server.respondWith([200, {}, '[]']);
+            validation = validator({}, {});
+          });
+          runs(function() {
+            server.respond();
+          });
+          runs(function() {
+            expect(server.requests[0].url).toBe('/judge?klass=MyModule%3A%3ALeader&attribute=email&value=leader%40team.com&kind=uniqueness');
+          });
+        });
+      });
     });
 
     describe('user added validator', function() {
