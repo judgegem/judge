@@ -1,8 +1,8 @@
 describe('judge', function() {
   var server,
-      uniquenessAttr   = '[{"kind":"uniqueness","options":{},"messages":{}}]',
+      uniquenessAttr   = '[{"kind":"uniqueness","options":{},"messages":{},"original_value":"leader"}]',
       presenceAttr     = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]',
-      uniqPresenceAttr = '[{"kind":"uniqueness","options":{},"messages":{}},{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]',
+      uniqPresenceAttr = '[{"kind":"uniqueness","options":{},"messages":{},"original_value":"leader"},{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]',
       mixedAttr        = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}},{"kind":"inclusion","options":{"in":["a","b"]},"messages":{"inclusion":"must be a or b"}}]',
       uniqAndIncAttr  = '[{"kind":"uniqueness","options":{},"messages":{}},{"kind":"inclusion","options":{"in":["a","b"]},"messages":{"inclusion":"must be a or b"}}]';
 
@@ -446,7 +446,7 @@ describe('judge', function() {
         validator  = _.bind(judge.eachValidators.uniqueness, el);
         el.value   = 'leader@team.com';
         el.name    = 'team[leader][email]';
-        el.setAttribute('data-validate', '[{"kind":"uniqueness","options":{},"messages":{},"original_value":"leader"}]')
+        el.setAttribute('data-validate', uniquenessAttr)
       });
       it('returns a pending Validation', function() {
         validation = validator({}, {});
