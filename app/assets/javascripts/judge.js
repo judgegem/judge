@@ -222,9 +222,7 @@
         this.trigger('close', this.element, status, report.messages);
 
         // handle named callbacks
-        if (status === eventName) {
-          this.trigger(status, this.element, report.messages);
-        }
+        this.trigger(status, this.element, report.messages);
       }
     }
   });
