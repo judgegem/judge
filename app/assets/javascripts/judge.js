@@ -390,8 +390,8 @@
     if (_.isFunction(callbacks)) {
       queue.on('close', callbacks);
     } else if (isCallbacksObj(callbacks)) {
-      queue.on('valid', callbacks.valid);
-      queue.on('invalid', callbacks.invalid);
+      queue.on('valid', _.once(callbacks.valid));
+      queue.on('invalid', _.once(callbacks.invalid));
     }
     return queue;
   };
