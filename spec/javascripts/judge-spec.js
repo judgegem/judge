@@ -3,7 +3,8 @@ describe('judge', function() {
       uniquenessAttr   = '[{"kind":"uniqueness","options":{},"messages":{}}]',
       presenceAttr     = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]',
       uniqPresenceAttr = '[{"kind":"uniqueness","options":{},"messages":{}},{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}}]',
-      mixedAttr        = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}},{"kind":"inclusion","options":{"in":["a","b"]},"messages":{"inclusion":"must be a or b"}}]';
+      mixedAttr        = '[{"kind":"presence","options":{},"messages":{"blank":"must not be blank"}},{"kind":"inclusion","options":{"in":["a","b"]},"messages":{"inclusion":"must be a or b"}}]',
+      uniqAndIncAttr  = '[{"kind":"uniqueness","options":{},"messages":{}},{"kind":"inclusion","options":{"in":["a","b"]},"messages":{"inclusion":"must be a or b"}}]';
 
   beforeEach(function() {
     this.addMatchers(customMatchers);
@@ -43,13 +44,49 @@ describe('judge', function() {
         expect(first.callCount).toEqual(1);
       });
       it('calls second callback wth messages when queue is closed as invalid', function() {
-        var first = jasmine.createSpy(), second = jasmine.createSpy();
+        var first = jasmine.createSpy('first'), second = jasmine.createSpy('second');
+        el.value = ''
         judge.validate(el, {
           valid: first,
           invalid: second
         });
         expect(second).toHaveBeenCalledWith(el, ['must not be blank', 'must be a or b']);
         expect(second.callCount).toEqual(1);
+      });
+    });
+
+    describe('when checking local and remote validation messages', function() {
+      it('calls valid callback when remote(unique) validation is eventually closed', function() {
+        var valid = jasmine.createSpy(), invalid = jasmine.createSpy();
+        el.setAttribute('data-validate', uniqAndIncAttr);
+        el.value = 'a';
+
+        var queue = judge.validate(el, {
+          valid: valid,
+          invalid: invalid
+        });
+        expect(valid).not.toHaveBeenCalled();
+        expect(invalid).not.toHaveBeenCalled();
+
+        queue.validations[0].close([]);
+        expect(valid).toHaveBeenCalledWith(el, []);
+        expect(valid.callCount).toEqual(1);
+      });
+      it('calls invalid callback when remote(unique) validation is eventually closed', function() {
+        var valid = jasmine.createSpy(), invalid = jasmine.createSpy();
+        el.setAttribute('data-validate', uniqAndIncAttr);
+        el.value = 'c'; // Not included, will fail.
+
+        var queue = judge.validate(el, {
+          valid: valid,
+          invalid: invalid
+        });
+        expect(valid).not.toHaveBeenCalled();
+        expect(invalid).not.toHaveBeenCalled();
+
+        queue.validations[0].close([]);
+        expect(invalid).toHaveBeenCalledWith(el, ["must be a or b"]);
+        expect(invalid.callCount).toEqual(1);
       });
     });
   });
