@@ -138,7 +138,7 @@
     };
     originalValue = function(el) {
       var validations = JSON.parse(el.getAttribute('data-validate'));
-      var validation = _.filter(validations, function (validation) { return validation.kind == "uniqueness"})[0];
+      var validation = _.filter(validations, function (validation) { return validation.kind === "uniqueness"})[0];
       return validation.original_value;
     };
 
@@ -152,7 +152,7 @@
           'value'    : el.value,
           'kind'     : kind
         };
-        if (kind == 'uniqueness') {
+        if (kind === 'uniqueness') {
           params['original_value'] = originalValue(el);
         }
     return path + queryString(params);
