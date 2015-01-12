@@ -6,6 +6,7 @@ module Judge
       @attribute = params[:attribute]
       @value     = params[:value]
       @kind      = params[:kind]
+      @original_value = params[:original_value]
       validate!
     end
 
@@ -27,7 +28,7 @@ module Judge
 
     def validate!
       record.errors.delete(@attribute)
-      amv.validate_each(record, @attribute, @value)
+      amv.validate_each(record, @attribute, @value) unless amv.kind == :uniqueness && @value == @original_value && @original_value != ""
       self
     end
 
