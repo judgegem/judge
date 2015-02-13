@@ -1,5 +1,6 @@
 # Changelog
 
+* **2.0.5** Respect defined attribute accessor methods when validating.
 * **2.0.4** Better empty param handling and safer loading of engine files.
 * **2.0.3** Fixed Internet Explorer XHR bug.
 * **2.0.2** Fixed controller inheritance bug.
