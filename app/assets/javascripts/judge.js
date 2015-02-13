@@ -204,7 +204,8 @@
     this.attrValidators = root.JSON.parse(this.element.getAttribute('data-validate'));
 
     _.each(this.attrValidators, function(av) {
-      if (this.element.value.length || av.options.allow_blank !== true) {
+      av.options || (av.options = {});
+      if (this.element.value.length || av.options.allow_blank !== true || (av.kind == "format" && av.options.allow_blank === true)) {
         var method     = _.bind(judge.eachValidators[av.kind], this.element),
             validation = method(av.options, av.messages);
         validation.on('close', this.tryClose, this);
@@ -342,16 +343,18 @@
     // ActiveModel::Validations::FormatValidator
     format: function(options, messages) {
       var msgs  = [];
-      if (_(options).has('with')) {
-        var withReg = convertRegExp(options['with']);
-        if (!withReg.test(this.value)) {
-          msgs.push(messages.invalid);
+      if (!(_(options).has('allow_blank') && !this.value.length)) {
+        if (_(options).has('with')) {
+          var withReg = convertRegExp(options['with']);
+          if (!withReg.test(this.value)) {
+            msgs.push(messages.invalid);
+          }
         }
-      }
-      if (_(options).has('without')) {
-        var withoutReg = convertRegExp(options.without);
-        if (withoutReg.test(this.value)) {
-          msgs.push(messages.invalid);
+        if (_(options).has('without')) {
+          var withoutReg = convertRegExp(options.without);
+          if (withoutReg.test(this.value)) {
+            msgs.push(messages.invalid);
+          }
         }
       }
       return closed(msgs);

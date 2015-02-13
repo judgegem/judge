@@ -3,8 +3,8 @@ module Judge
   class FormBuilder < ActionView::Helpers::FormBuilder
 
     include Judge::Html
-    
-    %w{text_field text_area password_field}.each do |type|
+
+    %w{text_field text_area password_field email_field number_field phone_field range_field search_field telephone_field url_field file_field}.each do |type|
       helper = <<-END
         def #{type}(method, options = {})
           add_validate_attr!(self.object, method, options)
@@ -18,7 +18,7 @@ module Judge
       add_validate_attr!(self.object, method, options)
       super
     end
-    
+
     def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
       add_validate_attr!(self.object, method, options)
       super
@@ -62,7 +62,7 @@ module Judge
           options_to_merge.merge! attrs_for(object, method)
         end
       end
-    
+
   end
 
 end

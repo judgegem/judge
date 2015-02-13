@@ -21,7 +21,7 @@ module Judge
     def record
       @record ||= begin
         rec = @klass.new
-        rec[@attribute] = @value
+        rec.send(:"#{@attribute}=", @value)
         rec
       end
     end

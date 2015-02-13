@@ -9,9 +9,25 @@ module Judge
     def initialize(object, method, amv)
       @kind     = amv.kind
       @options  = amv.options.reject { |key| REJECTED_OPTIONS.include?(key)  }
+      @options  = @options.each { |key, value|
+        @options[key] = (value.class.name == "Regexp" ? json_regexp(value) : value)
+      }
       @method   = method
       @messages = Judge::MessageCollection.new(object, method, amv)
       @original_value    = object.send(method)
+    end
+
+    def json_regexp(regexp)
+      str = regexp.inspect.
+        sub('\\A' , '^').
+        sub('\\Z' , '$').
+        sub('\\z' , '$').
+        sub(/^\// , '').
+        sub(/\/[a-z]*$/ , '').
+        gsub(/\(\?#.+\)/ , '').
+        gsub(/\(\?-\w+:/ , '(').
+        gsub(/\s/ , '')
+      Regexp.new(str)
     end
 
     def to_hash
