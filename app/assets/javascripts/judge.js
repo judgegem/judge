@@ -116,17 +116,41 @@
   var
     attrFromName = function(name) {
       var matches, attr = '';
-      if (matches = name.match(/\[(\w+)\]$/)) {
+      if (matches = name.match(/\[(\w+).*\]$/)) {
         attr = matches[1];
       }
       return attr;
     };
     classFromName = function(name) {
       var bracketed, klass = '';
-      if (bracketed = name.match(/\[(\w+)\]/g)) {
+      if (bracketed = name.match(/\[(\w+).*\]/g)) {
         klass = (bracketed.length > 1) ? camelize(debracket(bracketed[0])) : name.match(/^\w+/)[0];
       }
       return klass;
+    };
+    optionFromName = function(name) {
+      var matches, option = '';
+      if (matches = name.match(/\[\w+\((.*)\)\]$/)) {
+        option = matches[1];
+      }
+      return option;
+    };
+    inputsFromName = judge.inputsFromName = function(name) {
+      var klass  = classFromName(name),
+          attr   = attrFromName(name),
+          inputs = document.querySelector("." + klass + "_" + attr).querySelectorAll("input, select");
+
+      return _.sortBy(inputs, function(el) {
+        return optionFromName(el.name);
+      }).reverse();
+
+    };
+    valueFromName = function(name) {
+      var inputs = inputsFromName(name);
+
+      return _.map(inputs, function(el) {
+        return el.value;
+      }).join('-');
     };
     debracket = function(str) {
       return str.replace(/\[|\]/g, '');
@@ -140,11 +164,16 @@
   // Build the URL necessary to send a GET request to the mounted validations
   // controller to check the validity of the given form element.
   var urlFor = judge.urlFor = function(el, kind) {
+    var value = false;
+    if (el.tagName === 'SELECT') {
+      value = valueFromName(el.name);
+    }
+
     var path   = judge.enginePath,
         params = {
           'klass'    : classFromName(el.name),
           'attribute': attrFromName(el.name),
-          'value'    : el.value,
+          'value'    : value || el.value,
           'kind'     : kind
         };
     return path + queryString(params);
