@@ -14,18 +14,31 @@ module Judge
 
     private
 
-      REQUIRED_PARAMS = %w{klass attribute value kind original_value}
+      REQUIRED_PARAMS = %w{klass attribute value kind}
+      CONDITIONAL_PARAMS = {kind: ['uniqueness', :original_value]}
 
       def params_exposed?(params)
         Judge.config.exposed?(params[:klass], params[:attribute])
       end
 
       def params_present?(params)
-        params.keys == REQUIRED_PARAMS && params.values.all?
+        required_params_present?(params) && conditional_params_present?(params)
+      end
+
+      def required_params_present?(params)
+        REQUIRED_PARAMS.all? {|s| params.key? s} && params.values_at(*REQUIRED_PARAMS).all?
+      end
+
+      def conditional_params_present?(params)
+        CONDITIONAL_PARAMS.each do |required_param, constraint|
+          if params[required_param] == constraint.first
+            return false unless params[constraint.last]
+          end
+        end
       end
 
       def normalized_params(params)
-        params = params.dup.keep_if {|k| REQUIRED_PARAMS.include?(k) || (k == :original_value && params[:kind] == :uniqueness)}
+        params = params.dup.keep_if {|k| REQUIRED_PARAMS.include?(k) || (k == 'original_value' && params[:kind] == 'uniqueness')}
         params[:klass]     = find_klass(params[:klass]) if params[:klass]
         params[:attribute] = params[:attribute].to_sym  if params[:attribute]
         params[:value]     = URI.decode(params[:value]) if params[:value]
