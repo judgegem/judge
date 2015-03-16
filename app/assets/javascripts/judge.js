@@ -121,21 +121,6 @@
       }
       return attr;
     };
-    classFromName = function(name) {
-      var bracketed, klass = '';
-      if (bracketed = name.match(/\[(\w+)\]/g)) {
-        klass = (bracketed.length > 1) ? camelize(debracket(bracketed[0])) : name.match(/^\w+/)[0];
-      }
-      return klass;
-    };
-    debracket = function(str) {
-      return str.replace(/\[|\]/g, '');
-    };
-    camelize = function(str) {
-      return str.replace(/(^[a-z]|\_[a-z])/g, function($1) {
-        return $1.toUpperCase().replace('_','');
-      });
-    };
     originalValue = function(el) {
       var validations = JSON.parse(el.getAttribute('data-validate'));
       var validation = _.filter(validations, function (validation) { return validation.kind === "uniqueness"})[0];
@@ -147,7 +132,7 @@
   var urlFor = judge.urlFor = function(el, kind) {
     var path   = judge.enginePath,
         params = {
-          'klass'    : classFromName(el.name),
+          'klass'    : el.getAttribute('data-klass'),
           'attribute': attrFromName(el.name),
           'value'    : el.value,
           'kind'     : kind

@@ -446,7 +446,8 @@ describe('judge', function() {
         validator  = _.bind(judge.eachValidators.uniqueness, el);
         el.value   = 'leader@team.com';
         el.name    = 'team[leader][email]';
-        el.setAttribute('data-validate', uniquenessAttr)
+        el.setAttribute('data-validate', uniquenessAttr);
+        el.setAttribute('data-klass', 'Leader');
       });
       it('returns a pending Validation', function() {
         validation = validator({}, {});
