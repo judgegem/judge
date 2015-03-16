@@ -121,14 +121,6 @@
       }
       return attr;
     };
-    debracket = function(str) {
-      return str.replace(/\[|\]/g, '');
-    };
-    camelize = function(str) {
-      return str.replace(/(^[a-z]|\_[a-z])/g, function($1) {
-        return $1.toUpperCase().replace('_','');
-      });
-    };
     originalValue = function(el) {
       var validations = JSON.parse(el.getAttribute('data-validate'));
       var validation = _.filter(validations, function (validation) { return validation.kind === "uniqueness"})[0];
