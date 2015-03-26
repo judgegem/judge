@@ -1,5 +1,12 @@
 # Changelog
 
+* **2.0.6**
+    - [#46](https://github.com/joecorcoran/judge/pull/46): remove Responders
+    - [#49](https://github.com/joecorcoran/judge/pull/49): remove status check from tryClose
+    - [#48](https://github.com/joecorcoran/judge/pull/48): added original value to uniqueness validations
+    - [#51](https://github.com/joecorcoran/judge/pull/51): Seperate required parameters from conditional parameters
+    - [#52](https://github.com/joecorcoran/judge/pull/52): Fix nested model uniqueness validation
+* **2.0.5**
 * **2.0.4** Better empty param handling and safer loading of engine files.
 * **2.0.3** Fixed Internet Explorer XHR bug.
 * **2.0.2** Fixed controller inheritance bug.
