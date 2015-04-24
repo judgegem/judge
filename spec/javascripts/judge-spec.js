@@ -421,11 +421,11 @@ describe('judge', function() {
     describe('confirmation', function() {
       var confEl;
       beforeEach(function() {
-        validator = _.bind(judge.eachValidators.confirmation, el);
-        el.id = 'pw';
+        el.id = 'pw_confirmation';
         confEl = document.createElement('input');
-        confEl.id = 'pw_confirmation';
+        confEl.id = 'pw';
         document.body.appendChild(confEl);
+        validator = _.bind(judge.eachValidators.confirmation, el);
       });
       afterEach(function() {
         document.body.removeChild(confEl);

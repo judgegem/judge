@@ -350,7 +350,7 @@
     // ActiveModel::Validations::ConfirmationValidator
     confirmation: function(options, messages) {
       var id       = this.getAttribute('id'),
-          confId   = id + '_confirmation',
+          confId   = id.replace('_confirmation', ''),
           confElem = root.document.getElementById(confId);
       return closed(
         this.value === confElem.value ? [] : [messages.confirmation]
