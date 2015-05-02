@@ -69,4 +69,8 @@ describe Judge::FormBuilder do
     tzs.should match expected
   end
 
+  specify "#email_field" do
+    builder.email_field(:username, :validate => true).should match expected
+  end
+
 end
