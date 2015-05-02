@@ -23,8 +23,8 @@ module Judge
 
     def amv_from_original
       original_amv = nil
-      original_method = @method.to_s.gsub('_confirmation', '').to_sym
-      @object.class.validators_on(original_method).each do |v|
+      original_method = method.to_s.gsub('_confirmation', '').to_sym
+      object.class.validators_on(original_method).each do |v|
         original_amv = v if v.class.name['ConfirmationValidator']
       end
 
