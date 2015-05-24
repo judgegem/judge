@@ -256,7 +256,12 @@
   judge.eachValidators = {
     // ActiveModel::Validations::PresenceValidator
     presence: function(options, messages) {
-      return closed(this.value.length ? [] : [messages.blank]);
+      if (this.type === 'radio') {
+        var is_selected = root.document.querySelectorAll('[name="'+this.name+'"]:checked').length;
+        return closed(is_selected ? [] : [messages.blank]);
+      } else {
+        return closed(this.value.length ? [] : [messages.blank]);
+      }
     },
 
     // ActiveModel::Validations::LengthValidator

@@ -260,6 +260,25 @@ describe('judge', function() {
         el.value = 'foo';
         expect(validator({}, { blank: 'Must not be blank' })).toBeValid();
       });
+      it('returns invalid Validation if radio has no selection', function() {
+        el.type  = 'radio'
+        el.name  = 'radio_group'
+        el.value = 'option1'
+        // eachValidators.presence for radio btns rely on querySelectorAll
+        // so we have to add the el to the body
+        document.body.appendChild(el);
+        expect(validator({}, { blank: 'Must not be blank' })).toBeInvalid();
+      });
+      it('returns valid Validation if radio has selection', function() {
+        el.type    = 'radio'
+        el.name    = 'radio_group'
+        el.value   = 'option1'
+        el.checked = true;
+        // eachValidators.presence for radio btns rely on querySelectorAll
+        // so we have to add the el to the body
+        document.body.appendChild(el);
+        expect(validator({}, { blank: 'Must not be blank' })).toBeValid();
+      });
     });
 
     describe('length', function() {
