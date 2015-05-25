@@ -78,7 +78,7 @@
   var convertRegExp = function(string) {
     var parts  = string.slice(1, -1).split(':'),
         flags  = parts.shift().replace('?', ''),
-        source = parts.join(':').replace(/\\\\/g, '\\');
+        source = parts.join(':').replace(/\\\\/g, '\\').replace('\\A', '^').replace('\\z', '$');
     return new RegExp(source, convertFlags(flags));
   };
 
