@@ -407,6 +407,26 @@ describe('judge', function() {
           el.value = 'AbC';
           expect(validator({ 'with': '(?-mix:[A-Za-z]+)' }, {})).toBeValid();
         });
+
+        it('converts devise\'s Ruby email regex and returns invalid with invalid email', function() {
+          el.value = 'not an email';
+          expect(validator({ 'with': '(?-mix:\\A[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+\\z)' }, { invalid: 'is invalid' })).toBeInvalidWith(['is invalid']);
+        });
+
+        it('converts devise\'s Ruby email regex and returns valid with valid email', function() {
+          el.value = 'john.doe@somesite.com';
+          expect(validator({ 'with': '(?-mix:\\A[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+\\z)' }, {})).toBeValid();
+        });
+
+        it('converts a Ruby slug regex and returns invalid with invalid slug', function() {
+          el.value = 'not an slug.';
+          expect(validator({ 'with': '(?-mix:\\A[-a-zA-Z0-9]+\\z)' }, { invalid: 'is invalid' })).toBeInvalidWith(['is invalid']);
+        });
+
+        it('converts a Ruby slug regex and returns valid with valid slug', function() {
+          el.value = 'this-is-a-slug';
+          expect(validator({ 'with': '(?-mix:\\A[-a-zA-Z0-9]+\\z)' }, {})).toBeValid();
+        });
       });
 
       describe('without', function() {
