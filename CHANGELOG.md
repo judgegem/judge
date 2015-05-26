@@ -1,5 +1,10 @@
 # Changelog
 
+* **2.1.0**
+    - [#55](https://github.com/joecorcoran/judge/pull/55): move confirmation validator to comfirmation field
+    - [#56](https://github.com/joecorcoran/judge/pull/56): add `email_field` support
+    - [#58](https://github.com/joecorcoran/judge/pull/58): add presence validation support to radio buttons
+    - [#60](https://github.com/joecorcoran/judge/pull/60): support Ruby-style regex in JavaScript
 * **2.0.6**
     - [#46](https://github.com/joecorcoran/judge/pull/46): remove Responders
     - [#49](https://github.com/joecorcoran/judge/pull/49): remove status check from tryClose
