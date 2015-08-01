@@ -45,7 +45,7 @@ describe('judge', function() {
       });
       it('calls second callback wth messages when queue is closed as invalid', function() {
         var first = jasmine.createSpy('first'), second = jasmine.createSpy('second');
-        el.value = ''
+        el.value = '';
         judge.validate(el, {
           valid: first,
           invalid: second
@@ -261,18 +261,18 @@ describe('judge', function() {
         expect(validator({}, { blank: 'Must not be blank' })).toBeValid();
       });
       it('returns invalid Validation if radio has no selection', function() {
-        el.type  = 'radio'
-        el.name  = 'radio_group'
-        el.value = 'option1'
+        el.type  = 'radio';
+        el.name  = 'radio_group';
+        el.value = 'option1';
         // eachValidators.presence for radio btns rely on querySelectorAll
         // so we have to add the el to the body
         document.body.appendChild(el);
         expect(validator({}, { blank: 'Must not be blank' })).toBeInvalid();
       });
       it('returns valid Validation if radio has selection', function() {
-        el.type    = 'radio'
-        el.name    = 'radio_group'
-        el.value   = 'option1'
+        el.type    = 'radio';
+        el.name    = 'radio_group';
+        el.value   = 'option1';
         el.checked = true;
         // eachValidators.presence for radio btns rely on querySelectorAll
         // so we have to add the el to the body
@@ -282,20 +282,50 @@ describe('judge', function() {
     });
 
     describe('length', function() {
-      beforeEach(function() {
-        validator = _.bind(judge.eachValidators.length, el);
+      describe('length : single input', function() {
+        beforeEach(function() {
+          validator = _.bind(judge.eachValidators.length, el);
+        });
+        it('returns invalid Validation if value is too short', function() {
+          el.value = 'abc';
+          expect(validator({ minimum: 5 }, { too_short: '2 shrt' })).toBeInvalidWith(['2 shrt']);
+        });
+        it('returns invalid Validation if value is too long', function() {
+          el.value = 'abcdef';
+          expect(validator({ maximum: 5 }, { too_long: '2 lng' })).toBeInvalidWith(['2 lng']);
+        });
+        it('returns valid Validation for valid value', function() {
+          el.value = 'abc';
+          expect(validator({ minimum: 2, maximum: 5 }, {})).toBeValid();
+        });
       });
-      it('returns invalid Validation if value is too short', function() {
-        el.value = 'abc'
-        expect(validator({ minimum: 5 }, { too_short: '2 shrt' })).toBeInvalidWith(['2 shrt']);
-      });
-      it('returns invalid Validation if value is too long', function() {
-        el.value = 'abcdef'
-        expect(validator({ maximum: 5 }, { too_long: '2 lng' })).toBeInvalidWith(['2 lng']);
-      });
-      it('returns valid Validation for valid value', function() {
-        el.value = 'abc';
-        expect(validator({ minimum: 2, maximum: 5 }, {})).toBeValid();
+
+      describe('length : multiple input', function() {
+        var options;
+        beforeEach(function() {
+          el = document.createElement('select');
+          options = {
+            option1 : 'text a',
+            option2 : 'text b',
+            option3 : 'text c'
+          };
+          for(var i in options) {
+            el.options[el.options.length] = new Option(options[i], i);
+          }
+          validator = _.bind(judge.eachValidators.length, el);
+        });
+
+        it('returns invalid Validation if array is too small', function() {
+          expect(validator({ minimum: 4 }, { too_short: '2 shrt' })).toBeInvalidWith(['2 shrt']);
+        });
+
+        it('returns invalid Validation if array is too big', function() {
+          expect(validator({ maximum: 2 }, { too_long: '2 lng' })).toBeInvalidWith(['2 lng']);
+        });
+
+        it('returns valid Validation for valid size of array', function() {
+          expect(validator({ minimum: 2, maximum: 5 }, {})).toBeValid();
+        });
       });
     });
 
