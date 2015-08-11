@@ -273,7 +273,8 @@
             is:      { operator: '!=', message: 'wrong_length' }
           };
       _(types).each(function(properties, type) {
-        var invalid = operate(this.value.length, properties.operator, options[type]);
+        var length = this.length || this.value.length,
+            invalid = operate(length, properties.operator, options[type]);
         if (_(options).has(type) && invalid) {
           msgs.push(messages[properties.message]);
         }
