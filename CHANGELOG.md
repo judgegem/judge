@@ -1,5 +1,8 @@
 # Changelog
 
+* **2.1.1**
+    - [#63](https://github.com/joecorcoran/judge/pull/63): add array length validation
+    - [#68](https://github.com/joecorcoran/judge/pull/68): count newlines as two characters when validating length
 * **2.1.0**
     - [#55](https://github.com/joecorcoran/judge/pull/55): move confirmation validator to comfirmation field
     - [#56](https://github.com/joecorcoran/judge/pull/56): add `email_field` support
