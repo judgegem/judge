@@ -244,7 +244,7 @@ describe('judge', function() {
   });
 
   describe('eachValidators', function() {
-    var el, validator;
+    var el, validator, textarea;
     beforeEach(function() {
       el = document.createElement('input');
     });
@@ -297,6 +297,23 @@ describe('judge', function() {
         it('returns valid Validation for valid value', function() {
           el.value = 'abc';
           expect(validator({ minimum: 2, maximum: 5 }, {})).toBeValid();
+        });
+      });
+
+      describe('length', function() {
+        describe('length : textarea', function() {
+          beforeEach(function() {
+            textarea = document.createElement('textarea');
+            validator = _.bind(judge.eachValidators.length, textarea);
+          });
+          it('counts new lines as two characters', function() {
+            textarea.value = 'abc\nd';
+            expect(validator({ maximum: 5 }, { too_long: '2 lng' })).toBeInvalidWith(['2 lng']);
+          });
+          it('counts each variation of new line as two character', function() {
+            textarea.value = 'abc\nd\refg\r\nhi';
+            expect(validator({ is: 15 })).toBeValid();
+          });
         });
       });
 

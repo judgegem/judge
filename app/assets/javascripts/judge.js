@@ -273,8 +273,10 @@
             is:      { operator: '!=', message: 'wrong_length' }
           };
       _(types).each(function(properties, type) {
-        var length = this.length || this.value.length,
-            invalid = operate(length, properties.operator, options[type]);
+        var length = this.length || this.value.length;
+        // Rails validations count new lines as two characters, we account for them here
+        length += (this.value.match(/\n/g) || []).length;
+        var invalid = operate(length, properties.operator, options[type]);
         if (_(options).has(type) && invalid) {
           msgs.push(messages[properties.message]);
         }
