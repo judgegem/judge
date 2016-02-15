@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20120426221506) do
     t.string  "time_zone"
     t.integer "discipline_id"
     t.string  "city"
+    t.string  "telephone"
   end
 
 end

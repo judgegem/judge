@@ -23,4 +23,5 @@ class User < ActiveRecord::Base
   validates :discipline_id, :uniqueness => { :judge => :force }, :if => Proc.new { false }
   validates :time_zone,     :presence => { :judge => :ignore }
   validates :gender,        :presence => { :judge => :unknown_option }
+  validates :telephone,     :numericality => { :only_integer => true }
 end

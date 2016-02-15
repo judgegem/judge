@@ -73,4 +73,7 @@ describe Judge::FormBuilder do
     builder.email_field(:username, :validate => true).should match expected
   end
 
+  specify "#telephone_field" do
+    builder.telephone_field(:telephone, :validate => true).should match expected
+  end
 end
