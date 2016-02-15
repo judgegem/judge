@@ -14,6 +14,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :time_zone
       t.integer :discipline_id
       t.string :city
+      t.string :telephone
     end
   end
 end
