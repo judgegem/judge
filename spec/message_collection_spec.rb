@@ -60,6 +60,12 @@ describe Judge::MessageCollection do
       messages = Judge::MessageCollection.new(user, :age, amv).to_hash
       messages[:not_an_integer].should eql "Age must be an integer"
     end
+
+    it "adds not_an_integer message to messages hash if only_integer is true" do
+      amv = User.validators_on(:telephone).first
+      messages = Judge::MessageCollection.new(user, :telephone, amv).to_hash
+      messages[:not_an_integer].should eql "Telephone must be an integer"
+    end
   end
 
   describe "custom messages" do
