@@ -321,6 +321,6 @@ $ bundle exec rake appraisal
 
 ## Credit
 
-Created by [Joe Corcoran](mailto:joecorcoran@gmail.com), whose [blog](http://blog.joecorcoran.co.uk) and [tweets](http://twitter.com/josephcorcoran) you can read on the world wide internet. Thank you to every user, email corresponder and pull request submitter.
+Created by [Joe Corcoran](https://corcoran.io). Thank you to every user, email corresponder and pull request submitter.
 
 [Released under an MIT license](https://github.com/joecorcoran/judge/blob/master/LICENSE.txt).
