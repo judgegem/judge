@@ -13,7 +13,7 @@ module Judge
     end
 
     def exposed
-      @@exposed
+      @@exposed.map { |k, v| [k.constantize, v] }.to_h
     end
 
     def exposed?(klass, attribute)
