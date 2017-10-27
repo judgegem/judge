@@ -26,7 +26,6 @@ describe Judge::ConfirmationValidator do
 
   describe '#options' do
     it "should return the original amv's options (an empty hash)" do
-      expect(password_confirmation.options).to eq({})
       expect(password_confirmation.options).to eq(password_confirmation.amv.options)
     end
   end

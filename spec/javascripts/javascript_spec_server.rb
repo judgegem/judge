@@ -1,4 +1,5 @@
 require 'rack'
+require 'net/http'
 
 class JavascriptSpecServer < Struct.new(:port, :root)
 
