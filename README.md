@@ -12,7 +12,8 @@ In many cases it would be simpler to safely expose the validation information fr
 
 ## Installation
 
-Judge supports Rails >= 3.1.
+Judge supports Rails >= 5.0.  
+If you require Rails 4 support, please use Judge ~> 2.1.0.
 
 Judge relies on [Underscore.js](underscore) in general and [JSON2.js](json2) for browsers that lack proper JSON support. If your application already makes use of these files, you can safely ignore the versions provided with Judge.
 
