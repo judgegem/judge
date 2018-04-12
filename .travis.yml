@@ -1,8 +1,9 @@
 language: ruby
 
 rvm:
-  - 1.9.3
-  - 2.1
+  - 2.2
+  - 2.3
+  - 2.4
 
 before_script:
   - "RAILS_ENV=test bundle exec rake app:db:schema:load"
@@ -13,8 +14,6 @@ before_install:
 script: "bundle exec rake"
 
 gemfile:
-  - "gemfiles/rails_3_1.gemfile"
-  - "gemfiles/rails_3_2.gemfile"
-  - "gemfiles/rails_4_0.gemfile"
-  - "gemfiles/rails_4_1.gemfile"
-  - "gemfiles/rails_4_2.gemfile"
+  - "gemfiles/rails_5_0.gemfile"
+  - "gemfiles/rails_5_1.gemfile"
+  - "gemfiles/rails_5_2.gemfile"
