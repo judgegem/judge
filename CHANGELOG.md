@@ -1,5 +1,12 @@
 # Changelog
 
+* **3.0.0**
+    - Updates Rails support to 5.0+ and Ruby support to 2.2+
+    - [#71](https://github.com/joecorcoran/judge/pull/71): Add Code of Conduct from contributor-covenant.org
+    - [#72](https://github.com/joecorcoran/judge/pull/72): Add `telephone_field` support
+    - [#75](https://github.com/joecorcoran/judge/pull/75): Additional documentation for error messages
+    - [#78](https://github.com/joecorcoran/judge/pull/78): Fix uniqueness validation after source code changes
+    - [#83](https://github.com/joecorcoran/judge/pull/83): Remove `ActiveModel::Errors#get` deprecation for Rails 5.1
 * **2.1.1**
     - [#63](https://github.com/joecorcoran/judge/pull/63): add array length validation
     - [#68](https://github.com/joecorcoran/judge/pull/68): count newlines as two characters when validating length
