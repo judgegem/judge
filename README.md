@@ -117,7 +117,48 @@ end
 * uniqueness;
 * any `EachValidator` that you have written, provided you add a JavaScript version too and add it to `judge.eachValidators`.
 
-The *allow_blank* option is available everywhere it should be. Error messages are looked up according to the [Rails i18n API](http://guides.rubyonrails.org/i18n.html#translations-for-active-record-models).
+The *allow_blank* option is available everywhere it should be.
+
+### Error messages
+Error messages are looked up according to the [Rails i18n API](http://guides.rubyonrails.org/i18n.html#error-message-interpolation).
+
+To override error messages, add entries to `config/locales/en.yml` for the messages you'd like to customize. Here's an example with Rails default values:
+```
+en:
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: must be accepted
+      blank: can't be blank
+      present: must be blank
+      confirmation: doesn't match %{attribute}
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      model_invalid: "Validation failed: %{errors}"
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      odd: must be odd
+      required: must exist
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+      other_than: must be other than %{count}
+```
 
 ## Validating uniqueness
 
