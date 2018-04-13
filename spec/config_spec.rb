@@ -19,7 +19,7 @@ describe Judge::Config do
         Judge.configure do
           expose User, :username, :email
         end
-        Judge.config.exposed[User].should eql [:username, :email]
+        Judge.config.exposed['User'].should eql [:username, :email]
       end
 
       it "accepts multiple declarations for the same class" do
@@ -27,7 +27,7 @@ describe Judge::Config do
           expose User, :username
           expose User, :username, :email
         end
-        Judge.config.exposed[User].length.should eq 2
+        Judge.config.exposed['User'].length.should eq 2
       end
     end
     describe "unexpose" do
@@ -40,7 +40,7 @@ describe Judge::Config do
         Judge.configure do
           unexpose User, :email
         end
-        Judge.config.exposed[User].length.should eq 1
+        Judge.config.exposed['User'].length.should eq 1
       end
       it "removes whole class when no attributes given" do
         Judge.configure do

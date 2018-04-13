@@ -8,7 +8,7 @@ module Judge
     @@ignore_unsupported_validators = false
 
     def expose(klass, *attributes)
-      attrs = (@@exposed[klass] ||= [])
+      attrs = (@@exposed[klass.name] ||= [])
       attrs.concat(attributes).uniq!
     end
 
@@ -17,15 +17,15 @@ module Judge
     end
 
     def exposed?(klass, attribute)
-      @@exposed.has_key?(klass) && @@exposed[klass].include?(attribute)
+      @@exposed.has_key?(klass.name) && @@exposed[klass.name].include?(attribute)
     end
 
     def unexpose(klass, *attributes)
       attributes.each do |a|
-        @@exposed[klass].delete(a)
+        @@exposed[klass.name].delete(a)
       end
-      if attributes.empty? || @@exposed[klass].empty?
-        @@exposed.delete(klass)
+      if attributes.empty? || @@exposed[klass.name].empty?
+        @@exposed.delete(klass.name)
       end
     end
     
