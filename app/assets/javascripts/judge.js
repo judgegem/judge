@@ -260,7 +260,7 @@
         var is_selected = root.document.querySelectorAll('[name="'+this.name+'"]:checked').length;
         return closed(is_selected ? [] : [messages.blank]);
       } else {
-        return closed(this.value.length ? [] : [messages.blank]);
+        return closed(this.value.replace(/^\s+|\s+$/g, '').length ? [] : [messages.blank]);
       }
     },
 
