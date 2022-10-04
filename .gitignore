@@ -14,3 +14,4 @@ spec/dummy/log/**/*
 *.sqlite3
 .rspec
 gemfiles/*.lock
+.rbenv-gemsets

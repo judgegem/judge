@@ -33,12 +33,34 @@ module Judge
       #   unsupported by Judge
       # if it's a confirmation field, an AM::V like class is added to handle the confirmation validations
       def amvs
-        amvs = object.class.validators_on(method)
+        method_to_search = method
+        
+        if Judge.config.use_association_name_for_validations?
+          # since the method that gets passed in here for associations comes in the form of the generated form attribute 
+          # i.e. :wine_id or :acclaim_ids
+          # object.class.validators_on(:wine_id) will fail if the active model validation is on the association directly
+          # this ensures that validations defined as 'validates :wine, presence: true' still get applied 
+          # and client side error messages get generated 
+          regex_for_assocations = /_id|_ids/
+          if method.to_s.match?(regex_for_assocations)
+            parsed_method = method.to_s.gsub(regex_for_assocations, '');
+            reflection = find_association_reflection(parsed_method)
+            method_to_search = reflection.name if reflection
+          end
+        end
+
+        amvs = object.class.validators_on(method_to_search)
         amvs = amvs.reject { |amv| reject?(amv) || amv.class.name['ConfirmationValidator'] }
         amvs = amvs.reject { |amv| unsupported_options?(amv) && reject?(amv) != false } if Judge.config.ignore_unsupported_validators?
         amvs << Judge::ConfirmationValidator.new(object, method) if is_confirmation?
 
         amvs
+      end
+
+      def find_association_reflection(association)
+        if object.class.respond_to?(:reflect_on_association)
+          object.class.reflect_on_association(association) || object.class.reflect_on_association(association.pluralize)
+        end
       end
 
       def unsupported_options?(amv)
