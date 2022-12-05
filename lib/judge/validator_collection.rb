@@ -42,7 +42,7 @@ module Judge
           # this ensures that validations defined as 'validates :wine, presence: true' still get applied 
           # and client side error messages get generated 
           regex_for_assocations = /_id|_ids/
-          if method.to_s.match?(regex_for_assocations)
+          if method.to_s =~ regex_for_assocations
             parsed_method = method.to_s.gsub(regex_for_assocations, '');
             reflection = find_association_reflection(parsed_method)
             method_to_search = reflection.name if reflection
