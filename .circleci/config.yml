@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/judge
     docker:
-      - image: circleci/ruby:2.4.1
+      - image: cimg/ruby:2.7
         environment:
           RAILS_ENV: test
       - image: keinos/sqlite3:3.40.1
@@ -12,30 +12,12 @@ jobs:
     steps:
       - checkout
 
-      # Restore Cached Dependencies
-      - type: cache-restore
-        name: Restore bundle cache
-        key: judge-{{ checksum "Gemfile.lock" }}
+      - run: bundle install
+      - run: bundle exec appraisal install
 
-      # Bundle install dependencies
-      - run: gem bundle install
-
-      # Cache Dependencies
-      - type: cache-save
-        name: Store bundle cache
-        key: judge-{{ checksum "Gemfile.lock" }}
-        paths:
-          - bin/bundle
-
-      # Wait for DB
-      # - run: dockerize -wait tcp://localhost:5432 -timeout 1m
-
-      # Setup the environment
-      # - run: cp .sample.env .env
-
-      # Setup the database
       - run: bundle exec appraisal rake db:create
       - run: bundle exec appraisal rake db:migrate
 
-      # Run the tests
       - run: bundle exec appraisal rspec
+
+

@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency     'rails',                  '>= 5.0'
 
-  s.add_development_dependency 'rspec-rails',            '~> 3.1'
+  s.add_development_dependency 'rspec-rails',            '~> 4.0.1'
   s.add_development_dependency 'rspec-extra-formatters', '~> 1.0'
   s.add_development_dependency 'jquery-rails'
   s.add_development_dependency 'sqlite3',                '~> 1.3'
