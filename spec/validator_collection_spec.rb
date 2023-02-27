@@ -36,6 +36,12 @@ describe Judge::ValidatorCollection do
     Judge::ValidatorCollection.new(FactoryGirl.build(:user), :time_zone).validators.length.should eq 1
   end
 
+  it "respects the use association name judge configuration option" do
+    Judge.config.use_association_name_for_validations true
+    # validation is defined as (validates :sport, presence: true) instead of (validates :sport_id, presence: true)
+    Judge::ValidatorCollection.new(FactoryGirl.build(:discipline), :sport_id).validators.length.should eq 1
+  end
+
   it "ignores unknown per-validator judge configuration options" do
     Judge::ValidatorCollection.new(FactoryGirl.build(:user), :gender).validators.length.should eq 2
   end

@@ -6,6 +6,7 @@ module Judge
 
     @@exposed = {}
     @@ignore_unsupported_validators = false
+    @@use_association_name_for_validations = false
 
     def expose(klass, *attributes)
       attrs = (@@exposed[klass.name] ||= [])
@@ -35,6 +36,14 @@ module Judge
 
     def ignore_unsupported_validators?
       @@ignore_unsupported_validators
+    end
+
+    def use_association_name_for_validations(status)
+      @@use_association_name_for_validations = status
+    end
+
+    def use_association_name_for_validations?
+      @@use_association_name_for_validations
     end
   end
 
