@@ -25,7 +25,7 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - test:
+      - build:
           matrix:
             parameters:
               ruby-version: ['2.5', '2.7']
