@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/judge
     docker:
-      - image: cimg/ruby:2.7
+      - image: cimg/ruby:<< parameters.ruby-version >>
         environment:
           RAILS_ENV: test
       - image: keinos/sqlite3:3.40.1
@@ -20,4 +20,12 @@ jobs:
 
       - run: bundle exec appraisal rspec
 
-
+# For more info on Matrix Jobs:
+# https://circleci.com/blog/circleci-matrix-jobs/
+workflows:
+  build_and_test:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              ruby-version: ['2.5', '2.7']
