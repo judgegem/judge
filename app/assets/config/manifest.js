@@ -1,0 +1,1 @@
+//= link javascripts/judge.js
