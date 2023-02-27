@@ -1,5 +1,8 @@
 # Changelog
 
+* **3.1.0**
+    - [#96](https://github.com/judgegem/judge/pull/96): Allows more flexible validation definitions for foreign keys
+    - [#98](https://github.com/judgegem/judge/pull/98): Updates to CircleCI
 * **3.0.0**
     - Updates Rails support to 5.0+ and Ruby support to 2.2+
     - [#71](https://github.com/joecorcoran/judge/pull/71): Add Code of Conduct from contributor-covenant.org
